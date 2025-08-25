@@ -2,10 +2,11 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const { readJson, writeJson } = require("./src/utils/fileManager");
-
 const ProductManager = require("./src/managers/productManager");
+const CartManager = require("./src/managers/cartManager");
 
 const productManager = new ProductManager("products.json");
+const cartManager = new CartManager("carts.json");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -87,6 +88,41 @@ app.delete("/api/products/:pid", async (req, res) => {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
     res.json({ message: "Producto eliminado exitosamente" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/carts", async (req, res) => {
+  try {
+    const newCart = await cartManager.createCart();
+    res.status(201).json(newCart);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/carts/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const products = await cartManager.getProductsFromCart(cid);
+    if (!products) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    }
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/carts/:cid/product/:pid", async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const cart = await cartManager.addProductToCart(cid, pid);
+    if (!cart) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    }
+    res.json(cart);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
