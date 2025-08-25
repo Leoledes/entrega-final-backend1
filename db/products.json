@@ -3,5 +3,18 @@
     "id": 1,
     "name": "Planta de prueba",
     "price": 100
+  },
+  {
+    "id": "f013f2f5-33b9-49f0-b23e-6227619863d7",
+    "title": "Monera deliciosa",
+    "description": "Planta tropical con hojas grandes y perforadas.",
+    "code": "MONE-1",
+    "price": 35.5,
+    "status": true,
+    "stock": 20,
+    "category": "Interior",
+    "thumbnails": [
+      "/img/monera-deliciosa.jpg"
+    ]
   }
 ]

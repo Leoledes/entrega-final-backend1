@@ -40,6 +40,15 @@ app.get("/test-products", async (req, res) => {
   }
 });
 
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/api/products/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
@@ -56,8 +65,8 @@ app.get("/api/products/:pid", async (req, res) => {
 app.post("/api/products", async (req, res) => {
   try {
     const newProductData = req.body;
-    if (!newProductData.name || !newProductData.price) {
-      return res.status(400).json({ error: "Faltan campos obligatorios" });
+    if (!newProductData.title || !newProductData.description || !newProductData.code || !newProductData.price || typeof newProductData.status !== 'boolean' || !newProductData.stock || !newProductData.category || !newProductData.thumbnails) {
+      return res.status(400).json({ error: "Faltan campos obligatorios o el formato es incorrecto" });
     }
     const newProduct = await productManager.addProduct(newProductData);
     res.status(201).json(newProduct);
