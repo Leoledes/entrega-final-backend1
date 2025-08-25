@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
+const { readJson, writeJson } = require("./src/utils/fileManager");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +18,23 @@ app.get("/", (req, res) => {
   res.send("Servidor funcionando");
 });
 
+app.get("/test-products", async (req, res) => {
+  try {
+    let products = await readJson("products.json");
+    if (products.length === 0) {
+      products.push({
+        id: 1,
+        name: "Planta de prueba 🌱",
+        price: 100
+      });
+      await writeJson("products.json", products);
+    }
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.use((req, res) => {
   res.status(404).json({ status: "error", message: "Ruta no encontrada" });
 });
@@ -24,3 +42,7 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
+
+
+
