@@ -79,6 +79,19 @@ app.put("/api/products/:pid", async (req, res) => {
   }
 });
 
+app.delete("/api/products/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const success = await productManager.deleteProduct(pid);
+    if (!success) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    res.json({ message: "Producto eliminado exitosamente" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.use((req, res) => {
   res.status(404).json({ status: "error", message: "Ruta no encontrada" });
