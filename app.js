@@ -3,10 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const { readJson, writeJson } = require("./src/utils/fileManager");
 
-// Importar la clase ProductManager
 const ProductManager = require("./src/managers/productManager");
 
-// Instanciar la clase. Le pasamos el nombre del archivo con el que va a trabajar.
 const productManager = new ProductManager("products.json");
 
 app.use(express.json());
