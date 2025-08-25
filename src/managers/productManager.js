@@ -13,13 +13,25 @@ class ProductManager {
   async addProduct(productData) {
     const products = await this.getProducts();
     const newProduct = {
-      id: crypto.randomUUID(), // Genera un ID único para el producto
-      ...productData, // Copia el resto de los datos del producto
+      id: crypto.randomUUID(),
+      ...productData,
       status: true
     };
     products.push(newProduct);
     await writeJson(this.path, products);
     return newProduct;
+  }
+
+async updateProduct(id, updateData) {
+    const products = await this.getProducts();
+    const index = products.findIndex(p => String(p.id) === String(id));
+    if (index === -1) {
+      return null;
+    }
+    const updatedProduct = { ...products[index], ...updateData };
+    products[index] = updatedProduct;
+    await writeJson(this.path, products);
+    return updatedProduct;
   }
 }
 
