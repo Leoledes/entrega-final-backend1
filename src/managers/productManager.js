@@ -33,6 +33,15 @@ async updateProduct(id, updateData) {
     await writeJson(this.path, products);
     return updatedProduct;
   }
+  async deleteProduct(id) {
+    const products = await this.getProducts();
+    const newProducts = products.filter(p => String(p.id) !== String(id));
+    if (newProducts.length === products.length) {
+      return false;
+    }
+    await writeJson(this.path, newProducts);
+    return true;
+  }
 }
 
 module.exports = ProductManager;
