@@ -13,8 +13,6 @@
     "status": true,
     "stock": 10,
     "category": "Interior",
-    "thumbnails": [
-      "/img/monera-deliciosa.jpg"
-    ]
+    "thumbnails": ["/img/monera-deliciosa.jpg"]
   }
 ]
