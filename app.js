@@ -22,6 +22,29 @@ const initializeFiles = async () => {
   }
 };
 
+class PlantManager {
+  constructor(filePath) {
+    this.path = filePath;
+  }
+
+ async #readData() {
+    try {
+      const data = await fs.readFile(this.path, "utf-8");
+      return JSON.parse(data);
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        return [];
+      }
+      throw new Error(`Error al leer los datos de plantas: ${error.message}`);
+    }
+  }
+    async getPlants() {
+    return await this.#readData();
+  }
+}
+
+const plantManager = new PlantManager(PLANTS_FILE);
+
 const fs = require("fs/promises");
 
 app.use((req, res, next) => {
