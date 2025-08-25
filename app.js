@@ -3,6 +3,12 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const { readJson, writeJson } = require("./src/utils/fileManager");
 
+// Importar la clase ProductManager
+const ProductManager = require("./src/managers/productManager");
+
+// Instanciar la clase. Le pasamos el nombre del archivo con el que va a trabajar.
+const productManager = new ProductManager("products.json");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,6 +36,19 @@ app.get("/test-products", async (req, res) => {
       await writeJson("products.json", products);
     }
     res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/products/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const product = await productManager.getProductById(pid);
+    if (!product) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    res.json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
