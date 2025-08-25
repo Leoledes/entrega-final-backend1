@@ -28,7 +28,7 @@ app.get("/test-products", async (req, res) => {
     if (products.length === 0) {
       products.push({
         id: 1,
-        name: "Planta de prueba 🌱",
+        name: "Planta de prueba",
         price: 100
       });
       await writeJson("products.json", products);
@@ -51,6 +51,21 @@ app.get("/api/products/:pid", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.post("/api/products", async (req, res) => {
+  try {
+    const newProductData = req.body;
+    if (!newProductData.name || !newProductData.price) {
+      return res.status(400).json({ error: "Faltan campos obligatorios" });
+    }
+    const newProduct = await productManager.addProduct(newProductData);
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 app.use((req, res) => {
   res.status(404).json({ status: "error", message: "Ruta no encontrada" });
