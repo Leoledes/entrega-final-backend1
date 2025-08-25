@@ -1,0 +1,58 @@
+[
+  {
+    "id": "664f3c8a8d1d1a0f9c7a5b1b",
+    "title": "Monera Deliciosa",
+    "year": 2023,
+    "author": "Jardinero experto",
+    "genre": "Planta de interior",
+    "description": "Planta tropical con hojas grandes y perforadas.",
+    "price": 35.50,
+    "stock": 20
+  },
+  {
+    "id": "664f3c8a8d1d1a0f9c7a5b1c",
+    "title": "Sakura",
+    "year": 2024,
+    "author": "Jardinero experto",
+    "genre": "Árbol ornamental",
+    "description": "Árbol de cerezo japonés famoso por sus flores rosadas.",
+    "price": 50.00,
+    "stock": 10
+  },
+  {
+    "id": "664f3c8a8d1d1a0f9c7a5b1d",
+    "title": "Laurel de flor",
+    "year": 2022,
+    "author": "Jardinero experto",
+    "genre": "Arbusto de exterior",
+    "description": "Arbusto resistente con hermosas flores en forma de trompeta.",
+    "price": 28.75,
+    "stock": 25
+  },
+  {
+    "id": "664f3c8a8d1d1a0f9c7a5b1e",
+    "title": "Limonero",
+    "year": 2023,
+    "author": "Jardinero experto",
+    "genre": "Árbol frutal",
+    "description": "Árbol que produce limones, ideal para huertos y jardines.",
+    "price": 45.00,
+    "stock": 12
+  },
+  {
+    "id": "664f3c8a8d1d1a0f9c7a5b1f",
+    "title": "Potus",
+    "year": 2024,
+    "author": "Jardinero experto",
+    "genre": "Planta de interior",
+    "description": "Planta trepadora de fácil cuidado, perfecta para principiantes.",
+    "price": 18.25,
+    "stock": 30
+  }
+]
+
+
+
+
+
+
