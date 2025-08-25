@@ -1,73 +1,26 @@
 const express = require("express");
 const app = express();
-import fs from "fs/promises";
-import crypto from "crypto";
-
-
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-const PORT = 8080;
-
-const DATA_DIR = "./db";
-const PLANTS_FILE = `${DATA_DIR}/plants.json`;
-const initializeFiles = async () => {
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.access(PLANTS_FILE).catch(async () => {
-      await fs.writeFile(PLANTS_FILE, "[]", "utf-8");
-      console.log("Archivo plants.json creado para almacenar las plantas.");
-    });
-  } catch (error) {
-    console.error("Error al inicializar los archivos:", error);
-  }
-};
-
-class PlantManager {
-  constructor(filePath) {
-    this.path = filePath;
-  }
-
- async #readData() {
-    try {
-      const data = await fs.readFile(this.path, "utf-8");
-      return JSON.parse(data);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        return [];
-      }
-      throw new Error(`Error al leer los datos de plantas: ${error.message}`);
-    }
-  }
-    async getPlants() {
-    return await this.#readData();
-  }
-}
-
-const plantManager = new PlantManager(PLANTS_FILE);
-
-const fs = require("fs/promises");
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
   next();
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
-
 app.get("/", (req, res) => {
-  res.send("Servidor funcionando");
+  res.send("Servidor funcionando 🚀");
 });
 
-app.get("/api/products", (req, res) => {
-  const data = fs.readFileSync("./db/products.json", "utf-8");
-  const products = JSON.parse(data || "[]");
-  res.json(products);
+app.use((req, res) => {
+  res.status(404).json({ status: "error", message: "Ruta no encontrada" });
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
