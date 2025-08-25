@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Servidor funcionando 🚀");
+  res.send("Servidor funcionando");
 });
 
 app.use((req, res) => {
