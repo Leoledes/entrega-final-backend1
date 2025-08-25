@@ -65,6 +65,19 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
+app.put("/api/products/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const updateData = req.body;
+    const updatedProduct = await productManager.updateProduct(pid, updateData);
+    if (!updatedProduct) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 app.use((req, res) => {
