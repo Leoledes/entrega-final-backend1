@@ -11,7 +11,7 @@
     "code": "MONE-1",
     "price": 35.5,
     "status": true,
-    "stock": 20,
+    "stock": 10,
     "category": "Interior",
     "thumbnails": [
       "/img/monera-deliciosa.jpg"
