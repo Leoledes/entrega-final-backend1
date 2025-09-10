@@ -5,7 +5,7 @@ const getProducts = async (req, res) => {
         const products = await productService.getAllProducts();
         res.json(products);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal Server Error: " + err.message });
     }
 };
 
@@ -18,20 +18,20 @@ const getProductById = async (req, res) => {
         }
         res.json(product);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal Server Error: " + err.message });
     }
 };
 
 const addProduct = async (req, res) => {
     try {
         const newProductData = req.body;
-        if (!newProductData.title || !newProductData.description || !newProductData.code || !newProductData.price || typeof newProductData.status !== 'boolean' || !newProductData.stock || !newProductData.category || !newProductData.thumbnails) {
-            return res.status(400).json({ error: "Faltan campos obligatorios o el formato es incorrecto" });
-        }
         const newProduct = await productService.addNewProduct(newProductData);
         res.status(201).json(newProduct);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+            if (err.message.includes("Faltan campos")) {
+            return res.status(400).json({ error: err.message });
+        }
+        res.status(500).json({ error: "Internal Server Error: " + err.message });
     }
 };
 
@@ -45,7 +45,7 @@ const updateProduct = async (req, res) => {
         }
         res.json(updatedProduct);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal Server Error: " + err.message });
     }
 };
 
@@ -58,7 +58,7 @@ const deleteProduct = async (req, res) => {
         }
         res.json({ message: "Producto eliminado exitosamente" });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal Server Error: " + err.message });
     }
 };
 
