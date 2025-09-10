@@ -1,0 +1,84 @@
+const fs = require('fs/promises');
+const path = require('path');
+
+const readJson = async (fileName) => {
+    const filePath = path.resolve(__dirname, '../../data', fileName);
+    try {
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        return JSON.parse(fileContent);
+    } catch (err) {
+        if (err.code === 'ENOENT') {
+            await fs.writeFile(filePath, '[]');
+            return [];
+        }
+        throw new Error(`Error al leer el archivo ${fileName}: ${err.message}`);
+    }
+};
+
+const writeJson = async (fileName, data) => {
+    const filePath = path.resolve(__dirname, '../../data', fileName);
+    try {
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (err) {
+        throw new Error(`Error al escribir en el archivo ${fileName}: ${err.message}`);
+    }
+};
+
+class ProductManager {
+    constructor(fileName) {
+        this.fileName = fileName;
+    }
+
+    async getProducts() {
+        return readJson(this.fileName);
+    }
+
+    async updateProducts(products) {
+        await writeJson(this.fileName, products);
+    }
+
+    async getProductById(pid) {
+        const products = await this.getProducts();
+        return products.find(p => p.id === parseInt(pid));
+    }
+
+    async addProduct(newProductData) {
+        const products = await this.getProducts();
+        const newProduct = {
+            id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+            ...newProductData
+        };
+        products.push(newProduct);
+        await this.updateProducts(products);
+        return newProduct;
+    }
+
+    async updateProduct(pid, updateData) {
+        const products = await this.getProducts();
+        const productIndex = products.findIndex(p => p.id === parseInt(pid));
+        if (productIndex === -1) {
+            return null;
+        }
+        const updatedProduct = { ...products[productIndex], ...updateData, id: products[productIndex].id };
+        products[productIndex] = updatedProduct;
+        await this.updateProducts(products);
+        return updatedProduct;
+    }
+
+    async deleteProduct(pid) {
+        const products = await this.getProducts();
+        const initialLength = products.length;
+        const filteredProducts = products.filter(p => p.id !== parseInt(pid));
+        if (filteredProducts.length === initialLength) {
+            return false;
+        }
+        await this.updateProducts(filteredProducts);
+        return true;
+    }
+}
+
+const productManager = new ProductManager("products.json");
+
+module.exports = {
+    productManager
+};
