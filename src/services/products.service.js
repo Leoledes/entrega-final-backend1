@@ -9,6 +9,9 @@ const getProductById = async (pid) => {
 };
 
 const addNewProduct = async (productData) => {
+    if (!productData.title || !productData.description || !productData.code || !productData.price || typeof productData.status !== 'boolean' || !productData.stock || !productData.category || !productData.thumbnails) {
+        throw new Error("Faltan campos obligatorios o el formato es incorrecto");
+    }
     return productManager.addProduct(productData);
 };
 
