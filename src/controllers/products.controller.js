@@ -1,4 +1,3 @@
-// Controlador para manejar la lógica de las rutas de productos
 const productService = require('../services/products.service');
 
 const getProducts = async (req, res) => {
@@ -26,7 +25,6 @@ const getProductById = async (req, res) => {
 const addProduct = async (req, res) => {
     try {
         const newProductData = req.body;
-        // Validar los datos de entrada
         if (!newProductData.title || !newProductData.description || !newProductData.code || !newProductData.price || typeof newProductData.status !== 'boolean' || !newProductData.stock || !newProductData.category || !newProductData.thumbnails) {
             return res.status(400).json({ error: "Faltan campos obligatorios o el formato es incorrecto" });
         }

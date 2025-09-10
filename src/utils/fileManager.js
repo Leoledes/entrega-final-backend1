@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 const path = require("path");
 
 function getFilePath(fileName) {
-  return path.resolve(__dirname, "../../db", fileName);
+  return path.resolve(__dirname, "../../data", fileName);
 }
 
 async function readJson(fileName) {
