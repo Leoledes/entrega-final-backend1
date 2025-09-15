@@ -1,8 +1,10 @@
 const fs = require('fs/promises');
 const path = require('path');
 
+const dataFolderPath = path.resolve(__dirname, '../../data');
+
 const readJson = async (fileName) => {
-    const filePath = path.resolve(__dirname, '../../data', fileName);
+    const filePath = path.join(dataFolderPath, fileName);
     try {
         const fileContent = await fs.readFile(filePath, 'utf-8');
         return JSON.parse(fileContent);
@@ -16,7 +18,7 @@ const readJson = async (fileName) => {
 };
 
 const writeJson = async (fileName, data) => {
-    const filePath = path.resolve(__dirname, '../../data', fileName);
+    const filePath = path.join(dataFolderPath, fileName);
     try {
         await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
     } catch (err) {
@@ -46,6 +48,7 @@ class ProductManager {
         const products = await this.getProducts();
         const newProduct = {
             id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+            status: true,
             ...newProductData
         };
         products.push(newProduct);

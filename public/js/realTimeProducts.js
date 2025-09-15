@@ -1,6 +1,5 @@
 const socket = io();
 
-
 const productsList = document.getElementById('productsList');
 const addProductForm = document.getElementById('addProductForm');
 const deleteProductForm = document.getElementById('deleteProductForm');
@@ -26,7 +25,6 @@ socket.on('updateProducts', (products) => {
     renderProducts(products);
 });
 
-
 addProductForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -48,6 +46,10 @@ deleteProductForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const productId = document.getElementById('productIdToDelete').value;
-    socket.emit('deleteProduct', productId);
+    socket.emit('deleteProduct', parseInt(productId));
     deleteProductForm.reset();
+});
+
+socket.on('productError', (data) => {
+    alert(data.message);
 });
