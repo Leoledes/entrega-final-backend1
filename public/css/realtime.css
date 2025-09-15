@@ -1,7 +1,8 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    background-color: #e9f2f7;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f9;
     color: #333;
     line-height: 1.6;
 }
@@ -10,95 +11,112 @@ h1 {
     color: #2c3e50;
     text-align: center;
     margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 300;
 }
 
 h2 {
     color: #34495e;
     border-bottom: 2px solid #3498db;
-    padding-bottom: 5px;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    padding-bottom: 8px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    font-weight: 400;
 }
 
 .forms-container {
     display: flex;
-    justify-content: space-around;
-    gap: 20px;
+    justify-content: center;
+    gap: 30px;
     margin-bottom: 40px;
     flex-wrap: wrap;
 }
 
 .form-card {
     background-color: #ffffff;
-    border: 1px solid #cce7f4;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
+    max-width: 450px;
 }
 
 .form-card form label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
+    font-weight: 600;
     color: #555;
 }
 
 .form-card form input[type="text"],
 .form-card form input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
     box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-card form input[type="text"]:focus,
+.form-card form input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
 }
 
 .form-card form button {
     background-color: #3498db;
     color: white;
-    padding: 12px 20px;
+    padding: 14px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
 }
 
 .form-card form button:hover {
     background-color: #2980b9;
+    transform: translateY(-2px);
 }
 
 .products-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 25px;
     margin-top: 30px;
 }
 
 .product-card {
     background-color: #ffffff;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-card h3 {
     color: #2c3e50;
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.3em;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    font-weight: 500;
 }
 
 .product-card p {
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-size: 0.95em;
 }
