@@ -17,7 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', viewsRouter);
 app.use('/api/products', productsRouter);
 
-
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -25,7 +24,6 @@ app.use((req, res, next) => {
     if (req.method === "OPTIONS") return res.sendStatus(200);
     next();
 });
-
 
 app.get("/", (req, res) => {
     res.send("Servidor funcionando");
@@ -47,8 +45,6 @@ app.get("/test-products", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
-app.use('/api/products', productsRouter);
 
 app.use((req, res) => {
     res.status(404).json({ status: "error", message: "Ruta no encontrada" });
