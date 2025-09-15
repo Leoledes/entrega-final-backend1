@@ -32,19 +32,19 @@ Para poner en marcha la API en tu entorno local, sigue estos pasos:
 
 ### 1. Clonar el Repositorio:
 
-```shellscript
+```
 git clone https://github.com/Leoledes/segunda-entrega-backend1.git
 ```
 
 ### 2. Navegar al Directorio del Proyecto:
 
-```shellscript
+```
 cd segunda-entrega-backend1
 ```
 
 ### 3. Instalar Dependencias:
 
-```shellscript
+```
 npm install
 ```
 
@@ -52,13 +52,13 @@ npm install
 
 Crea un archivo `.env` en la raíz del proyecto y añade el puerto.
 
-```plaintext
+```
 PORT=8080
 ```
 
 ### 5. Iniciar el Servidor:
 
-```shellscript
+```
 node index.js
 ```
 
@@ -89,7 +89,7 @@ Aquí tienes una descripción de los endpoints principales y las vistas disponib
 
 El proyecto sigue una estructura modular para facilitar el desarrollo y el mantenimiento.
 
-```plaintext
+```
 ├── data/
 │   └── products.json          # Almacén de datos simulado
 ├── src/                       # Directorio principal del código fuente
