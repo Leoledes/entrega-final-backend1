@@ -1,5 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
+const crypto = require('crypto');
 
 const dataFolderPath = path.resolve(__dirname, '../../data');
 
@@ -41,13 +42,13 @@ class ProductManager {
 
     async getProductById(pid) {
         const products = await this.getProducts();
-        return products.find(p => p.id === parseInt(pid));
+        return products.find(p => String(p.id) === String(pid)); 
     }
 
     async addProduct(newProductData) {
         const products = await this.getProducts();
         const newProduct = {
-            id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+            id: crypto.randomUUID(),
             status: true,
             ...newProductData
         };
@@ -58,7 +59,7 @@ class ProductManager {
 
     async updateProduct(pid, updateData) {
         const products = await this.getProducts();
-        const productIndex = products.findIndex(p => p.id === parseInt(pid));
+        const productIndex = products.findIndex(p => String(p.id) === String(pid));
         if (productIndex === -1) {
             return null;
         }
@@ -71,7 +72,7 @@ class ProductManager {
     async deleteProduct(pid) {
         const products = await this.getProducts();
         const initialLength = products.length;
-        const filteredProducts = products.filter(p => p.id !== parseInt(pid));
+        const filteredProducts = products.filter(p => String(p.id) !== String(pid));
         if (filteredProducts.length === initialLength) {
             return false;
         }

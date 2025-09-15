@@ -9,10 +9,35 @@ const getProductById = async (pid) => {
 };
 
 const addNewProduct = async (productData) => {
-    if (!productData.title || !productData.description || !productData.code || !productData.price || typeof productData.status !== 'boolean' || !productData.stock || !productData.category || !productData.thumbnails) {
-        throw new Error("Faltan campos obligatorios o el formato es incorrecto");
+    console.log("📥 Datos recibidos en service:", productData);
+    
+    if (productData.name && !productData.title) {
+        productData.title = productData.name;
     }
-    return productManager.addProduct(productData);
+    
+    if (typeof productData.status !== 'boolean') {
+        productData.status = true;
+    }
+    
+    if (!productData.thumbnails) {
+        productData.thumbnails = [];
+    }
+    
+    if (!productData.code) {
+        productData.code = 'PROD-' + Date.now();
+    }
+
+    const requiredFields = ['title', 'description', 'price', 'stock', 'category'];
+    const missingFields = requiredFields.filter(field => !productData[field]);
+    
+    if (missingFields.length > 0) {
+        throw new Error(`Faltan campos obligatorios: ${missingFields.join(', ')}`);
+    }
+    
+    const result = await productManager.addProduct(productData);
+    console.log("📤 Producto creado en service:", result);
+    
+    return result;
 };
 
 const updateProduct = async (pid, updateData) => {
