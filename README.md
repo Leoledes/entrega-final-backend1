@@ -1,124 +1,119 @@
-# 🌿 Plantify API RESTful
+# Plantify API RESTful
 
------
+## Descripción del Proyecto
 
-## **Descripción del Proyecto**
+Plantify es una API RESTful desarrollada con Node.js y Express para la gestión de un inventario de productos. Lo que la hace única es su capacidad de ofrecer actualizaciones en tiempo real gracias a WebSockets y la renderización de vistas dinámicas con Handlebars. Es una solución ideal para cualquier aplicación que requiera una gestión de productos robusta, con funcionalidades en tiempo real y una interfaz de usuario simple.
 
-`Plantify` es una API RESTful desarrollada con Node.js y Express diseñada para la gestión de un inventario de productos, específicamente plantas. Esta API actúa como el *back-end* de una aplicación, proporcionando una serie de *endpoints* que permiten realizar operaciones CRUD (Crear, Leer, Actualizar, Borrar) sobre los productos. Es una solución ideal para sistemas de comercio electrónico, paneles de administración de inventario o cualquier aplicación que requiera una robusta gestión de productos basada en plantas.
-
------
-
-## **Tecnologías y Herramientas**
+## Tecnologías y Herramientas
 
 Este proyecto fue construido utilizando:
 
-  * **Node.js**: Entorno de ejecución de JavaScript del lado del servidor.
-  * **Express.js**: Un framework web minimalista y flexible para Node.js que proporciona un conjunto robusto de características para aplicaciones web y móviles.
-  * **JavaScript**: El lenguaje de programación principal.
+- **Node.js**: Entorno de ejecución de JavaScript del lado del servidor.
+- **Express.js**: Framework web minimalista y flexible para Node.js.
+- **Express-Handlebars**: Motor de plantillas que permite crear vistas dinámicas en el servidor.
+- **Socket.IO**: Librería que habilita la comunicación bidireccional en tiempo real (WebSockets) entre el cliente y el servidor.
+- **JavaScript**: El lenguaje de programación principal.
 
------
 
-## **Características Principales**
+## Características Principales
 
-  * **Gestión Completa de Productos**: La API permite a los usuarios gestionar el catálogo de productos con operaciones CRUD (creación, lectura, actualización y eliminación).
-  * **Servidor de Prueba Integrado**: Incluye una ruta (`/test-products`) que automáticamente genera un producto de ejemplo si el catálogo está vacío, facilitando un inicio rápido del desarrollo y las pruebas.
-  * **Manejo de CORS**: Configuración robusta para gestionar solicitudes de origen cruzado, asegurando que la API pueda ser consumida de forma segura por aplicaciones *front-end* alojadas en diferentes dominios.
-  * **Manejo de Errores y Rutas No Encontradas**: Implementa un *middleware* para manejar rutas no definidas, retornando un código de estado `404` y un mensaje descriptivo.
-  * **Estructura Modular**: Organización clara del código siguiendo patrones como DAO (Data Access Object) y separación de controladores, servicios y rutas para facilitar la escalabilidad y el mantenimiento.
+- **Gestión Completa de Productos**: La API permite realizar operaciones CRUD (crear, leer, actualizar, borrar) en el catálogo de productos.
+- **Vistas Dinámicas con Handlebars**: Incluye dos vistas principales, `home.handlebars` para una lista estática de productos y `realTimeProducts.handlebars` para una lista en tiempo real.
+- **Actualizaciones en Tiempo Real con WebSockets**: La vista `realTimeProducts.handlebars` se actualiza automáticamente cada vez que se agrega o elimina un producto.
+- **Servidor de Prueba Integrado**: Una ruta (`/test-products`) genera un producto de ejemplo si el catálogo está vacío para facilitar un inicio rápido.
+- **Manejo de CORS**: Configuración para manejar solicitudes de origen cruzado de manera segura.
+- **Manejo de Errores y Rutas No Encontradas**: Un middleware se encarga de retornar un código de estado 404 para rutas no definidas.
+- **Estructura Modular**: Código organizado en módulos separados para controladores, rutas y DAO (Data Access Object) para facilitar la escalabilidad y el mantenimiento.
 
------
 
-## **Instalación y Uso**
+## Instalación y Uso
 
-Para poner en marcha la API en tu entorno local, sigue los siguientes pasos:
+Para poner en marcha la API en tu entorno local, sigue estos pasos:
 
-1.  **Clonar el Repositorio**:
+### 1. Clonar el Repositorio:
 
-    ```bash
-    git clone <https://github.com/Leoledes/segunda-entrega-backend1.git>
-    ```
+```shellscript
+git clone https://github.com/Leoledes/segunda-entrega-backend1.git
+```
 
-2.  **Navegar al Directorio del Proyecto**:
+### 2. Navegar al Directorio del Proyecto:
 
-    ```bash
-    cd plantify
-    ```
+```shellscript
+cd segunda-entrega-backend1
+```
 
-3.  **Instalar Dependencias**:
+### 3. Instalar Dependencias:
 
-    ```bash
-    npm install
-    ```
+```shellscript
+npm install
+```
 
-4.  **Configurar Variables de Entorno**:
-    Crea un archivo llamado `.env` en la raíz del proyecto. Este archivo contendrá las variables de entorno necesarias.
+### 4. Configurar Variables de Entorno:
 
-    ```env
-    # Puerto en el que el servidor escuchará. Si no se especifica, usa 8080 por defecto.
-    PORT=8080
-    ```
+Crea un archivo `.env` en la raíz del proyecto y añade el puerto.
 
-5.  **Iniciar el Servidor**:
-    Puedes iniciar el servidor usando Node directamente o a través de un script npm (si está configurado en `package.json`).
+```plaintext
+PORT=8080
+```
 
-    ```bash
-    node index.js
-    # O si tienes configurado el script "start" en package.json
-    # npm start
-    ```
+### 5. Iniciar el Servidor:
 
-    Una vez iniciado, el servidor estará escuchando en `http://localhost:8080` (o el puerto que hayas definido en `.env`).
+```shellscript
+node index.js
+```
 
------
+Una vez iniciado, el servidor estará escuchando en `http://localhost:8080`.
 
-## **Rutas de la API**
+## Rutas de la API y Vistas
 
-Aquí tienes una descripción de los *endpoints* principales disponibles en la API:
+Aquí tienes una descripción de los endpoints principales y las vistas disponibles en la aplicación:
 
-  * **`GET /`**
-      * **Descripción**: Ruta de bienvenida simple para verificar que el servidor está funcionando correctamente.
-      * **Respuesta**: `Servidor funcionando`
-  * **`GET /test-products`**
-      * **Descripción**: Obtiene todos los productos del inventario. Si el inventario está vacío, crea un producto de prueba para facilitar el desarrollo.
-      * **Respuesta**: `JSON` con la lista de productos.
-  * **`GET /api/products`**
-      * **Descripción**: Obtiene una lista completa de todos los productos en el inventario.
-      * **Respuesta**: `JSON` con un array de objetos de producto.
-  * **`POST /api/products`**
-      * **Descripción**: Crea un nuevo producto y lo añade al inventario. Requiere un cuerpo de solicitud `JSON` con los detalles del producto.
-      * **Cuerpo de la Solicitud (Ejemplo)**:
-        ```json
-        {
-            "name": "Monstera Deliciosa",
-            "description": "Una hermosa planta tropical con hojas grandes y distintivas.",
-            "price": 25.99,
-            "stock": 50,
-            "category": "Interior"
-        }
-        ```
-      * **Respuesta**: `JSON` con el producto creado.
-  * **`GET /api/products/:id`**
-      * **Descripción**: Obtiene los detalles de un producto específico utilizando su `id`.
-      * **Parámetros**: `id` (entero) - El ID del producto.
-      * **Respuesta**: `JSON` con los detalles del producto.
-  * **`PUT /api/products/:id`**
-      * **Descripción**: Actualiza la información de un producto existente identificado por su `id`. Requiere un cuerpo de solicitud `JSON` con los campos a actualizar.
-      * **Parámetros**: `id` (entero) - El ID del producto.
-      * **Cuerpo de la Solicitud (Ejemplo)**:
-        ```json
-        {
-            "price": 27.50,
-            "stock": 45
-        }
-        ```
-      * **Respuesta**: `JSON` con el producto actualizado.
-  * **`DELETE /api/products/:id`**
-      * **Descripción**: Elimina un producto del inventario utilizando su `id`.
-      * **Parámetros**: `id` (entero) - El ID del producto.
-      * **Respuesta**: `JSON` de confirmación de la eliminación.
+### Endpoints de la API (RESTful)
 
------
+- **GET /**: Ruta de bienvenida.
+- **GET /test-products**: Muestra todos los productos y agrega uno de prueba.
+- **GET /api/products**: Obtiene la lista completa de productos.
+- **POST /api/products**: Crea un nuevo producto.
+- **GET /api/products/:pid**: Obtiene los detalles de un producto por su id.
+- **PUT /api/products/:pid**: Actualiza un producto existente por su id.
+- **DELETE /api/products/:pid**: Elimina un producto por su id.
 
-## **Estructura del Proyecto**
 
-El proyecto sigue una estructura modular y organizada para facilitar el desarrollo, mantenimiento y escalabilidad. La arquitectura está diseñada para separar las preocupaciones de manera clara.
+### Vistas Renderizadas con Handlebars
+
+- **GET /home**: Muestra una vista estática (`home.handlebars`) con una lista de todos los productos.
+- **GET /realtimeproducts**: Presenta una vista dinámica (`realTimeProducts.handlebars`) que usa WebSockets para actualizaciones en tiempo real.
+
+
+## Estructura del Proyecto
+
+El proyecto sigue una estructura modular para facilitar el desarrollo y el mantenimiento.
+
+```plaintext
+├── data/
+│   └── products.json          # Almacén de datos simulado
+├── src/                       # Directorio principal del código fuente
+│   ├── controllers/
+│   │   └── products.controller.js
+│   ├── dao/
+│   │   └── products.dao.js
+│   ├── routes/
+│   │   ├── products.routes.js
+│   │   └── views.router.js
+│   ├── utils/
+│   └── views/
+│       ├── layouts/
+│       │   └── main.handlebars
+│       ├── home.handlebars
+│       └── realTimeProducts.handlebars
+├── public/
+│   ├── js/
+│   │   └── realTimeProducts.js
+│   └── css/
+│       ├── home.css
+│       └── realtime.css
+├── .env
+├── app.js
+├── index.js
+└── package.json
+```
