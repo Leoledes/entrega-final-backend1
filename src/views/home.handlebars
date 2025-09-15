@@ -1,0 +1,8 @@
+<h1>Lista de Productos</h1>
+<p>Aquí se mostrará la lista de productos estática.</p>
+{{#each products}}
+    <div>
+        <h2>{{this.name}}</h2>
+        <p>Precio: ${{this.price}}</p>
+    </div>
+{{/each}}

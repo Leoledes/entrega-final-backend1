@@ -35,7 +35,7 @@ Para poner en marcha la API en tu entorno local, sigue los siguientes pasos:
 1.  **Clonar el Repositorio**:
 
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone <https://github.com/Leoledes/segunda-entrega-backend1.git>
     ```
 
 2.  **Navegar al Directorio del Proyecto**:
