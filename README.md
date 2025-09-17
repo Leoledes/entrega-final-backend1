@@ -13,7 +13,8 @@ Este proyecto fue construido utilizando:
 - **Express-Handlebars**: Motor de plantillas que permite crear vistas dinámicas en el servidor.
 - **Socket.IO**: Librería que habilita la comunicación bidireccional en tiempo real (WebSockets) entre el cliente y el servidor.
 - **JavaScript**: El lenguaje de programación principal.
-
+- **Dotenv**: Para el manejo de variables de entorno.
+- **Nodemon**: Para el desarrollo con recarga automática.
 
 ## Características Principales
 
@@ -25,48 +26,60 @@ Este proyecto fue construido utilizando:
 - **Manejo de Errores y Rutas No Encontradas**: Un middleware se encarga de retornar un código de estado 404 para rutas no definidas.
 - **Estructura Modular**: Código organizado en módulos separados para controladores, rutas y DAO (Data Access Object) para facilitar la escalabilidad y el mantenimiento.
 
+## Inicio Rápido
 
-## Instalación y Uso
+### Requisitos Previos
+- Node.js (versión 14 o superior)
+- npm
 
-Para poner en marcha la API en tu entorno local, sigue estos pasos:
+### Instalación y Ejecución
 
-### 1. Clonar el Repositorio:
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/Leoledes/segunda-entrega-backend1.git
+   cd segunda-entrega-backend1
+   ```
 
-```
-git clone https://github.com/Leoledes/segunda-entrega-backend1.git
-```
+2. **Configurar variables de entorno (opcional):**
+   
+   Crea un archivo `.env` en la raíz del proyecto:
+   ```
+   PORT=8080
+   ```
+   
+   Si no creas el archivo, la aplicación usará el puerto 8080 por defecto.
 
-### 2. Navegar al Directorio del Proyecto:
+3. **Iniciar la aplicación:**
 
-```
-cd segunda-entrega-backend1
-```
+   **Opción A - Configuración automática (Recomendado):**
+   ```bash
+   npm run setup
+   ```
+   Este comando instalará todas las dependencias e iniciará el servidor automáticamente.
 
-### 3. Instalar Dependencias:
+   **Opción B - Para desarrollo (con recarga automática):**
+   ```bash
+   npm run setup-dev
+   ```
 
-```
-npm install
-```
+   **Opción C - Instalación manual:**
+   ```bash
+   npm install
+   npm start
+   ```
 
-### 4. Configurar Variables de Entorno:
+4. **Verificar funcionamiento:**
+   
+   Una vez iniciado, el servidor estará disponible en `http://localhost:8080`
 
-Crea un archivo `.env` en la raíz del proyecto y añade el puerto.
+## Scripts Disponibles
 
-```
-PORT=8080
-```
-
-### 5. Iniciar el Servidor:
-
-```
-node index.js
-```
-
-Una vez iniciado, el servidor estará escuchando en `http://localhost:8080`.
+- **`npm run setup`**: Instala dependencias e inicia el servidor
+- **`npm run setup-dev`**: Instala dependencias e inicia en modo desarrollo con nodemon
+- **`npm start`**: Inicia el servidor
+- **`npm run dev`**: Inicia el servidor en modo desarrollo con recarga automática
 
 ## Rutas de la API y Vistas
-
-Aquí tienes una descripción de los endpoints principales y las vistas disponibles en la aplicación:
 
 ### Endpoints de la API (RESTful)
 
@@ -78,16 +91,12 @@ Aquí tienes una descripción de los endpoints principales y las vistas disponib
 - **PUT /api/products/:pid**: Actualiza un producto existente por su id.
 - **DELETE /api/products/:pid**: Elimina un producto por su id.
 
-
 ### Vistas Renderizadas con Handlebars
 
 - **GET /home**: Muestra una vista estática (`home.handlebars`) con una lista de todos los productos.
 - **GET /realtimeproducts**: Presenta una vista dinámica (`realTimeProducts.handlebars`) que usa WebSockets para actualizaciones en tiempo real.
 
-
 ## Estructura del Proyecto
-
-El proyecto sigue una estructura modular para facilitar el desarrollo y el mantenimiento.
 
 ```
 ├── data/
@@ -117,3 +126,15 @@ El proyecto sigue una estructura modular para facilitar el desarrollo y el mante
 ├── index.js
 └── package.json
 ```
+
+## Dependencias
+
+### Producción
+- **express**: Framework web para Node.js
+- **express-handlebars**: Motor de plantillas para Express
+- **socket.io**: Comunicación en tiempo real con WebSockets
+- **dotenv**: Manejo de variables de entorno
+
+### Desarrollo
+- **nodemon**: Recarga automática durante el desarrollo
+
