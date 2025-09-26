@@ -1,30 +1,31 @@
-const fs = require("fs/promises");
-const path = require("path");
+const fs = require('fs/promises');
+const path = require('path');
 
-function getFilePath(fileName) {
-  return path.resolve(__dirname, "../../data", fileName);
-}
+const dataFolderPath = path.resolve(__dirname, '../../data');
 
-async function readJson(fileName) {
+const readJson = async (fileName) => {
+  const filePath = path.join(dataFolderPath, fileName);
   try {
-    const filePath = getFilePath(fileName);
-    const data = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(data);
+    const content = await fs.readFile(filePath, 'utf8');
+    return JSON.parse(content);
   } catch (err) {
-    if (err.code === "ENOENT") {
+    if (err.code === 'ENOENT') {
+      await fs.mkdir(dataFolderPath, { recursive: true });
+      await fs.writeFile(filePath, '[]', 'utf8');
       return [];
     }
-    throw new Error(`Error leyendo ${fileName}: ${err.message}`);
+    throw err;
   }
-}
+};
 
-async function writeJson(fileName, content) {
+const writeJson = async (fileName, data) => {
+  const filePath = path.join(dataFolderPath, fileName);
   try {
-    const filePath = getFilePath(fileName);
-    await fs.writeFile(filePath, JSON.stringify(content, null, 2));
+    await fs.mkdir(dataFolderPath, { recursive: true });
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
   } catch (err) {
-    throw new Error(`Error escribiendo ${fileName}: ${err.message}`);
+    throw err;
   }
-}
+};
 
 module.exports = { readJson, writeJson };

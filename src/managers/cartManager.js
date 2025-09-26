@@ -34,10 +34,10 @@ class CartManager {
 
   async addProductToCart(cartId, productId) {
     const carts = await this.getCarts();
-    const cartIdx = carts.findIndex(c => String(c.id) === String(cartId));
-    if (cartIdx === -1) return null;
+    const idx = carts.findIndex(c => String(c.id) === String(cartId));
+    if (idx === -1) return null;
 
-    const cart = carts[cartIdx];
+    const cart = carts[idx];
     const prodIdx = cart.products.findIndex(p => String(p.product) === String(productId));
 
     if (prodIdx !== -1) {
@@ -46,7 +46,7 @@ class CartManager {
       cart.products.push({ product: productId, quantity: 1 });
     }
 
-    carts[cartIdx] = cart;
+    carts[idx] = cart;
     await writeJson(this.fileName, carts);
     return cart;
   }
@@ -81,8 +81,7 @@ class CartManager {
     if (idx === -1) return null;
 
     const cart = carts[idx];
-    const newProducts = cart.products.filter(p => String(p.product) !== String(productId));
-    cart.products = newProducts;
+    cart.products = cart.products.filter(p => String(p.product) !== String(productId));
     carts[idx] = cart;
     await writeJson(this.fileName, carts);
     return cart;
