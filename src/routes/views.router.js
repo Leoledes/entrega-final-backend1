@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { productManager } = require('../dao/products.dao');
 
+router.get('/', (req, res) => {
+    res.send('Servidor funcionando');
+});
+
 router.get('/home', async (req, res) => {
     try {
         const products = await productManager.getProducts();
