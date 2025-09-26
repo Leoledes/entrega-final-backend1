@@ -60,3 +60,11 @@ const deleteProductFromCart = async (req, res, next) => {
   }
 };
 
+module.exports = {
+  createCart,
+  getCart,
+  addProductToCart,
+  updateCartProducts,
+  updateProductQuantity,
+  deleteProductFromCart
+};
