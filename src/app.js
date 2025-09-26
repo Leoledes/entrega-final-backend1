@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const productsRouter = require('./src/routes/products.routes');
-const { productManager } = require('./src/dao/products.dao');
+const productsRouter = require('./routes/products.routes');
+const { productManager } = require('./dao/products.dao');
 const handlebars = require('express-handlebars');
-const viewsRouter = require('./src/routes/views.router');
+const viewsRouter = require('./routes/views.router');
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/src/views');
