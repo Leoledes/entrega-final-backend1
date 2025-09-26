@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const handlebars = require('express-handlebars');
 
@@ -7,7 +8,7 @@ const viewsRouter = require('./routes/views.router');
 const app = express();
 
 app.engine('handlebars', handlebars.engine());
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
 app.use(express.static(__dirname + '/../../public'));
