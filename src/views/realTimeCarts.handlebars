@@ -1,7 +1,38 @@
-<h1>Carritos en tiempo real</h1>
-<button id="createCart">Crear carrito</button>
+<h1>Gestión de Carritos en Tiempo Real</h1>
 
-<div id="cartsList"></div>
+<div class="forms-container">
+    <div class="form-card">
+        <h2>Crear Nuevo Carrito</h2>
+        <button id="createCartBtn">Crear Carrito</button>
+    </div>
+
+    <div class="form-card">
+        <h2>Agregar Producto al Carrito</h2>
+        <form id="addProductToCartForm">
+            <label for="cartId">ID del Carrito:</label>
+            <input type="text" id="cartId" name="cartId" required>
+
+            <label for="productId">ID del Producto:</label>
+            <input type="text" id="productId" name="productId" required>
+
+            <button type="submit">Agregar Producto</button>
+        </form>
+    </div>
+</div>
+
+<h2>Lista de Carritos</h2>
+<div id="cartsList" class="carts-container">
+    {{#each carts}}
+        <div class="cart-card" data-id="{{this.id}}">
+            <h3>Carrito ID: {{this.id}}</h3>
+            <ul>
+                {{#each this.products}}
+                    <li>Producto ID: {{this.id}}, Cantidad: {{this.quantity}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    {{/each}}
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realTimeCarts.js"></script>

@@ -1,16 +1,15 @@
-<link rel="stylesheet" href="/css/style.css">
-<script src="/js/script.js"></script>
+<h1>Lista de productos</h1>
 
-<h1>Lista de Productos</h1>
-<p>Aquí se mostrará la lista de productos estática.</p>
-<div class="products-container">
+{{#if products.length}}
+  <ul>
     {{#each products}}
-        <div class="product-card">
-            <h3>{{this.name}} (ID: {{this.id}})</h3>
-            <p>Descripción: {{this.description}}</p>
-            <p>Precio: ${{this.price}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <p>Categoría: {{this.category}}</p>
-        </div>
+      <li>
+        <strong>{{this.title}}</strong> - ${{this.price}}  
+        <br>
+        <small>ID: {{this.id}}</small>
+      </li>
     {{/each}}
-</div>
+  </ul>
+{{else}}
+  <p>No hay productos cargados.</p>
+{{/if}}
