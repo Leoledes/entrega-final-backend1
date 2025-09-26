@@ -1,27 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const { productManager } = require('../dao/products.dao');
+const { Router } = require('express');
 
-router.get('/', (req, res) => {
-    res.send('Servidor funcionando');
+const router = Router();
+
+// Home
+router.get('/home', (req, res) => {
+  res.render('home');
 });
 
-router.get('/home', async (req, res) => {
-    try {
-        const products = await productManager.getProducts();
-        res.render('home', { products, style: 'home.css' });
-    } catch (error) {
-        res.status(500).send('Error al obtener los productos.');
-    }
+// Productos en tiempo real
+router.get('/realtimeproducts', (req, res) => {
+  res.render('realTimeProducts');
 });
 
-router.get('/realtimeproducts', async (req, res) => {
-    try {
-        const products = await productManager.getProducts();
-        res.render('realTimeProducts', { products, style: 'realtime.css' });
-    } catch (error) {
-        res.status(500).send('Error al obtener los productos en tiempo real.');
-    }
+// Carritos en tiempo real
+router.get('/realtimecarts', (req, res) => {
+  res.render('realTimeCarts');
 });
 
 module.exports = router;
