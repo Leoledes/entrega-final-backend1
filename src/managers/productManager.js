@@ -1,9 +1,12 @@
+// src/managers/productManager.js
 const { readJson, writeJson } = require('../utils/fileManager');
 const crypto = require('crypto');
+const path = require('path');
 
 class ProductManager {
   constructor(fileName = 'products.json') {
-    this.fileName = fileName;
+    // 🔥 siempre ruta absoluta dentro de src/data
+    this.fileName = path.join(__dirname, '..', 'data', fileName);
   }
 
   async getProducts() {
