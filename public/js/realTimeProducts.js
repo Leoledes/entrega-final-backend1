@@ -1,91 +1,65 @@
 const socket = io();
 
 const productsList = document.getElementById('productsList');
-const addProductForm = document.getElementById('addProductForm');
-const deleteProductForm = document.getElementById('deleteProductForm');
 
-const renderProducts = (products) => {
+function renderProducts(products) {
     productsList.innerHTML = '';
-    
-    if (!products || products.length === 0) {
-        productsList.innerHTML = '<p>No hay productos disponibles</p>';
-        return;
-    }
-    
     products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        productCard.setAttribute('data-id', product.id);
-        productCard.innerHTML = `
-            <h3>${product.title || product.name || 'Sin nombre'} (ID: ${product.id || 'Sin ID'})</h3>
-            <p><strong>Descripción:</strong> ${product.description || 'Sin descripción'}</p>
-            <p><strong>Precio:</strong> $${product.price || 0}</p>
-            <p><strong>Stock:</strong> ${product.stock || 0}</p>
-            <p><strong>Categoría:</strong> ${product.category || 'Sin categoría'}</p>
-            <p><strong>Código:</strong> ${product.code || 'Sin código'}</p>
-            <p><strong>Estado:</strong> ${product.status ? 'Activo' : 'Inactivo'}</p>
+        const div = document.createElement('div');
+        div.classList.add('product-card');
+        div.setAttribute('data-id', product.id);
+        div.innerHTML = `
+            <h3>${product.name} (ID: ${product.id})</h3>
+            <p>${product.description}</p>
+            <p>Precio: $${product.price}</p>
+            <p>Stock: ${product.stock}</p>
+            <p>Categoría: ${product.category}</p>
         `;
-        productsList.appendChild(productCard);
+        productsList.appendChild(div);
     });
-};
+}
 
 socket.on('updateProducts', (products) => {
-    console.log('📦 Productos recibidos:', products);
     renderProducts(products);
 });
 
-addProductForm.addEventListener('submit', (e) => {
+socket.on('newProduct', (product) => {
+    const div = document.createElement('div');
+    div.classList.add('product-card');
+    div.setAttribute('data-id', product.id);
+    div.innerHTML = `
+        <h3>${product.name} (ID: ${product.id})</h3>
+        <p>${product.description}</p>
+        <p>Precio: $${product.price}</p>
+        <p>Stock: ${product.stock}</p>
+        <p>Categoría: ${product.category}</p>
+    `;
+    productsList.appendChild(div);
+});
+
+socket.on('deleteProduct', (productId) => {
+    const productDiv = document.querySelector(`.product-card[data-id='${productId}']`);
+    if (productDiv) productDiv.remove();
+});
+
+const addProductForm = document.getElementById('addProductForm');
+addProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    const formData = new FormData(addProductForm);
     const newProduct = {
-        status: true,
-        thumbnails: []
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        price: parseFloat(document.getElementById('price').value),
+        stock: parseInt(document.getElementById('stock').value),
+        category: document.getElementById('category').value
     };
-    
-    formData.forEach((value, key) => {
-        if (key === 'price' || key === 'stock') {
-            newProduct[key] = parseFloat(value) || 0;
-        } else if (key === 'name') {
-            newProduct['name'] = value;
-            newProduct['title'] = value;
-        } else {
-            newProduct[key] = value;
-        }
-    });
-
-    if (!newProduct.code) {
-        newProduct.code = 'PROD-' + Date.now();
-    }
-
-    console.log('🚀 Enviando producto:', newProduct);
     socket.emit('addProduct', newProduct);
     addProductForm.reset();
 });
 
-deleteProductForm.addEventListener('submit', (e) => {
+const deleteProductForm = document.getElementById('deleteProductForm');
+deleteProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const productId = document.getElementById('productIdToDelete').value;
-    
-    if (!productId) {
-        alert('Por favor ingresa un ID de producto válido');
-        return;
-    }
-    
-    console.log('🗑️ Eliminando producto ID:', productId);
-    socket.emit('deleteProduct', productId); 
+    socket.emit('deleteProduct', productId);
     deleteProductForm.reset();
-});
-
-socket.on('productError', (data) => {
-    console.error('❌ Error de producto:', data);
-    alert(`Error: ${data.message}`);
-});
-
-socket.on('connect', () => {
-    console.log('✅ Conectado al servidor');
-});
-
-socket.on('disconnect', () => {
-    console.log('❌ Desconectado del servidor');
 });

@@ -16,5 +16,59 @@
     "thumbnails": [
       "/img/monera-deliciosa.jpg"
     ]
+  },
+  {
+    "id": "337fee79-ca86-48d6-b8c4-41b4a3d76b1d",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 156776,
+    "stock": 5,
+    "category": "Exterior"
+  },
+  {
+    "id": "337fee79-ca86-48d6-b8c4-41b4a3d76b1d",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 156776,
+    "stock": 5,
+    "category": "Exterior"
+  },
+  {
+    "id": "f0326525-d47c-4666-995e-0e86f4a6606b",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 145667,
+    "stock": 5,
+    "category": "Exterior"
+  },
+  {
+    "id": "f0326525-d47c-4666-995e-0e86f4a6606b",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 145667,
+    "stock": 5,
+    "category": "Exterior"
+  },
+  {
+    "id": "bbe86739-491f-4f62-a83c-f080da6d15dd",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 145667,
+    "stock": 5,
+    "category": "Exterior"
+  },
+  {
+    "id": "bbe86739-491f-4f62-a83c-f080da6d15dd",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 145667,
+    "stock": 5,
+    "category": "Exterior"
   }
 ]
