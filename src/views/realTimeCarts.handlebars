@@ -25,11 +25,16 @@
     {{#each carts}}
         <div class="cart-card" data-id="{{this.id}}">
             <h3>Carrito ID: {{this.id}}</h3>
-            <ul>
+            <ul class="cart-products">
                 {{#each this.products}}
-                    <li>Producto ID: {{this.id}}, Cantidad: {{this.quantity}}</li>
+                    <li>{{this.name}} - Cantidad: {{this.quantity}}</li>
                 {{/each}}
             </ul>
+            <p class="cart-total">Total: ${{this.total}}</p>
+            <div class="cart-actions">
+                <button class="delete">Eliminar</button>
+                <button class="checkout">Finalizar Compra</button>
+            </div>
         </div>
     {{/each}}
 </div>

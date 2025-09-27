@@ -1,16 +1,22 @@
 const { Router } = require('express');
 const productManager = require('../managers/productManager');
+const cartManager = require('../managers/cartManager');
 
 const router = Router();
 
-// Home → muestra productos (sin tiempo real)
+// 👉 Redirección de "/" a "/home"
+router.get('/', (req, res) => {
+    res.redirect('/home');
+});
+
+// 👉 Vista Home (lista de productos, sin tiempo real)
 router.get('/home', async (req, res) => {
     try {
         const products = await productManager.getProducts();
         res.render('home', { 
             layout: 'main', 
             title: 'Productos', 
-            style: 'home.css', 
+            style: 'home.css', // 👈 mismo estilo que realtimeproducts
             products 
         });
     } catch (error) {
@@ -18,6 +24,8 @@ router.get('/home', async (req, res) => {
     }
 });
 
+
+// 👉 Vista de productos en tiempo real
 router.get('/realtimeproducts', async (req, res) => {
     try {
         const products = await productManager.getProducts();
@@ -32,10 +40,10 @@ router.get('/realtimeproducts', async (req, res) => {
     }
 });
 
-
+// 👉 Vista de carritos en tiempo real
 router.get('/realtimecarts', async (req, res) => {
     try {
-        const carts = await cartManager.getCarts(); // método que devuelve todos los carritos
+        const carts = await cartManager.getCarts();
         res.render('realTimeCarts', { 
             layout: 'main', 
             title: 'Carritos en Tiempo Real', 
@@ -43,9 +51,8 @@ router.get('/realtimecarts', async (req, res) => {
             carts 
         });
     } catch (error) {
-        res.status(500).send('Error al obtener los carritos.');
+        res.status(500).send('Error al obtener los carritos en tiempo real.');
     }
 });
-
 
 module.exports = router;

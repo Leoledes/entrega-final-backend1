@@ -1,15 +1,17 @@
-<h1>Lista de productos</h1>
+<h1>Lista de Productos</h1>
 
 {{#if products.length}}
-  <ul>
+  <div class="products-container">
     {{#each products}}
-      <li>
-        <strong>{{this.title}}</strong> - ${{this.price}}  
-        <br>
-        <small>ID: {{this.id}}</small>
-      </li>
+      <div class="product-card" data-id="{{this.id}}">
+        <h3>{{this.name}} (ID: {{this.id}})</h3>
+        <p>{{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Categoría: {{this.category}}</p>
+      </div>
     {{/each}}
-  </ul>
+  </div>
 {{else}}
   <p>No hay productos cargados.</p>
 {{/if}}
