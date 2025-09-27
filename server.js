@@ -32,8 +32,16 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
 // SOCKET.IO
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('Cliente conectado:', socket.id);
+
+  // Enviar productos existentes al cliente que se conecta
+  const existingProducts = await productManager.getProducts();
+  socket.emit('productsUpdated', existingProducts);
+
+  // Enviar carritos existentes al cliente que se conecta
+  const existingCarts = await cartManager.getCarts();
+  socket.emit('cartsUpdated', existingCarts);
 
   // Productos en tiempo real
   socket.on('newProduct', async (product) => {
