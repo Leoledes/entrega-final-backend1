@@ -1,10 +1,7 @@
 const socket = io();
 const productsList = document.getElementById('productsList');
-const createCartBtn = document.getElementById('createCartBtn');
-const cartsList = document.getElementById('cartsList');
-let currentCartId = null;
 
-// Renderizar productos en la lista
+// Renderizar productos
 function renderProducts(products) {
     productsList.innerHTML = '';
     products.forEach(p => {
@@ -21,53 +18,31 @@ function renderProducts(products) {
     });
 }
 
-// Renderizar carritos
-function renderCarts(carts) {
-    if (!cartsList) return;
-    cartsList.innerHTML = '';
-    carts.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'cart-card';
-        div.innerHTML = `
-            <h3>Carrito ID: ${c.id}</h3>
-            <ul>
-                ${c.products.map(p => `<li>Producto ID: ${p.id}, Cantidad: ${p.quantity}</li>`).join('')}
-            </ul>
-        `;
-        cartsList.appendChild(div);
-    });
-}
-
-// Crear carrito
-if (createCartBtn) {
-    createCartBtn.addEventListener('click', () => {
-        socket.emit('newCart');
-    });
-}
-
-// Escuchar eventos del servidor
-socket.on('productsUpdated', renderProducts);
-socket.on('cartsUpdated', renderCarts);
-
-socket.on('cartCreated', (cart) => {
-    currentCartId = cart.id;
-    alert(`Carrito creado con ID: ${cart.id}`);
+// Escuchar productos iniciales y actualizaciones
+socket.on('productsUpdated', (products) => {
+    renderProducts(products);
 });
 
-// Agregar producto al carrito
-function addProduct(pid, quantity = 1) {
-    if (!currentCartId) {
-        alert('Primero crea un carrito');
-        return;
-    }
-    socket.emit('addProductToCart', { cartId: currentCartId, product: { id: pid, quantity } });
-}
+// Agregar producto
+const addForm = document.getElementById('addProductForm');
+addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const product = {
+        name: addForm.name.value,
+        description: addForm.description.value,
+        price: parseFloat(addForm.price.value),
+        stock: parseInt(addForm.stock.value),
+        category: addForm.category.value
+    };
+    socket.emit('newProduct', product);
+    addForm.reset();
+});
 
-// Eliminar producto del carrito
-function removeProduct(pid) {
-    if (!currentCartId) {
-        alert('Primero crea un carrito');
-        return;
-    }
-    socket.emit('removeProductFromCart', { cartId: currentCartId, productId: pid });
-}
+// Eliminar producto
+const deleteForm = document.getElementById('deleteProductForm');
+deleteForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const productId = deleteForm.productIdToDelete.value;
+    socket.emit('deleteProduct', productId);
+    deleteForm.reset();
+});

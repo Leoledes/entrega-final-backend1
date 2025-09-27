@@ -16,5 +16,14 @@
     "thumbnails": [
       "/img/monera-deliciosa.jpg"
     ]
+  },
+  {
+    "id": "76155957-bb9f-40d9-bf4d-a69f0b477f18",
+    "status": true,
+    "name": "Eucaliptus",
+    "description": "Plnata verde",
+    "price": 12455,
+    "stock": 8,
+    "category": "Exterior"
   }
 ]

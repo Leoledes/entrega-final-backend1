@@ -32,13 +32,14 @@ router.get('/realtimeproducts', async (req, res) => {
         res.render('realTimeProducts', { 
             layout: 'main', 
             title: 'Productos en Tiempo Real', 
-            style: 'realtime.css', 
-            products 
+            style: 'realtime.css', // aplica los estilos de los formularios
+            products // pasa la lista al template
         });
     } catch (error) {
         res.status(500).send('Error al obtener los productos en tiempo real.');
     }
 });
+
 
 // 👉 Vista de carritos en tiempo real
 router.get('/realtimecarts', async (req, res) => {
