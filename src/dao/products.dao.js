@@ -1,3 +1,6 @@
+const Product = require("../models/product.model");
+const mongoose = require("mongoose");
+
 const { readJson, writeJson } = require('../utils/fileManager');
 const crypto = require('crypto');
 
