@@ -4,6 +4,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const handlebars = require('express-handlebars');
+const connectDB = require("./database");
 
 const productsRouter = require('../routes/products.routes');
 const cartsRouter = require('../routes/carts.routes');
@@ -15,6 +16,8 @@ const cartManager = require('../managers/cartManager');
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+
+connectDB();
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());
