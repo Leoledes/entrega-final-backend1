@@ -5,12 +5,12 @@ const { Server } = require('socket.io');
 const path = require('path');
 const handlebars = require('express-handlebars');
 
-const productsRouter = require('./src/routes/products.routes');
-const cartsRouter = require('./src/routes/carts.routes');
-const viewsRouter = require('./src/routes/views.router');
+const productsRouter = require('../routes/products.routes');
+const cartsRouter = require('../routes/carts.routes');
+const viewsRouter = require('../routes/views.router');
 
-const productManager = require('./src/managers/productManager');
-const cartManager = require('./src/managers/cartManager');
+const productManager = require('../managers/productManager');
+const cartManager = require('../managers/cartManager');
 
 const app = express();
 const httpServer = createServer(app);
@@ -18,11 +18,11 @@ const io = new Server(httpServer);
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());
-app.set('views', path.join(__dirname, 'src/views'));
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'handlebars');
 
 // Middlewares
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
