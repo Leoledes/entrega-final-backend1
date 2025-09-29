@@ -1,6 +1,5 @@
 [
   { 
-	  "id": "f013f2f5-33b9-49f0-23e-6227619863d7", 	
     "name": "Monera deliciosa",
 	  "description": "Planta tropical con hojas grandes y perforadas.", 
 	  "price": 35.5, 
@@ -9,7 +8,6 @@
 	  "thumbnails": [ "/img/monera-deliciosa.jpg" ] 
   },
   {
-    "id": "1a2b3c4d-0001-4f0b-8f00-111111111111",
     "name": "Ficus lyrata",
     "description": "Planta de interior con hojas grandes y brillantes, ideal para rincones luminosos.",
     "price": 42.0,
@@ -18,7 +16,6 @@
     "thumbnails": ["/img/ficus-lyrata.jpg"]
   },
   {
-    "id": "1a2b3c4d-0002-4f0b-8f00-222222222222",
     "name": "Sansevieria trifasciata",
     "description": "Planta resistente de interior, fácil de cuidar y purificadora de aire.",
     "price": 25.0,
@@ -27,7 +24,6 @@
     "thumbnails": ["/img/sansevieria.jpg"]
   },
   {
-    "id": "1a2b3c4d-0003-4f0b-8f00-333333333333",
     "name": "Pothos dorado",
     "description": "Planta colgante de hojas verdes y amarillas, muy decorativa y de bajo mantenimiento.",
     "price": 18.5,
@@ -36,7 +32,6 @@
     "thumbnails": ["/img/pothos-dorado.jpg"]
   },
   {
-    "id": "1a2b3c4d-0004-4f0b-8f00-444444444444",
     "name": "Calathea orbifolia",
     "description": "Planta ornamental de hojas grandes y rayadas, ideal para interiores húmedos.",
     "price": 38.0,
@@ -45,7 +40,6 @@
     "thumbnails": ["/img/calathea-orbifolia.jpg"]
   },
   {
-    "id": "1a2b3c4d-0005-4f0b-8f00-555555555555",
     "name": "Aloe vera",
     "description": "Planta suculenta medicinal, fácil de cuidar y resistente al sol.",
     "price": 20.0,
@@ -54,7 +48,6 @@
     "thumbnails": ["/img/aloe-vera.jpg"]
   },
   {
-    "id": "1a2b3c4d-0006-4f0b-8f00-666666666666",
     "name": "Monstera adansonii",
     "description": "Planta tropical de hojas perforadas, perfecta para interiores luminosos.",
     "price": 36.0,
@@ -63,7 +56,6 @@
     "thumbnails": ["/img/monstera-adansonii.jpg"]
   },
   {
-    "id": "1a2b3c4d-0007-4f0b-8f00-777777777777",
     "name": "Hoya carnosa",
     "description": "Planta trepadora con hojas carnosas y flores aromáticas en primavera.",
     "price": 30.0,
@@ -72,7 +64,6 @@
     "thumbnails": ["/img/hoya-carnosa.jpg"]
   },
   {
-    "id": "1a2b3c4d-0008-4f0b-8f00-888888888888",
     "name": "Philodendron brasil",
     "description": "Planta colgante de hojas verdes con rayas amarillas, ideal para decorar interiores.",
     "price": 28.0,
@@ -81,7 +72,6 @@
     "thumbnails": ["/img/philodendron-brasil.jpg"]
   },
   {
-    "id": "1a2b3c4d-0009-4f0b-8f00-999999999999",
     "name": "Dracaena marginata",
     "description": "Planta de interior alta y estilizada, con hojas rojas en los bordes.",
     "price": 40.0,
@@ -90,7 +80,6 @@
     "thumbnails": ["/img/dracaena-marginata.jpg"]
   },
   {
-    "id": "1a2b3c4d-0010-4f0b-8f00-aaaaaaaaaaaa",
     "name": "Cactus Echinopsis",
     "description": "Cactus de fácil cuidado, ideal para macetas pequeñas y decoración minimalista.",
     "price": 15.0,
