@@ -1,3 +1,4 @@
+// src/config/server.js
 require('dotenv').config();
 const express = require('express');
 const { createServer } = require('http');
@@ -10,13 +11,13 @@ const productsRouter = require('../routes/products.routes');
 const cartsRouter = require('../routes/carts.routes');
 const viewsRouter = require('../routes/views.router');
 
-const productManager = require('../managers/productManager');
-const cartManager = require('../managers/cartManager');
+const productDAO = require('../dao/product.dao');
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+// Conectar a MongoDB
 connectDB();
 
 // Handlebars
@@ -38,20 +39,49 @@ app.use('/api/carts', cartsRouter);
 io.on('connection', async (socket) => {
   console.log('Cliente conectado:', socket.id);
 
-  // Enviar lista inicial de productos
-  const products = await productManager.getProducts();
+  // ✅ Enviar productos iniciales desde MongoDB
+  const productsFromDB = await productDAO.getAllProducts();
+  const products = productsFromDB.map(p => {
+      const obj = p.toObject();
+      obj.id = obj._id; // para compatibilidad con Handlebars y JS frontend
+      return obj;
+  });
   socket.emit('productsUpdated', products);
 
-  socket.on('newProduct', async (product) => {
-    await productManager.addProduct(product);
-    const updatedProducts = await productManager.getProducts();
-    io.emit('productsUpdated', updatedProducts);
+  // Agregar nuevo producto
+  socket.on('newProduct', async (data) => {
+      try {
+          await productDAO.createProduct(data);
+          const updatedProducts = await productDAO.getAllProducts();
+          const productsToSend = updatedProducts.map(p => {
+              const obj = p.toObject();
+              obj.id = obj._id;
+              return obj;
+          });
+          io.emit('productsUpdated', productsToSend);
+      } catch (error) {
+          console.error("Error creando producto:", error.message);
+      }
   });
 
+  // Eliminar producto
   socket.on('deleteProduct', async (productId) => {
-    await productManager.deleteProduct(productId);
-    const updatedProducts = await productManager.getProducts();
-    io.emit('productsUpdated', updatedProducts);
+      try {
+          await productDAO.deleteProductById(productId);
+          const updatedProducts = await productDAO.getAllProducts();
+          const productsToSend = updatedProducts.map(p => {
+              const obj = p.toObject();
+              obj.id = obj._id;
+              return obj;
+          });
+          io.emit('productsUpdated', productsToSend);
+      } catch (error) {
+          console.error("Error eliminando producto:", error.message);
+      }
+  });
+
+  socket.on('disconnect', () => {
+      console.log('Cliente desconectado:', socket.id);
   });
 });
 

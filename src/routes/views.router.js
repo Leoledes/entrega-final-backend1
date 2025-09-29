@@ -1,6 +1,6 @@
 const { Router } = require('express');
-const productManager = require('../managers/productManager');
-const cartManager = require('../managers/cartManager');
+const productDAO = require('../dao/product.dao');
+//const cartDAO = require('../dao/cart.dao'); // si ya migraste carritos a MongoDB
 
 const router = Router();
 
@@ -12,48 +12,73 @@ router.get('/', (req, res) => {
 // 👉 Vista Home (lista de productos, sin tiempo real)
 router.get('/home', async (req, res) => {
     try {
-        const products = await productManager.getProducts();
+        const productsFromDB = await productDAO.getAllProducts();
+        // Convertir documentos Mongoose a objetos planos y agregar 'id'
+        const products = productsFromDB.map(p => {
+            const obj = p.toObject();
+            obj.id = obj._id;
+            return obj;
+        });
+
         res.render('home', { 
             layout: 'main', 
             title: 'Productos', 
-            style: 'home.css', // 👈 mismo estilo que realtimeproducts
-            products 
+            style: 'home.css',
+            products
         });
     } catch (error) {
+        console.error("Error en /home:", error.message);
         res.status(500).send('Error al obtener los productos.');
     }
 });
 
-
 // 👉 Vista de productos en tiempo real
 router.get('/realtimeproducts', async (req, res) => {
     try {
-        const products = await productManager.getProducts();
+        const productsFromDB = await productDAO.getAllProducts();
+        const products = productsFromDB.map(p => {
+            const obj = p.toObject();
+            obj.id = obj._id;
+            return obj;
+        });
+
         res.render('realTimeProducts', { 
             layout: 'main', 
             title: 'Productos en Tiempo Real', 
-            style: 'realtime.css', // aplica los estilos de los formularios
-            products // pasa la lista al template
+            style: 'realtime.css',
+            products
         });
     } catch (error) {
+        console.error("Error en /realtimeproducts:", error.message);
         res.status(500).send('Error al obtener los productos en tiempo real.');
     }
 });
 
-
 // 👉 Vista de carritos en tiempo real
-router.get('/realtimecarts', async (req, res) => {
-    try {
-        const carts = await cartManager.getCarts();
-        res.render('realTimeCarts', { 
-            layout: 'main', 
-            title: 'Carritos en Tiempo Real', 
-            style: 'carts.css', 
-            carts 
-        });
-    } catch (error) {
-        res.status(500).send('Error al obtener los carritos en tiempo real.');
-    }
-});
+// router.get('/realtimecarts', async (req, res) => {
+//     try {
+//         const cartsFromDB = await cartDAO.getAllCarts();
+//         const carts = cartsFromDB.map(c => {
+//             const cartObj = c.toObject();
+//             cartObj.id = cartObj._id;
+//             // Convertir los productos del carrito
+//             cartObj.products = cartObj.products.map(p => {
+//                 p.id = p._id || p.id; // mantener compatibilidad
+//                 return p;
+//             });
+//             return cartObj;
+//         });
+
+//         res.render('realTimeCarts', { 
+//             layout: 'main', 
+//             title: 'Carritos en Tiempo Real', 
+//             style: 'carts.css', 
+//             carts
+//         });
+//     } catch (error) {
+//         console.error("Error en /realtimecarts:", error.message);
+//         res.status(500).send('Error al obtener los carritos en tiempo real.');
+//     }
+// });
 
 module.exports = router;

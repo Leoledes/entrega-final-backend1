@@ -16,7 +16,7 @@ class ProductManager {
 
   async getAllProducts() {
     try{
-      const products = await Product.find({}, "id name description price category");
+      const products = await Product.find({}, "_id name description price category");
       return products;
     } catch (error) {
       console.error("Error al buscar producto:", error);
@@ -24,10 +24,10 @@ class ProductManager {
     }
   }
 
-  async getProductById(id) {
+  async getProductById(_id) {
     try {
-      if (!id) throw new Error("ID no proporcionado");
-      const user = await Product.findById(id);
+      if (!_id) throw new Error("ID no proporcionado");
+      const user = await Product.findById(_id);
       return user;
     } catch (error) {
       console.error("Error obteniendo producto:", error);
@@ -46,12 +46,12 @@ class ProductManager {
     }
   }
 
-  async updateProductById(id, data) {
+  async updateProductById(_id, data) {
     try {
-      if (!mongoose.Types.ObjectId.isValid(id)) {
+      if (!mongoose.Types.ObjectId.isValid(_id)) {
         throw new Error("ID no válido");
       }
-      const updateProduct = await User.findByIdAndUpdate(id, data, { new: true });
+      const updateProduct = await Product.findByIdAndUpdate(_id, data, { new: true });
       return updateProduct
     } catch (error) {
       console.error("Error actualizando:", error);
@@ -61,11 +61,14 @@ class ProductManager {
 
   async deleteProductById(id) {
     try {
-      const productDelete = await Product.findByIdAndDelete(id);
-      return productDelete
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new Error("ID no válido");
+        }
+        const productDelete = await Product.findByIdAndDelete(id);
+        return productDelete;
     } catch (error) {
-      console.error("Error eliminando:", error.message);
-      return null;
+        console.error("Error eliminando:", error.message);
+        return null;
     }
   }
 }

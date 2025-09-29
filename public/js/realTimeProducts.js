@@ -7,6 +7,7 @@ function renderProducts(products) {
     products.forEach(p => {
         const div = document.createElement('div');
         div.className = 'product-card';
+        div.dataset.id = p.id;
         div.innerHTML = `
             <h3>${p.name} (ID: ${p.id})</h3>
             <p>${p.description}</p>
