@@ -71,6 +71,55 @@ class ProductManager {
         return null;
     }
   }
+
+
+  async getProductsPaginated(options = {}) {
+    const limit = parseInt(options.limit) || 10;
+    let page = parseInt(options.page) || 1;
+    const rawQuery = options.query;
+    const sort = options.sort; // 'asc' | 'desc'
+
+    // Build filter
+    const filter = {};
+    if (rawQuery) {
+      if (rawQuery.includes(':')) {
+        const [k, v] = rawQuery.split(':');
+        const key = k.trim().toLowerCase();
+        const val = v.trim();
+        if (key === 'category') filter.category = val;
+        else if (key === 'status' || key === 'available') filter.status = val === 'true';
+        else filter[key] = val;
+      } else {
+        // if rawQuery is 'true'/'false' treat as status, otherwise category
+        if (rawQuery === 'true' || rawQuery === 'false') filter.status = rawQuery === 'true';
+        else filter.category = rawQuery;
+      }
+    }
+
+    // Sort
+    let sortObj = {};
+    if (sort === 'asc') sortObj = { price: 1 };
+    else if (sort === 'desc') sortObj = { price: -1 };
+
+    const totalDocs = await Product.countDocuments(filter);
+    const totalPages = Math.max(Math.ceil(totalDocs / limit), 1);
+
+    if (page > totalPages) page = totalPages;
+
+    const products = await Product.find(filter)
+      .sort(sortObj)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(); // devuelve objetos planos, evita problemas con Handlebars
+
+    return {
+      products,
+      totalDocs,
+      totalPages,
+      page,
+      limit
+    };
+  }
 }
 
 module.exports = new ProductManager();

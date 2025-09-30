@@ -1,9 +1,37 @@
 const productDAO = require('../dao/product.dao');
 
-const getAllProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
-    const products = await productDAO.getAllProducts();
-    res.json(products);
+    const { limit = 10, page = 1, query, sort } = req.query;
+
+    const { products, totalDocs, totalPages, page: currentPage } =
+      await productDAO.getProductsPaginated({ limit, page, query, sort });
+
+    const hasPrevPage = currentPage > 1;
+    const hasNextPage = currentPage < totalPages;
+    const prevPage = hasPrevPage ? currentPage - 1 : null;
+    const nextPage = hasNextPage ? currentPage + 1 : null;
+
+    const buildLink = (newPage) => {
+      const params = { ...req.query, page: newPage };
+      const q = Object.keys(params)
+        .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+        .join("&");
+      return `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?${q}`;
+    };
+
+    res.json({
+      status: "success",
+      payload: products,
+      totalPages,
+      prevPage,
+      nextPage,
+      page: currentPage,
+      hasPrevPage,
+      hasNextPage,
+      prevLink: hasPrevPage ? buildLink(prevPage) : null,
+      nextLink: hasNextPage ? buildLink(nextPage) : null
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,7 +77,7 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  getAllProducts,
+  getProducts,
   getProductById,
   createProduct,
   updateProduct,
