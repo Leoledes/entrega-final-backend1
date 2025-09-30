@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const productDAO = require('../dao/product.dao');
-//const cartDAO = require('../dao/cart.dao'); // si ya migraste carritos a MongoDB
+const cartDAO = require('../dao/cart.dao');
 
 const router = Router();
 
@@ -55,30 +55,30 @@ router.get('/realtimeproducts', async (req, res) => {
 });
 
 // 👉 Vista de carritos en tiempo real
-// router.get('/realtimecarts', async (req, res) => {
-//     try {
-//         const cartsFromDB = await cartDAO.getAllCarts();
-//         const carts = cartsFromDB.map(c => {
-//             const cartObj = c.toObject();
-//             cartObj.id = cartObj._id;
-//             // Convertir los productos del carrito
-//             cartObj.products = cartObj.products.map(p => {
-//                 p.id = p._id || p.id; // mantener compatibilidad
-//                 return p;
-//             });
-//             return cartObj;
-//         });
+router.get('/realtimecarts', async (req, res) => {
+    try {
+        const cartsFromDB = await cartDAO.getAllCarts();
+        const carts = cartsFromDB.map(c => {
+            const cartObj = c.toObject();
+            cartObj.id = cartObj._id;
+            // Convertir los productos del carrito
+            cartObj.products = cartObj.products.map(p => {
+                p.id = p._id || p.id; // mantener compatibilidad
+                return p;
+            });
+            return cartObj;
+        });
 
-//         res.render('realTimeCarts', { 
-//             layout: 'main', 
-//             title: 'Carritos en Tiempo Real', 
-//             style: 'carts.css', 
-//             carts
-//         });
-//     } catch (error) {
-//         console.error("Error en /realtimecarts:", error.message);
-//         res.status(500).send('Error al obtener los carritos en tiempo real.');
-//     }
-// });
+        res.render('realtimecarts', { 
+            layout: 'main', 
+            title: 'Carritos en Tiempo Real', 
+            style: 'carts.css', 
+            carts
+        });
+    } catch (error) {
+        console.error("Error en /realtimecarts:", error.message);
+        res.status(500).send('Error al obtener los carritos en tiempo real.');
+    }
+});
 
 module.exports = router;

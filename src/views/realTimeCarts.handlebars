@@ -26,15 +26,19 @@
 </div>
 
 <h2>Lista de Carritos</h2>
-<div id="cartsList" class="carts-container">
+<div id="cartsList" class="products-container">
     {{#each carts}}
-        <div class="cart-card" data-id="{{this._id}}">
-            <h3>Carrito ID: {{this._id}}</h3>
-            <ul>
-                {{#each this.products}}
-                    <li>Producto ID: {{this.product._id}}, Cantidad: {{this.quantity}}</li>
-                {{/each}}
-            </ul>
+        <div class="product-card cart-card" data-id="{{this.id}}">
+            <h3>Carrito ID: {{this.id}}</h3>
+            {{#if this.products.length}}
+                <ul>
+                    {{#each this.products}}
+                        <li>{{this.product.name}} (ID: {{this.product.id}}) - Cantidad: {{this.quantity}}</li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p>No hay productos en este carrito.</p>
+            {{/if}}
         </div>
     {{/each}}
 </div>

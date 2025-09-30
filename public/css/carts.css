@@ -1,84 +1,129 @@
-/* Contenedor general de carritos */
-.carts-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
+/* --- ESTILOS GENERALES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f9;
+    color: #333;
+    line-height: 1.6;
 }
 
-/* Cada carrito como tarjeta */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 300;
+}
+
+h2 {
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
+/* --- FORMULARIOS --- */
+.forms-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 320px;
+    max-width: 450px;
+}
+
+.form-card form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-card form input[type="text"],
+.form-card form input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-card form input[type="text"]:focus,
+.form-card form input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.form-card form button {
+    background-color: #3498db;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
+}
+
+.form-card form button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* --- LISTA DE CARRITOS --- */
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
 .cart-card {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+}
+
+.cart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .cart-card h3 {
-  margin-top: 0;
-  color: #333;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 8px;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    font-weight: 500;
 }
 
-/* Lista de productos dentro de cada carrito */
-.cart-products {
-  margin: 10px 0;
-  padding: 0;
-  list-style: none;
+.cart-card ul {
+    padding-left: 20px;
 }
 
-.cart-products li {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
-}
-
-.cart-products li:last-child {
-  border-bottom: none;
-}
-
-/* Total del carrito */
-.cart-total {
-  font-weight: bold;
-  margin-top: 10px;
-  font-size: 1rem;
-  color: #007bff;
-}
-
-/* Botones para acciones en carritos */
-.cart-actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-}
-
-.cart-actions button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s ease-in-out;
-}
-
-.cart-actions button.delete {
-  background: #dc3545;
-  color: #fff;
-}
-
-.cart-actions button.delete:hover {
-  background: #a71d2a;
-}
-
-.cart-actions button.checkout {
-  background: #28a745;
-  color: #fff;
-}
-
-.cart-actions button.checkout:hover {
-  background: #1e7e34;
+.cart-card li {
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 0.95em;
 }

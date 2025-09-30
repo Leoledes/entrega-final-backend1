@@ -12,6 +12,7 @@ const cartsRouter = require('../routes/carts.routes');
 const viewsRouter = require('../routes/views.router');
 
 const productDAO = require('../dao/product.dao');
+const cartDAO = require('../dao/cart.dao');
 
 const app = express();
 const httpServer = createServer(app);
@@ -39,73 +40,72 @@ app.use('/api/carts', cartsRouter);
 io.on('connection', async (socket) => {
   console.log('Cliente conectado:', socket.id);
 
-  // ✅ Enviar productos iniciales desde MongoDB
+  // ---------------- Productos ----------------
   const productsFromDB = await productDAO.getAllProducts();
-  const products = productsFromDB.map(p => {
-      const obj = p.toObject();
-      obj.id = obj._id; // para compatibilidad con Handlebars y JS frontend
-      return obj;
-  });
-  socket.emit('productsUpdated', products);
+  socket.emit('productsUpdated', productsFromDB.map(p => ({ ...p.toObject(), id: p._id })));
 
-  // Agregar nuevo producto
+  // Crear producto
   socket.on('newProduct', async (data) => {
-      try {
-          await productDAO.createProduct(data);
-          const updatedProducts = await productDAO.getAllProducts();
-          const productsToSend = updatedProducts.map(p => {
-              const obj = p.toObject();
-              obj.id = obj._id;
-              return obj;
-          });
-          io.emit('productsUpdated', productsToSend);
-      } catch (error) {
-          console.error("Error creando producto:", error.message);
-      }
+    try {
+      await productDAO.createProduct(data);
+      const updatedProducts = await productDAO.getAllProducts();
+      io.emit('productsUpdated', updatedProducts.map(p => ({ ...p.toObject(), id: p._id })));
+    } catch (error) {
+      console.error("Error creando producto:", error.message);
+    }
   });
 
   // Eliminar producto
   socket.on('deleteProduct', async (productId) => {
-      try {
-          await productDAO.deleteProductById(productId);
-          const updatedProducts = await productDAO.getAllProducts();
-          const productsToSend = updatedProducts.map(p => {
-              const obj = p.toObject();
-              obj.id = obj._id;
-              return obj;
-          });
-          io.emit('productsUpdated', productsToSend);
-      } catch (error) {
-          console.error("Error eliminando producto:", error.message);
-      }
-  });
-
-  socket.on('disconnect', () => {
-      console.log('Cliente desconectado:', socket.id);
-  });
-});
-
-// --- EVENTOS CARRITOS ---
-socket.on('addProductToCart', async ({ cartId, productId, quantity }) => {
     try {
-        await cartDAO.addProductToCart(cartId, productId, quantity); // ⚡ aquí usamos el método correcto
-        const updatedCarts = await cartDAO.getAllCarts();
-        const cartsToSend = updatedCarts.map(c => {
-            const cartObj = c.toObject();
-            cartObj.id = cartObj._id;
-            cartObj.products = cartObj.products.map(p => ({ 
-                ...p, 
-                id: p.product._id || p.product.id,
-                name: p.product.name,
-                price: p.product.price,
-                quantity: p.quantity
-            }));
-            return cartObj;
-        });
-        io.emit('cartsUpdated', cartsToSend);
-    } catch (err) {
-        console.error('Error agregando producto al carrito:', err.message);
+      await productDAO.deleteProductById(productId);
+      const updatedProducts = await productDAO.getAllProducts();
+      io.emit('productsUpdated', updatedProducts.map(p => ({ ...p.toObject(), id: p._id })));
+    } catch (error) {
+      console.error("Error eliminando producto:", error.message);
     }
+  });
+
+  // ---------------- Carritos ----------------
+  const cartsFromDB = await cartDAO.getAllCarts();
+  socket.emit('cartsUpdated', cartsFromDB);
+
+  // Crear carrito
+  socket.on('newCart', async () => {
+    await cartDAO.createCart();
+    const updatedCarts = await cartDAO.getAllCarts();
+    io.emit('cartsUpdated', updatedCarts);
+  });
+
+  // Agregar producto al carrito
+  socket.on('addProductToCart', async ({ cartId, productId, quantity }) => {
+    try {
+      await cartDAO.addProductToCart(cartId, productId, quantity);
+      const updatedCarts = await cartDAO.getAllCarts();
+      io.emit('cartsUpdated', updatedCarts);
+    } catch (err) {
+      console.error('Error agregando producto al carrito:', err.message);
+    }
+  });
+
+  // Eliminar producto de carrito
+  socket.on('removeProductFromCart', async ({ cartId, productId }) => {
+    await cartDAO.removeProductFromCart(cartId, productId);
+    const updatedCarts = await cartDAO.getAllCarts();
+    io.emit('cartsUpdated', updatedCarts);
+  });
+
+  // Vaciar carrito
+  socket.on('emptyCart', async (cartId) => {
+    await cartDAO.emptyCart(cartId);
+    const updatedCarts = await cartDAO.getAllCarts();
+    io.emit('cartsUpdated', updatedCarts);
+  });
+
+  // Desconexión
+  socket.on('disconnect', () => {
+    console.log('Cliente desconectado:', socket.id);
+  });
 });
 
 // 404
