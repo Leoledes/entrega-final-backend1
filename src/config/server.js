@@ -85,6 +85,29 @@ io.on('connection', async (socket) => {
   });
 });
 
+// --- EVENTOS CARRITOS ---
+socket.on('addProductToCart', async ({ cartId, productId, quantity }) => {
+    try {
+        await cartDAO.addProductToCart(cartId, productId, quantity); // ⚡ aquí usamos el método correcto
+        const updatedCarts = await cartDAO.getAllCarts();
+        const cartsToSend = updatedCarts.map(c => {
+            const cartObj = c.toObject();
+            cartObj.id = cartObj._id;
+            cartObj.products = cartObj.products.map(p => ({ 
+                ...p, 
+                id: p.product._id || p.product.id,
+                name: p.product.name,
+                price: p.product.price,
+                quantity: p.quantity
+            }));
+            return cartObj;
+        });
+        io.emit('cartsUpdated', cartsToSend);
+    } catch (err) {
+        console.error('Error agregando producto al carrito:', err.message);
+    }
+});
+
 // 404
 app.use((req, res) => {
   res.status(404).json({ status: 'error', message: 'Ruta no encontrada' });

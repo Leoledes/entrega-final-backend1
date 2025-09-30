@@ -1,19 +1,24 @@
 <h1>Gestión de Carritos en Tiempo Real</h1>
 
 <div class="forms-container">
+    <!-- Crear carrito -->
     <div class="form-card">
         <h2>Crear Nuevo Carrito</h2>
         <button id="createCartBtn">Crear Carrito</button>
     </div>
 
+    <!-- Agregar producto a carrito -->
     <div class="form-card">
-        <h2>Agregar Producto al Carrito</h2>
+        <h2>Agregar Producto a Carrito</h2>
         <form id="addProductToCartForm">
             <label for="cartId">ID del Carrito:</label>
             <input type="text" id="cartId" name="cartId" required>
 
             <label for="productId">ID del Producto:</label>
             <input type="text" id="productId" name="productId" required>
+
+            <label for="quantity">Cantidad:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1">
 
             <button type="submit">Agregar Producto</button>
         </form>
@@ -23,21 +28,16 @@
 <h2>Lista de Carritos</h2>
 <div id="cartsList" class="carts-container">
     {{#each carts}}
-        <div class="cart-card" data-id="{{this.id}}">
-            <h3>Carrito ID: {{this.id}}</h3>
-            <ul class="cart-products">
+        <div class="cart-card" data-id="{{this._id}}">
+            <h3>Carrito ID: {{this._id}}</h3>
+            <ul>
                 {{#each this.products}}
-                    <li>{{this.name}} - Cantidad: {{this.quantity}}</li>
+                    <li>Producto ID: {{this.product._id}}, Cantidad: {{this.quantity}}</li>
                 {{/each}}
             </ul>
-            <p class="cart-total">Total: ${{this.total}}</p>
-            <div class="cart-actions">
-                <button class="delete">Eliminar</button>
-                <button class="checkout">Finalizar Compra</button>
-            </div>
         </div>
     {{/each}}
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/realTimeCarts.js"></script>
+<script src="/js/realtimecarts.js"></script>
