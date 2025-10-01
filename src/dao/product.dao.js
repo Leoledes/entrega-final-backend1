@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 class ProductManager {
   async createProduct(data) {
-    try{
+    try {
       if (!data) throw new Error("Datos de producto no proporcionados");
       const newProduct = new Product(data);
       await newProduct.save();
@@ -12,66 +12,50 @@ class ProductManager {
       console.error("Error creando producto:", error);
       throw new Error("Error al crear producto");
     }
-    }
+  }
 
   async getAllProducts() {
-    try{
-      const products = await Product.find({}, "_id name description price category");
+    try {
+      const products = await Product.find({}, "_id title description price category stock status").lean();
       return products;
     } catch (error) {
       console.error("Error al buscar producto:", error);
-      throw new Error("Error al obtener producto");
+      throw new Error("Error al obtener productos");
     }
   }
 
   async getProductById(_id) {
     try {
       if (!_id) throw new Error("ID no proporcionado");
-      const user = await Product.findById(_id);
-      return user;
+      const product = await Product.findById(_id).lean();
+      return product;
     } catch (error) {
       console.error("Error obteniendo producto:", error);
       return null;
     }
   }
 
-  async getProductByName(name) {
-    try {
-      const user = await Product.findOne({ name });
-      if (!user) throw new Error("Producto no encontrado");
-      return user;
-    } catch (error) {
-      console.error("Error buscando por Nombre:", error);
-      return null;
-    }
-  }
-
   async updateProductById(_id, data) {
     try {
-      if (!mongoose.Types.ObjectId.isValid(_id)) {
-        throw new Error("ID no válido");
-      }
-      const updateProduct = await Product.findByIdAndUpdate(_id, data, { new: true });
-      return updateProduct
+      if (!mongoose.Types.ObjectId.isValid(_id)) throw new Error("ID no válido");
+      const updatedProduct = await Product.findByIdAndUpdate(_id, data, { new: true }).lean();
+      return updatedProduct;
     } catch (error) {
       console.error("Error actualizando:", error);
       throw new Error("Error al actualizar");
     }
   }
 
-  async deleteProductById(id) {
+  async deleteProductById(_id) {
     try {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw new Error("ID no válido");
-        }
-        const productDelete = await Product.findByIdAndDelete(id);
-        return productDelete;
+      if (!mongoose.Types.ObjectId.isValid(_id)) throw new Error("ID no válido");
+      const deletedProduct = await Product.findByIdAndDelete(_id).lean();
+      return deletedProduct;
     } catch (error) {
-        console.error("Error eliminando:", error.message);
-        return null;
+      console.error("Error eliminando:", error.message);
+      return null;
     }
   }
-
 
   async getProductsPaginated(options = {}) {
     const limit = parseInt(options.limit) || 10;
@@ -79,7 +63,7 @@ class ProductManager {
     const rawQuery = options.query;
     const sort = options.sort; // 'asc' | 'desc'
 
-    // Build filter
+    // Construir filtro
     const filter = {};
     if (rawQuery) {
       if (rawQuery.includes(':')) {
@@ -90,34 +74,56 @@ class ProductManager {
         else if (key === 'status' || key === 'available') filter.status = val === 'true';
         else filter[key] = val;
       } else {
-        // if rawQuery is 'true'/'false' treat as status, otherwise category
         if (rawQuery === 'true' || rawQuery === 'false') filter.status = rawQuery === 'true';
         else filter.category = rawQuery;
       }
     }
 
-    // Sort
+    // Orden
     let sortObj = {};
     if (sort === 'asc') sortObj = { price: 1 };
     else if (sort === 'desc') sortObj = { price: -1 };
 
     const totalDocs = await Product.countDocuments(filter);
     const totalPages = Math.max(Math.ceil(totalDocs / limit), 1);
-
     if (page > totalPages) page = totalPages;
 
     const products = await Product.find(filter)
       .sort(sortObj)
       .skip((page - 1) * limit)
       .limit(limit)
-      .lean(); // devuelve objetos planos, evita problemas con Handlebars
+      .lean();
+
+    const hasPrevPage = page > 1;
+    const hasNextPage = page < totalPages;
+    const prevPage = hasPrevPage ? page - 1 : null;
+    const nextPage = hasNextPage ? page + 1 : null;
+
+    let prevLink = null, nextLink = null;
+    if (options.req) {
+      const buildLink = (newPage) => {
+        const params = { ...options.req.query, page: newPage };
+        const q = Object.keys(params)
+          .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+          .join("&");
+        return `${options.req.protocol}://${options.req.get('host')}${options.req.baseUrl}${options.req.path}?${q}`;
+      };
+      prevLink = hasPrevPage ? buildLink(prevPage) : null;
+      nextLink = hasNextPage ? buildLink(nextPage) : null;
+    }
 
     return {
       products,
       totalDocs,
       totalPages,
       page,
-      limit
+      limit,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+      prevLink,
+      nextLink
     };
   }
 }

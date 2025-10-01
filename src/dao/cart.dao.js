@@ -11,10 +11,11 @@ class CartManager {
     return await newCart.populate('products.product');
   }
 
-  // Obtener carrito por id (poblado)
+  // Obtener carrito por ID con populate
   async getCartById(id) {
     if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('Cart ID inválido');
-    return await Cart.findById(id).populate('products.product');
+    const cart = await Cart.findById(id).populate('products.product');
+    return cart;
   }
 
   // Agregar producto al carrito (incrementa si ya existe)
@@ -22,7 +23,6 @@ class CartManager {
     if (!mongoose.Types.ObjectId.isValid(cartId)) throw new Error('Cart ID inválido');
     if (!mongoose.Types.ObjectId.isValid(productId)) throw new Error('Product ID inválido');
 
-    // verificar existencia del producto
     const productExists = await Product.exists({ _id: productId });
     if (!productExists) throw new Error('Producto no existe');
 
@@ -31,16 +31,16 @@ class CartManager {
 
     const existing = cart.products.find(p => String(p.product) === String(productId));
     if (existing) {
-      existing.quantity = (existing.quantity || 0) + Number(quantity || 1);
+      existing.quantity += Number(quantity);
     } else {
-      cart.products.push({ product: productId, quantity: Number(quantity || 1) });
+      cart.products.push({ product: productId, quantity: Number(quantity) });
     }
 
     await cart.save();
     return await cart.populate('products.product');
   }
 
-  // Actualizar cantidad de un producto en el carrito
+  // Actualizar cantidad de un producto específico
   async updateProductQuantity(cartId, productId, quantity) {
     if (!mongoose.Types.ObjectId.isValid(cartId)) throw new Error('Cart ID inválido');
     if (!mongoose.Types.ObjectId.isValid(productId)) throw new Error('Product ID inválido');
@@ -87,8 +87,7 @@ class CartManager {
     return await Cart.find().populate('products.product');
   }
 
-  // --- NUEVO: reemplazar TODO el array de products del carrito ---
-  // productsArray: [ { product: "<productId>" OR id OR _id, quantity: <n> }, ... ]
+  // Reemplazar todo el array de productos del carrito
   async replaceProducts(cartId, productsArray) {
     if (!mongoose.Types.ObjectId.isValid(cartId)) throw new Error('Cart ID inválido');
     if (!Array.isArray(productsArray)) throw new Error('Products debe ser un array');
@@ -96,42 +95,35 @@ class CartManager {
     const cart = await Cart.findById(cartId);
     if (!cart) throw new Error('Carrito no encontrado');
 
-    // Normalizar y fusionar entradas duplicadas
+    // Normalizar productos y fusionar duplicados
     const normalized = productsArray.map(item => {
       const pid = item.product || item.id || item._id;
       if (!pid) throw new Error('Cada producto debe tener product/id/_id');
       return { product: String(pid), quantity: Number(item.quantity) || 1 };
     });
 
-    // Fusionar duplicados: sumar cantidades por productId
     const map = new Map();
     normalized.forEach(({ product, quantity }) => {
       if (!mongoose.Types.ObjectId.isValid(product)) {
         throw new Error(`Product ID inválido: ${product}`);
       }
-      const prev = map.get(product) || 0;
-      map.set(product, prev + Number(quantity));
+      map.set(product, (map.get(product) || 0) + Number(quantity));
     });
     const finalProducts = Array.from(map.entries()).map(([product, quantity]) => ({ product, quantity }));
 
-    // Validar que todos los productIds existen en la colección Products
+    // Validar existencia de productos
     const ids = finalProducts.map(p => p.product);
     const existing = await Product.find({ _id: { $in: ids } }).select('_id').lean();
     const existingIds = new Set(existing.map(e => String(e._id)));
-    const missing = ids.filter(id => !existingIds.has(String(id)));
-    if (missing.length > 0) {
-      throw new Error(`Algunos productos no existen: ${missing.join(', ')}`);
-    }
+    const missing = ids.filter(id => !existingIds.has(id));
+    if (missing.length > 0) throw new Error(`Algunos productos no existen: ${missing.join(', ')}`);
 
-    // Reemplazar y guardar
     cart.products = finalProducts;
     await cart.save();
-
-    // Devolver carrito poblado
     return await cart.populate('products.product');
   }
 
-  // Alias por compatibilidad con managers antiguos
+  // Alias por compatibilidad
   async updateCartProducts(cartId, productsArray) {
     return this.replaceProducts(cartId, productsArray);
   }
