@@ -12,9 +12,7 @@
     {{/each}}
   </ul>
 
-  <p><strong>Total:</strong> 
-    ${{calcTotal cart.products}}
-  </p>
+  <p><strong>Total:</strong> ${{calcTotal cart.products}}</p>
 
   <button onclick="emptyCart('{{cart._id}}')">Vaciar Carrito</button>
 {{else}}
@@ -24,13 +22,13 @@
 <a href="/products">⬅️ Seguir comprando</a>
 
 <script>
-  async function removeFromCart(cartId, productId) {
-    await fetch(`/api/carts/${cartId}/products/${productId}`, { method: "DELETE" });
-    location.reload();
-  }
+async function removeFromCart(cartId, productId) {
+  await fetch(`/api/carts/${cartId}/products/${productId}`, { method: "DELETE" });
+  location.reload();
+}
 
-  async function emptyCart(cartId) {
-    await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
-    location.reload();
-  }
+async function emptyCart(cartId) {
+  await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
+  location.reload();
+}
 </script>
