@@ -1,4 +1,5 @@
-const { Router } = require("express");
+// src/routes/carts.routes.js
+const { Router } = require('express');
 const {
   createCart,
   getCart,
@@ -7,29 +8,29 @@ const {
   updateProductQuantity,
   deleteProductFromCart,
   emptyCart
-} = require("../controllers/cartController");
+} = require('../controllers/cartController');
 
 const router = Router();
 
 // Crear carrito
-router.post("/", createCart);
+router.post('/', createCart);
 
 // Obtener carrito por ID
-router.get("/:cid", getCart);
+router.get('/:cid', getCart);
 
-// Agregar producto al carrito
-router.post("/:cid/products/:pid", addProductToCart);
+// Agregar producto al carrito (quantity opcional en body)
+router.post('/:cid/products/:pid', addProductToCart);
 
 // Reemplazar todo el contenido del carrito
-router.put("/:cid", updateCartProducts);
+router.put('/:cid', updateCartProducts);
 
 // Actualizar cantidad de un producto específico
-router.put("/:cid/products/:pid", updateProductQuantity);
+router.put('/:cid/products/:pid', updateProductQuantity);
 
 // Eliminar producto del carrito
-router.delete("/:cid/products/:pid", deleteProductFromCart);
+router.delete('/:cid/products/:pid', deleteProductFromCart);
 
 // Vaciar carrito
-router.delete("/:cid", emptyCart);
+router.delete('/:cid', emptyCart);
 
 module.exports = router;
