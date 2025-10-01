@@ -9,7 +9,7 @@ const getProductById = async (pid) => {
 };
 
 const addNewProduct = async (productData) => {
-    console.log("📥 Datos recibidos en service:", productData);
+    console.log("Datos recibidos en service:", productData);
     
     if (productData.name && !productData.title) {
         productData.title = productData.name;
@@ -35,7 +35,7 @@ const addNewProduct = async (productData) => {
     }
     
     const result = await productManager.addProduct(productData);
-    console.log("📤 Producto creado en service:", result);
+    console.log("Producto creado en service:", result);
     
     return result;
 };

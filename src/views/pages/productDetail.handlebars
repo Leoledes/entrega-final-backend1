@@ -5,17 +5,7 @@
 <p><strong>Categoría:</strong> {{product.category}}</p>
 <p><strong>Stock:</strong> {{product.stock}}</p>
 
-<button onclick="addToCart('{{product._id}}')">Agregar al Carrito</button>
+<button onclick="addToCart('{{cartId}}', '{{product._id}}')">Agregar al Carrito</button>
 <a href="/products">⬅️ Volver a Productos</a>
 
-<script>
-async function addToCart(productId) {
-  const cartId = "{{cartId}}"; // 🔹 reemplazar dinámicamente según sesión
-  await fetch(`/api/carts/${cartId}/products/${productId}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ quantity: 1 })
-  });
-  alert("Producto agregado al carrito");
-}
-</script>
+<script src="/js/cart.js"></script>

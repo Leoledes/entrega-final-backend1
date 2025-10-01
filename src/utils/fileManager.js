@@ -1,21 +1,22 @@
-// src/utils/fileManager.js
-const fs = require('fs').promises;
+// Este era mi fileManager antes de migrar a MongoDB:
 
-async function readJson(filePath) {
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      await fs.writeFile(filePath, '[]'); // archivo vacío
-      return [];
-    }
-    throw err;
-  }
-}
+// const fs = require('fs').promises;
 
-async function writeJson(filePath, data) {
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-}
+// async function readJson(filePath) {
+//   try {
+//     const data = await fs.readFile(filePath, 'utf-8');
+//     return JSON.parse(data);
+//   } catch (err) {
+//     if (err.code === 'ENOENT') {
+//       await fs.writeFile(filePath, '[]'); // archivo vacío
+//       return [];
+//     }
+//     throw err;
+//   }
+// }
 
-module.exports = { readJson, writeJson };
+// async function writeJson(filePath, data) {
+//   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+// }
+
+// module.exports = { readJson, writeJson };
