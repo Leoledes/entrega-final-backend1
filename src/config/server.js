@@ -29,10 +29,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 }
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 }
 }));
 
 app.use('/', viewsRouter);
@@ -43,71 +43,119 @@ io.on('connection', async (socket) => {
     console.log('Cliente conectado:', socket.id);
 
     const productsFromDB = await productDAO.getAllProducts();
-    socket.emit('productsUpdated', productsFromDB.map(p => ({ ...p, id: p._id })));
+    const products = productsFromDB.map(p => ({
+        id: p._id,
+        name: p.name,
+        description: p.description,
+        price: p.price,
+        category: p.category,
+        stock: p.stock,
+        status: p.status
+    }));
+    socket.emit('productsUpdated', products);
 
     const cartsFromDB = await cartDAO.getAllCarts();
-    socket.emit('cartsUpdated', cartsFromDB);
+    const carts = cartsFromDB.map(c => ({
+        id: c._id,
+        products: c.products.map(p => ({
+            id: p.product._id,
+            name: p.product.name,
+            price: p.product.price,
+            quantity: p.quantity
+        }))
+    }));
+    socket.emit('cartsUpdated', carts);
 
     socket.on('newProduct', async (data) => {
-        try {
-            await productDAO.createProduct(data);
-            const updatedProducts = await productDAO.getAllProducts();
-            io.emit('productsUpdated', updatedProducts.map(p => ({ ...p, id: p._id })));
-        } catch (error) {
-            console.error("Error creando producto:", error.message);
-        }
+        await productDAO.createProduct(data);
+        const updatedProducts = await productDAO.getAllProducts();
+        io.emit('productsUpdated', updatedProducts.map(p => ({
+            id: p._id,
+            name: p.name,
+            description: p.description,
+            price: p.price,
+            category: p.category,
+            stock: p.stock,
+            status: p.status
+        })));
     });
 
     socket.on('deleteProduct', async (productId) => {
-        try {
-            await productDAO.deleteProductById(productId);
-            const updatedProducts = await productDAO.getAllProducts();
-            io.emit('productsUpdated', updatedProducts.map(p => ({ ...p, id: p._id })));
-        } catch (error) {
-            console.error("Error eliminando producto:", error.message);
-        }
+        await productDAO.deleteProductById(productId);
+        const updatedProducts = await productDAO.getAllProducts();
+        io.emit('productsUpdated', updatedProducts.map(p => ({
+            id: p._id,
+            name: p.name,
+            description: p.description,
+            price: p.price,
+            category: p.category,
+            stock: p.stock,
+            status: p.status
+        })));
     });
 
     socket.on('newCart', async () => {
         await cartDAO.createCart();
         const updatedCarts = await cartDAO.getAllCarts();
-        io.emit('cartsUpdated', updatedCarts);
+        io.emit('cartsUpdated', updatedCarts.map(c => ({
+            id: c._id,
+            products: c.products.map(p => ({
+                id: p.product._id,
+                name: p.product.name,
+                price: p.product.price,
+                quantity: p.quantity
+            }))
+        })));
     });
 
     socket.on('addProductToCart', async ({ cartId, productId, quantity }) => {
-        try {
-            await cartDAO.addProductToCart(cartId, productId, quantity);
-            const updatedCarts = await cartDAO.getAllCarts();
-            io.emit('cartsUpdated', updatedCarts);
-        } catch (err) {
-            console.error('Error agregando producto al carrito:', err.message);
-        }
+        await cartDAO.addProductToCart(cartId, productId, quantity);
+        const updatedCarts = await cartDAO.getAllCarts();
+        io.emit('cartsUpdated', updatedCarts.map(c => ({
+            id: c._id,
+            products: c.products.map(p => ({
+                id: p.product._id,
+                name: p.product.name,
+                price: p.product.price,
+                quantity: p.quantity
+            }))
+        })));
     });
 
     socket.on('removeProductFromCart', async ({ cartId, productId }) => {
         await cartDAO.removeProductFromCart(cartId, productId);
         const updatedCarts = await cartDAO.getAllCarts();
-        io.emit('cartsUpdated', updatedCarts);
+        io.emit('cartsUpdated', updatedCarts.map(c => ({
+            id: c._id,
+            products: c.products.map(p => ({
+                id: p.product._id,
+                name: p.product.name,
+                price: p.product.price,
+                quantity: p.quantity
+            }))
+        })));
     });
 
     socket.on('emptyCart', async (cartId) => {
         await cartDAO.emptyCart(cartId);
         const updatedCarts = await cartDAO.getAllCarts();
-        io.emit('cartsUpdated', updatedCarts);
+        io.emit('cartsUpdated', updatedCarts.map(c => ({
+            id: c._id,
+            products: c.products.map(p => ({
+                id: p.product._id,
+                name: p.product.name,
+                price: p.product.price,
+                quantity: p.quantity
+            }))
+        })));
     });
 
-    socket.on('disconnect', () => {
-        console.log('Cliente desconectado:', socket.id);
-    });
+    socket.on('disconnect', () => console.log('Cliente desconectado:', socket.id));
 });
 
-app.use((req, res) => {
-    res.status(404).json({ status: 'error', message: 'Ruta no encontrada' });
-});
+app.use((req, res) => res.status(404).json({ status: 'error', message: 'Ruta no encontrada' }));
 
 const PORT = process.env.PORT || 8080;
-httpServer.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
+httpServer.listen(PORT, () => console.log(`Servidor escuchando en http://localhost:${PORT}`));
 
 module.exports = { app, io };

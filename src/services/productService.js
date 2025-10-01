@@ -11,10 +11,6 @@ const getProductById = async (pid) => {
 const addNewProduct = async (productData) => {
     console.log("Datos recibidos en service:", productData);
     
-    if (productData.name && !productData.title) {
-        productData.title = productData.name;
-    }
-    
     if (typeof productData.status !== 'boolean') {
         productData.status = true;
     }
@@ -27,7 +23,7 @@ const addNewProduct = async (productData) => {
         productData.code = 'PROD-' + Date.now();
     }
 
-    const requiredFields = ['title', 'description', 'price', 'stock', 'category'];
+    const requiredFields = ['name', 'description', 'price', 'stock', 'category'];
     const missingFields = requiredFields.filter(field => !productData[field]);
     
     if (missingFields.length > 0) {

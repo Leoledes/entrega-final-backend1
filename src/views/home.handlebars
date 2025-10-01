@@ -9,9 +9,13 @@
         <p>Precio: ${{this.price}}</p>
         <p>Stock: {{this.stock}}</p>
         <p>Categoría: {{this.category}}</p>
+        <a href="/products/{{this.id}}" class="btn-detail">Ver Detalle</a>
+        <button onclick="addToCart('{{../cartId}}', '{{this.id}}')">Agregar al Carrito</button>
       </div>
     {{/each}}
   </div>
 {{else}}
   <p>No hay productos cargados.</p>
 {{/if}}
+
+<script src="/js/cart.js"></script>

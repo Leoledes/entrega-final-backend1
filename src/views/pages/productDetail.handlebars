@@ -1,11 +1,11 @@
-<h1>{{product.title}}</h1>
+<h1>{{product.name}}</h1>
 
 <p><strong>Precio:</strong> ${{product.price}}</p>
 <p><strong>Descripción:</strong> {{product.description}}</p>
 <p><strong>Categoría:</strong> {{product.category}}</p>
 <p><strong>Stock:</strong> {{product.stock}}</p>
 
-<button onclick="addToCart('{{cartId}}', '{{product._id}}')">Agregar al Carrito</button>
+<button onclick="addToCart('{{cartId}}', '{{product.id}}')">Agregar al Carrito</button>
 <a href="/products">⬅️ Volver a Productos</a>
 
 <script src="/js/cart.js"></script>

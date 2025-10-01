@@ -1,7 +1,6 @@
 const socket = io();
 const productsList = document.getElementById('productsList');
 
-// Renderizar productos
 function renderProducts(products) {
     productsList.innerHTML = '';
     products.forEach(p => {
@@ -19,12 +18,10 @@ function renderProducts(products) {
     });
 }
 
-// Escuchar productos iniciales y actualizaciones
 socket.on('productsUpdated', (products) => {
     renderProducts(products);
 });
 
-// Agregar producto
 const addForm = document.getElementById('addProductForm');
 addForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -39,7 +36,6 @@ addForm.addEventListener('submit', (e) => {
     addForm.reset();
 });
 
-// Eliminar producto
 const deleteForm = document.getElementById('deleteProductForm');
 deleteForm.addEventListener('submit', (e) => {
     e.preventDefault();

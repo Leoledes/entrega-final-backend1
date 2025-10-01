@@ -4,12 +4,10 @@ const createCartBtn = document.getElementById('createCartBtn');
 const addProductForm = document.getElementById('addProductToCartForm');
 const cartsList = document.getElementById('cartsList');
 
-// Crear carrito nuevo
 createCartBtn.addEventListener('click', () => {
     socket.emit('newCart');
 });
 
-// Agregar producto a carrito
 addProductForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const cartId = document.getElementById('cartId').value;
@@ -20,17 +18,14 @@ addProductForm.addEventListener('submit', (e) => {
     addProductForm.reset();
 });
 
-// Función para eliminar un producto de un carrito
 function removeProduct(cartId, productId) {
     socket.emit('removeProductFromCart', { cartId, productId });
 }
 
-// Función para vaciar un carrito
 function emptyCart(cartId) {
     socket.emit('emptyCart', cartId);
 }
 
-// Renderizar carritos
 function renderCarts(updatedCarts) {
     cartsList.innerHTML = '';
     updatedCarts.forEach(cart => {
@@ -41,8 +36,8 @@ function renderCarts(updatedCarts) {
         let productsHTML = '<ul>';
         cart.products.forEach(p => {
             productsHTML += `<li>
-                Producto: ${p.product.name || p.product} | Cantidad: ${p.quantity}
-                <button onclick="removeProduct('${cart._id}', '${p.product._id || p.product}')">Eliminar</button>
+                ${p.product?.name || p.product} (ID: ${p.product?._id || p.product}) - Cantidad: ${p.quantity}
+                <button onclick="removeProduct('${cart._id}', '${p.product?._id || p.product}')">Eliminar</button>
             </li>`;
         });
         productsHTML += '</ul>';
@@ -56,7 +51,6 @@ function renderCarts(updatedCarts) {
     });
 }
 
-// Escuchar actualizaciones desde el servidor
 socket.on('cartsUpdated', (updatedCarts) => {
     renderCarts(updatedCarts);
 });
