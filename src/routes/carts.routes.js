@@ -20,10 +20,10 @@ router.get("/:cid", getCart);
 // Agregar producto al carrito
 router.post("/:cid/products/:pid", addProductToCart);
 
-// Reemplazar todo el carrito con un nuevo array
+// Reemplazar todo el contenido del carrito
 router.put("/:cid", updateCartProducts);
 
-// Actualizar cantidad de un producto en el carrito
+// Actualizar cantidad de un producto específico
 router.put("/:cid/products/:pid", updateProductQuantity);
 
 // Eliminar producto del carrito

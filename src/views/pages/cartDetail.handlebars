@@ -1,0 +1,36 @@
+<h1>Carrito</h1>
+
+{{#if cart.products.length}}
+  <ul>
+    {{#each cart.products}}
+      <li>
+        <strong>{{this.product.title}}</strong>  
+        - Cantidad: {{this.quantity}}  
+        - Precio: ${{this.product.price}}  
+        <button onclick="removeFromCart('{{../cart._id}}', '{{this.product._id}}')">❌ Eliminar</button>
+      </li>
+    {{/each}}
+  </ul>
+
+  <p><strong>Total:</strong> 
+    ${{calcTotal cart.products}}
+  </p>
+
+  <button onclick="emptyCart('{{cart._id}}')">Vaciar Carrito</button>
+{{else}}
+  <p>El carrito está vacío</p>
+{{/if}}
+
+<a href="/products">⬅️ Seguir comprando</a>
+
+<script>
+  async function removeFromCart(cartId, productId) {
+    await fetch(`/api/carts/${cartId}/products/${productId}`, { method: "DELETE" });
+    location.reload();
+  }
+
+  async function emptyCart(cartId) {
+    await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
+    location.reload();
+  }
+</script>

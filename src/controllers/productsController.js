@@ -2,8 +2,12 @@ const productDAO = require('../dao/product.dao');
 
 const getProducts = async (req, res) => {
   try {
-    const { limit = 10, page = 1, query, sort } = req.query;
+    // Validación y conversión de query params
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const { query, sort } = req.query;
 
+    // Obtener productos paginados desde DAO
     const { products, totalDocs, totalPages, page: currentPage } =
       await productDAO.getProductsPaginated({ limit, page, query, sort });
 
@@ -12,12 +16,11 @@ const getProducts = async (req, res) => {
     const prevPage = hasPrevPage ? currentPage - 1 : null;
     const nextPage = hasNextPage ? currentPage + 1 : null;
 
+    // Construir links prev/next
     const buildLink = (newPage) => {
       const params = { ...req.query, page: newPage };
-      const q = Object.keys(params)
-        .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-        .join("&");
-      return `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?${q}`;
+      const q = new URLSearchParams(params).toString();
+      return `${req.protocol}://${req.get("host")}${req.baseUrl}?${q}`;
     };
 
     res.json({
