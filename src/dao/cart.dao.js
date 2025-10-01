@@ -62,6 +62,15 @@ class CartManager {
   async getAllCarts() {
     return await Cart.find().populate("products.product");
   }
+
+  async updateCartProducts(cartId, products) {
+    const cart = await Cart.findById(cartId);
+    if (!cart) throw new Error("Carrito no encontrado");
+
+    cart.products = products; // reemplaza todo el array
+    await cart.save();
+    return cart;
+  }
 }
 
 module.exports = new CartManager();

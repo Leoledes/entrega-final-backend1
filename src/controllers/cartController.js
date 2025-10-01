@@ -37,7 +37,9 @@ const addProductToCart = async (req, res, next) => {
 const updateCartProducts = async (req, res, next) => {
   try {
     const products = req.body.products;
-    if (!Array.isArray(products)) return res.status(400).json({ status: 'error', error: 'Products array required' });
+    if (!Array.isArray(products)) {
+      return res.status(400).json({ status: 'error', error: 'Products array required' });
+    }
 
     const updatedCart = await cartManager.updateCartProducts(req.params.cid, products);
     if (!updatedCart) return res.status(404).json({ status: 'error', error: 'Cart not found' });
@@ -51,10 +53,14 @@ const updateCartProducts = async (req, res, next) => {
 const updateProductQuantity = async (req, res, next) => {
   try {
     const { quantity } = req.body;
-    if (quantity == null) return res.status(400).json({ status: 'error', error: 'Quantity required' });
+    if (quantity == null) {
+      return res.status(400).json({ status: 'error', error: 'Quantity required' });
+    }
 
     const updatedCart = await cartManager.updateProductQuantity(req.params.cid, req.params.pid, quantity);
-    if (!updatedCart) return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
+    if (!updatedCart) {
+      return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
+    }
 
     res.json({ status: 'success', payload: updatedCart });
   } catch (err) {
@@ -65,9 +71,22 @@ const updateProductQuantity = async (req, res, next) => {
 const deleteProductFromCart = async (req, res, next) => {
   try {
     const updatedCart = await cartManager.removeProductFromCart(req.params.cid, req.params.pid);
-    if (!updatedCart) return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
+    if (!updatedCart) {
+      return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
+    }
 
     res.json({ status: 'success', payload: updatedCart });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const emptyCart = async (req, res, next) => {
+  try {
+    const cart = await cartManager.emptyCart(req.params.cid);
+    if (!cart) return res.status(404).json({ status: 'error', error: 'Cart not found' });
+
+    res.json({ status: 'success', payload: cart });
   } catch (err) {
     next(err);
   }
@@ -79,5 +98,6 @@ module.exports = {
   addProductToCart,
   updateCartProducts,
   updateProductQuantity,
-  deleteProductFromCart
+  deleteProductFromCart,
+  emptyCart
 };
