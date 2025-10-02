@@ -234,25 +234,8 @@ entrega-final-backend1/
   "setup": "npm install && node src/config/setup.js"
 }
 
-📄 Licencia
-Licencia ISC. Código abierto.
-
 👤 Autor
 Leonardo Ledesma
 GitHub: @Leoledes
-
-🐛 Reporte de Bugs
-Abrir un issue en GitHub.
-
-📚 Documentación Adicional
-Express.js
-
-MongoDB
-
-Mongoose
-
-Socket.IO
-
-Handlebars
 
 Desarrollado para Backend 1 - Coderhouse
