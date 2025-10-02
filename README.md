@@ -150,67 +150,67 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
 ## 📁 Estructura del Proyecto
 
 entrega-final-backend1/
-├── index.js
-├── package-lock.json
-├── package.json
-├── public/
-│   ├── css/
-│   │   ├── carts.css
-│   │   ├── home.css
-│   │   ├── productDetail.css
-│   │   ├── products.css
-│   │   ├── realtime.css
-│   │   └── realtimeCarts.css
-│   ├── docs/
-│   │   └── README.md
-│   └── js/
-│       ├── cart.js
-│       ├── home.js
-│       ├── realTimeCarts.js
-│       └── realTimeProducts.js
-└── src/
-    ├── app.js
-    ├── config/
-    │   ├── config.js
-    │   ├── database.js
-    │   └── server.js
-    ├── controllers/
-    │   ├── cartController.js
-    │   └── productsController.js
-    ├── dao/
-    │   ├── cart.dao.js
-    │   └── product.dao.js
-    ├── data/
-    │   ├── carts.json
-    │   └── products.json
-    ├── managers/
-    │   ├── cartManager.js
-    │   └── productManager.js
-    ├── middlewares/
-    │   └── cartInitializer.js
-    ├── models/
-    │   ├── cart.model.js
-    │   └── product.model.js
-    ├── routes/
-    │   ├── api/
-    │   │   └── carts.js
-    │   ├── carts.routes.js
-    │   ├── products.routes.js
-    │   └── views.router.js
-    ├── services/
-    │   └── productService.js
-    ├── utils/
-    │   └── fileManager.js
-    └── views/
-        ├── home.handlebars
-        ├── layouts/
-        │   └── main.handlebars
-        ├── pages/
-        │   ├── cartDetail.handlebars
-        │   ├── productDetail.handlebars
-        │   └── products.handlebars
-        ├── realTimeCarts.handlebars
-        └── realTimeProducts.handlebars
+- index.js                     # Punto de entrada principal
+- package-lock.json
+- package.json                 # Dependencias y scripts
+- public/                      # Archivos estáticos
+  - css/                       # Estilos
+    - carts.css
+    - home.css
+    - productDetail.css
+    - products.css
+    - realtime.css
+    - realtimeCarts.css
+  - docs/
+    - README.md
+  - js/                        # Scripts del cliente
+    - cart.js
+    - home.js
+    - realTimeCarts.js
+    - realTimeProducts.js
+- src/                         # Código fuente del backend
+  - app.js                     # Configuración de Express
+  - config/                    # Configuración general
+    - config.js
+    - database.js              # Conexión a MongoDB
+    - server.js                # Inicialización del servidor
+  - controllers/               # Lógica de controladores
+    - cartController.js
+    - productsController.js
+  - dao/                       # Data Access Objects
+    - cart.dao.js
+    - product.dao.js
+  - data/                      # Datos en JSON (opcional)
+    - carts.json
+    - products.json
+  - managers/                  # Managers de lógica de negocio
+    - cartManager.js
+    - productManager.js
+  - middlewares/               # Middlewares personalizados
+    - cartInitializer.js
+  - models/                    # Modelos de Mongoose
+    - cart.model.js
+    - product.model.js
+  - routes/                    # Rutas del proyecto
+    - api/
+      - carts.js
+    - carts.routes.js
+    - products.routes.js
+    - views.router.js
+  - services/                  # Servicios
+    - productService.js
+  - utils/                     # Utilidades
+    - fileManager.js
+  - views/                     # Plantillas Handlebars
+    - home.handlebars
+    - layouts/
+      - main.handlebars
+    - pages/
+      - cartDetail.handlebars
+      - productDetail.handlebars
+      - products.handlebars
+    - realTimeCarts.handlebars
+    - realTimeProducts.handlebars
 
 
 ---
