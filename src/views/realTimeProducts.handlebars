@@ -37,15 +37,24 @@
 <div id="productsList" class="products-container">
     {{#each products}}
         <div class="product-card" data-id="{{this.id}}">
-            <h3>{{this.name}} (ID: {{this.id}})</h3>
-            <p>{{this.description}}</p>
-            <p>Precio: ${{this.price}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <p>Categoría: {{this.category}}</p>
+            <h3>{{this.name}}</h3> 
+            
+            <p>ID:</p>
+            <span>{{this.id}}</span>
+
+            <p>Categoría:</p>
+            <span>{{this.category}}</span>
+            
+            <p>Descripción:</p>
+            <span>{{this.description}}</span>
+            
+            <span class="price-tag">
+                ${{this.price}} 
+            <span>Stock: {{this.stock}}</span>
+            </span>
         </div>
     {{/each}}
 </div>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realtimeproducts.js"></script>

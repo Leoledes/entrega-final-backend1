@@ -19,33 +19,114 @@ h1 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
-    margin-top: 30px;
+    padding: 0 10px;
 }
 
 .product-card {
     background-color: #ffffff;
     border: 1px solid #e0e7ee;
-    border-radius: 12px; 
-    padding: 25px;
+    border-radius: 12px;
+    padding: 20px; /* Padding ligeramente menor para más espacio visual */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .product-card h3 {
     color: #2c3e50;
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 8px; /* Menos margen inferior para que esté cerca del precio */
     font-size: 1.4em;
-    font-weight: 500;
+    font-weight: 600;
+    /* Opcional: esconder el ID en el H3 para una mejor visual */
 }
 
+/* Estilo para la información general (ID, descripción, categoría, stock) */
 .product-card p {
     color: #666;
-    margin-bottom: 8px;
+    margin-bottom: 4px; /* Espaciado ajustado */
+    font-size: 0.9em;
+}
+
+/* Estilo para el precio: lo hacemos más visible y destacado */
+.product-card .price-tag {
+    font-weight: 700;
+    color: #27ae60; 
+    font-size: 1.4em; /* Más grande y destacado */
+    margin: 10px 0 15px 0; /* Margen para separarlo de la descripción y las acciones */
+    display: block; /* Asegura que ocupe su propia línea */
+}
+
+.product-card .price-tag span {
+    font-size: 0.7em;
+    color: #666;
+    font-weight: 400;
+}
+
+/* Contenedor de acciones */
+.actions-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between; /* Distribuye el botón y el enlace */
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee; /* Separador sutil */
+}
+
+/* Estilo para el botón de agregar al carrito (Prioritario) */
+.product-card button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
     font-size: 0.95em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    flex-grow: 1; /* Permite que el botón ocupe el espacio principal */
+}
+
+.product-card button:hover {
+    background-color: #2980b9;
+}
+
+/* Estilo para el enlace secundario: Ver Detalle */
+.product-card .btn-detail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    background-color: transparent; /* Fondo transparente */
+    color: #3498db;
+    text-decoration: none;
+    border: 1px solid #3498db; /* Borde para que se vea como un botón secundario */
+    border-radius: 6px;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.product-card .btn-detail:hover {
+    background-color: #3498db;
+    color: white; /* Invierte los colores al pasar el ratón */
+}
+
+/* Estilo para cuando no hay productos */
+.no-products {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #7f8c8d;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-top: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
