@@ -1,119 +1,398 @@
-# Plantify API RESTful
+🌱 Plantify - E-commerce Backend
 
-## Descripción del Proyecto
+API RESTful desarrollada con Node.js, Express y MongoDB para la gestión completa de un e-commerce de plantas. Incluye gestión de productos, carritos de compra, paginación avanzada, y actualizaciones en tiempo real con WebSockets.
 
-Plantify es una API RESTful desarrollada con Node.js y Express para la gestión de un inventario de productos. Lo que la hace única es su capacidad de ofrecer actualizaciones en tiempo real gracias a WebSockets y la renderización de vistas dinámicas con Handlebars. Es una solución ideal para cualquier aplicación que requiera una gestión de productos robusta, con funcionalidades en tiempo real y una interfaz de usuario simple.
+📋 Tabla de Contenidos
 
-## Tecnologías y Herramientas
+Características
 
-Este proyecto fue construido utilizando:
+Tecnologías
 
-- **Node.js**: Entorno de ejecución de JavaScript del lado del servidor.
-- **Express.js**: Framework web minimalista y flexible para Node.js.
-- **Express-Handlebars**: Motor de plantillas que permite crear vistas dinámicas en el servidor.
-- **Socket.IO**: Librería que habilita la comunicación bidireccional en tiempo real (WebSockets) entre el cliente y el servidor.
-- **JavaScript**: El lenguaje de programación principal.
+Requisitos Previos
+
+Instalación y Setup
+
+Configuración de Entorno
+
+Uso
+
+API Endpoints
+
+Estructura del Proyecto
+
+Funcionalidades Principales
+
+Testing
+
+Contribuciones
+
+Scripts Disponibles
+
+Licencia
+
+Autor
+
+Reporte de Bugs
+
+Documentación Adicional
+
+✨ Características
+Gestión de Productos
+
+CRUD completo de productos
+
+Paginación profesional con limit, page, sort y query
+
+Filtros por categoría y disponibilidad
+
+Ordenamiento ascendente/descendente por precio
+
+Formato de respuesta con metadata de paginación completa
+
+Gestión de Carritos
+
+Creación automática de carrito por sesión
+
+Agregar/eliminar productos individuales
+
+Actualizar cantidades de productos
+
+Reemplazar todos los productos del carrito
+
+Vaciar carrito completo
+
+Referencias pobladas con detalles completos de productos
+
+Vistas Dinámicas
+
+Catálogo de productos con paginación visual
+
+Vista detallada de producto individual
+
+Vista de carrito con productos populados
+
+Actualizaciones en tiempo real con WebSockets
+
+Características Técnicas
+
+Arquitectura modular (MVC + DAO)
+
+Persistencia con MongoDB y Mongoose
+
+Sistema de sesiones con Express-Session
+
+WebSockets para actualizaciones en tiempo real
+
+Validaciones robustas en todas las capas
+
+Manejo centralizado de errores
+
+🛠 Tecnologías
+
+Node.js - Entorno de ejecución de JavaScript
+
+Express.js - Framework web minimalista
+
+MongoDB - Base de datos NoSQL
+
+Mongoose - ODM para MongoDB
+
+Express-Handlebars - Motor de plantillas
+
+Socket.IO - Comunicación bidireccional en tiempo real
+
+Express-Session - Manejo de sesiones
+
+Dotenv - Gestión de variables de entorno
+
+Cloudinary - Gestión de imágenes (opcional)
+
+Multer - Carga de archivos
+
+📦 Requisitos Previos
+
+Node.js (versión 14 o superior)
+
+MongoDB (local o MongoDB Atlas)
+
+npm o yarn
+
+🚀 Instalación y Setup
+
+Clonar el repositorio:
+
+git clone https://github.com/Leoledes/entrega-final-backend1.git
+cd entrega-final-backend1
 
 
-## Características Principales
+Instalar dependencias y ejecutar setup:
 
-- **Gestión Completa de Productos**: La API permite realizar operaciones CRUD (crear, leer, actualizar, borrar) en el catálogo de productos.
-- **Vistas Dinámicas con Handlebars**: Incluye dos vistas principales, `home.handlebars` para una lista estática de productos y `realTimeProducts.handlebars` para una lista en tiempo real.
-- **Actualizaciones en Tiempo Real con WebSockets**: La vista `realTimeProducts.handlebars` se actualiza automáticamente cada vez que se agrega o elimina un producto.
-- **Servidor de Prueba Integrado**: Una ruta (`/test-products`) genera un producto de ejemplo si el catálogo está vacío para facilitar un inicio rápido.
-- **Manejo de CORS**: Configuración para manejar solicitudes de origen cruzado de manera segura.
-- **Manejo de Errores y Rutas No Encontradas**: Un middleware se encarga de retornar un código de estado 404 para rutas no definidas.
-- **Estructura Modular**: Código organizado en módulos separados para controladores, rutas y DAO (Data Access Object) para facilitar la escalabilidad y el mantenimiento.
+npm run setup
 
 
-## Instalación y Uso
+Esto instalará todas las dependencias y ejecutará src/config/setup.js si existe algún script inicial de configuración.
 
-Para poner en marcha la API en tu entorno local, sigue estos pasos:
+Configurar variables de entorno:
 
-### 1. Clonar el Repositorio:
+Copiar el archivo .env.example a .env y completar los valores:
 
-```
-git clone https://github.com/Leoledes/segunda-entrega-backend1.git
-```
+cp .env.example .env
 
-### 2. Navegar al Directorio del Proyecto:
 
-```
-cd segunda-entrega-backend1
-```
+Ejemplo de .env:
 
-### 3. Instalar Dependencias:
-
-```
-npm install
-```
-
-### 4. Configurar Variables de Entorno:
-
-Crea un archivo `.env` en la raíz del proyecto y añade el puerto.
-
-```
 PORT=8080
-```
-
-### 5. Iniciar el Servidor:
-
-```
-node index.js
-```
-
-Una vez iniciado, el servidor estará escuchando en `http://localhost:8080`.
-
-## Rutas de la API y Vistas
-
-Aquí tienes una descripción de los endpoints principales y las vistas disponibles en la aplicación:
-
-### Endpoints de la API (RESTful)
-
-- **GET /**: Ruta de bienvenida.
-- **GET /test-products**: Muestra todos los productos y agrega uno de prueba.
-- **GET /api/products**: Obtiene la lista completa de productos.
-- **POST /api/products**: Crea un nuevo producto.
-- **GET /api/products/:pid**: Obtiene los detalles de un producto por su id.
-- **PUT /api/products/:pid**: Actualiza un producto existente por su id.
-- **DELETE /api/products/:pid**: Elimina un producto por su id.
+MONGO_URI=mongodb://localhost:27017/plantify
+SESSION_SECRET=tu_secreto_super_seguro
 
 
-### Vistas Renderizadas con Handlebars
+Iniciar la aplicación:
 
-- **GET /home**: Muestra una vista estática (`home.handlebars`) con una lista de todos los productos.
-- **GET /realtimeproducts**: Presenta una vista dinámica (`realTimeProducts.handlebars`) que usa WebSockets para actualizaciones en tiempo real.
+Modo producción:
+
+npm start
 
 
-## Estructura del Proyecto
+Modo desarrollo (con recarga automática):
 
-El proyecto sigue una estructura modular para facilitar el desarrollo y el mantenimiento.
+npm run dev
 
-```
-├── data/
-│   └── products.json          # Almacén de datos simulado
-├── src/                       # Directorio principal del código fuente
-│   ├── controllers/
-│   │   └── products.controller.js
-│   ├── dao/
-│   │   └── products.dao.js
-│   ├── routes/
-│   │   ├── products.routes.js
-│   │   └── views.router.js
-│   ├── utils/
-│   └── views/
-│       ├── layouts/
-│       │   └── main.handlebars
-│       ├── home.handlebars
-│       └── realTimeProducts.handlebars
-├── public/
-│   ├── js/
-│   │   └── realTimeProducts.js
-│   └── css/
-│       ├── home.css
-│       └── realtime.css
-├── .env
-├── app.js
-├── index.js
-└── package.json
-```
+
+Verificar funcionamiento:
+La aplicación estará disponible en http://localhost:8080.
+
+⚙️ Configuración de Entorno
+Variable	Descripción	Valor por Defecto
+PORT	Puerto del servidor	8080
+MONGO_URI	URI de conexión a MongoDB	(requerido)
+SESSION_SECRET	Secreto para firmar sesiones	(requerido)
+
+Nota: Nunca subir .env con datos reales a repositorios públicos. Se debe usar .env.example como plantilla.
+
+🎮 Uso
+Rutas Principales
+
+Inicio: /
+
+Catálogo: /home o /products
+
+Detalle de producto: /products/:pid
+
+Ver carrito: /carts/:cid
+
+Productos en tiempo real: /realtimeproducts
+
+Carritos en tiempo real: /realtimecarts
+
+Ejemplos de Paginación y Filtros
+
+Paginación básica:
+
+/products?page=2
+/products?limit=5
+
+
+Filtros por categoría:
+
+/products?query=Interior
+/products?query=category:Interior
+
+
+Filtros por disponibilidad:
+
+/products?query=true
+/products?query=status:true
+
+
+Ordenamiento:
+
+/products?sort=asc
+/products?sort=desc
+
+
+Combinaciones:
+
+/products?query=Interior&sort=asc&limit=5&page=1
+
+📡 API Endpoints
+Productos
+GET /api/products
+
+Obtiene lista de productos con paginación y filtros.
+
+Query Parameters:
+
+limit (opcional): Cantidad de productos por página (default: 10)
+
+page (opcional): Número de página (default: 1)
+
+query (opcional): Filtro de búsqueda (categoría o disponibilidad)
+
+sort (opcional): Ordenamiento por precio (asc o desc)
+
+Respuesta:
+
+{
+  "status": "success",
+  "payload": [...],
+  "totalPages": 5,
+  "prevPage": 1,
+  "nextPage": 3,
+  "page": 2,
+  "hasPrevPage": true,
+  "hasNextPage": true,
+  "prevLink": "http://localhost:8080/api/products?page=1",
+  "nextLink": "http://localhost:8080/api/products?page=3"
+}
+
+GET /api/products/:pid
+
+Obtiene un producto específico por ID.
+
+POST /api/products
+
+Crea un nuevo producto.
+
+Body:
+
+{
+  "name": "Monstera Deliciosa",
+  "description": "Planta de interior",
+  "price": 2500,
+  "stock": 15,
+  "category": "Interior",
+  "thumbnails": ["url_imagen"],
+  "status": true
+}
+
+PUT /api/products/:pid
+
+Actualiza un producto existente.
+
+DELETE /api/products/:pid
+
+Elimina un producto.
+
+Carritos
+POST /api/carts
+
+Crea un nuevo carrito vacío.
+
+GET /api/carts/:cid
+
+Obtiene un carrito con productos poblados.
+
+POST /api/carts/:cid/products/:pid
+
+Agrega un producto al carrito.
+
+PUT /api/carts/:cid
+
+Actualiza todos los productos del carrito.
+
+PUT /api/carts/:cid/products/:pid
+
+Actualiza la cantidad de un producto específico.
+
+DELETE /api/carts/:cid/products/:pid
+
+Elimina un producto específico del carrito.
+
+DELETE /api/carts/:cid
+
+Vacía el carrito completamente.
+
+📁 Estructura del Proyecto
+entrega-final-backend1/
+├── index.js                      
+├── package.json                  
+├── public/                       
+│   ├── css/                      
+│   └── js/                       
+└── src/
+    ├── app.js                    
+    ├── config/
+    ├── controllers/              
+    ├── dao/                      
+    ├── models/                   
+    ├── routes/                   
+    ├── middlewares/              
+    ├── services/                 
+    ├── utils/                    
+    └── views/                    
+
+🎯 Funcionalidades Principales
+
+Paginación Profesional con metadata completa.
+
+Filtros Avanzados por categoría, disponibilidad y ordenamiento.
+
+Sistema de Carritos con Referencias (populate()) para obtener detalles completos de productos.
+
+WebSockets en Tiempo Real para productos y carritos.
+
+Sistema de Sesiones que genera un carrito único por usuario.
+
+🧪 Testing
+
+Prueba los endpoints con Postman, Insomnia, Thunder Client o cURL.
+
+# Obtener productos con paginación
+curl http://localhost:8080/api/products?page=1&limit=5
+
+# Crear un producto
+curl -X POST http://localhost:8080/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Pothos", "price": 1200, "stock": 20, "category": "Interior"}'
+
+# Agregar producto al carrito
+curl -X POST http://localhost:8080/api/carts/CART_ID/products/PRODUCT_ID \
+  -H "Content-Type: application/json" \
+  -d '{"quantity": 2}'
+
+🤝 Contribuciones
+
+Fork el proyecto
+
+Crear una rama para tu feature (git checkout -b feature/AmazingFeature)
+
+Commit tus cambios (git commit -m 'Add some AmazingFeature')
+
+Push a la rama (git push origin feature/AmazingFeature)
+
+Abrir un Pull Request
+
+📝 Scripts Disponibles
+{
+  "start": "node src/config/server.js",
+  "dev": "nodemon src/config/server.js",
+  "setup": "npm install && node src/config/setup.js"
+}
+
+📄 Licencia
+
+Licencia ISC. Código abierto.
+
+👤 Autor
+
+Leonardo Ledesma
+GitHub: @Leoledes
+
+🐛 Reporte de Bugs
+
+Abre un issue
+ en GitHub.
+
+📚 Documentación Adicional
+
+Express.js Documentation
+
+MongoDB Documentation
+
+Mongoose Documentation
+
+Socket.IO Documentation
+
+Handlebars Documentation
+
+Desarrollado para Backend 1 - Coderhouse
