@@ -10,15 +10,15 @@
     <!-- Agregar Producto a Carrito -->
     <div class="form-card">
         <h2>Agregar Producto a Carrito</h2>
-        <form id="addProductToCartForm">
+        <form class="add-product-form">
             <label for="cartId">ID del Carrito:</label>
-            <input type="text" id="cartId" name="cartId" required>
+            <input type="text" name="cartId" required>
 
             <label for="productId">ID del Producto:</label>
-            <input type="text" id="productId" name="productId" required>
+            <input type="text" name="productId" required>
 
             <label for="quantity">Cantidad:</label>
-            <input type="number" id="quantity" name="quantity" value="1" min="1">
+            <input type="number" name="quantity" value="1" min="1">
 
             <button type="submit">Agregar Producto</button>
         </form>
@@ -30,7 +30,7 @@
     {{#each carts}}
         <div class="product-card cart-card" data-id="{{this.id}}">
             <h3>Carrito ID: {{this.id}}</h3>
-            
+
             {{#if this.products.length}}
                 <ul>
                     {{#each this.products}}

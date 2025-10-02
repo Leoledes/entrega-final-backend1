@@ -1,93 +1,59 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+const socket = io();
 
-    const createCartBtn = document.getElementById('createCartBtn');
-    const addProductForm = document.getElementById('addProductToCartForm');
-    const cartsList = document.getElementById('cartsList');
+// ===================== FUNCIONES DE CARRITO =====================
 
-    // ---------------------------
-    // CREAR NUEVO CARRITO
-    // ---------------------------
-    createCartBtn.addEventListener('click', () => {
-        socket.emit('newCart');
+async function emptyCart(cartId) {
+    if (!cartId) return alert("No se encontró el carrito");
+    await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
+    alert("Carrito vaciado");
+    socket.emit("cartDeleted", cartId);
+}
+
+// ===================== ELIMINAR CARRITO =====================
+document.querySelectorAll(".btn-delete-cart").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+        const cartId = e.target.dataset.cartId;
+        if (!cartId) return alert("No se encontró el carrito");
+
+        await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
+        alert("Carrito eliminado");
+        socket.emit("cartDeleted", cartId);
     });
+});
 
-    // ---------------------------
-    // AGREGAR PRODUCTO A CARRITO
-    // ---------------------------
-    addProductForm.addEventListener('submit', (e) => {
+// ===================== AGREGAR PRODUCTO =====================
+document.querySelectorAll(".add-product-form").forEach(form => {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const cartId = document.getElementById('cartId').value.trim();
-        const productId = document.getElementById('productId').value.trim();
-        const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
-        if (!cartId || !productId) return;
+        const cartId = form.querySelector("input[name='cartId']").value;
+        const productId = form.querySelector("input[name='productId']").value;
+        const quantity = parseInt(form.querySelector("input[name='quantity']").value) || 1;
 
-        socket.emit('addProductToCart', { cartId, productId, quantity });
-        addProductForm.reset();
-    });
+        if (!cartId || !productId) return alert("Faltan datos");
 
-    // ---------------------------
-    // FUNCIONES DE ACCIÓN
-    // ---------------------------
-    window.removeProduct = (cartId, productId) => {
-        socket.emit('removeProductFromCart', { cartId, productId });
-    };
+        try {
+            await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ quantity })
+            });
 
-    window.emptyCart = (cartId) => {
-        socket.emit('emptyCart', cartId);
-    };
+            alert("Producto agregado al carrito");
+            socket.emit("productAdded", { cartId, productId, quantity });
 
-    window.deleteCart = (cartId) => {
-        socket.emit('deleteCart', cartId);
-    };
-
-    // ---------------------------
-    // RENDER DE CARRITOS
-    // ---------------------------
-    function renderCarts(carts) {
-        cartsList.innerHTML = '';
-        if (!carts || carts.length === 0) {
-            cartsList.innerHTML = '<p class="no-products">No hay carritos cargados.</p>';
-            return;
+            // limpiar campos
+            form.querySelector("input[name='productId']").value = "";
+            form.querySelector("input[name='quantity']").value = 1;
+        } catch (err) {
+            console.error(err);
+            alert("Error al agregar producto");
         }
-
-        carts.forEach(cart => {
-            const div = document.createElement('div');
-            div.className = 'product-card cart-card';
-            div.dataset.id = cart.id;
-
-            let productsHTML = '';
-            if (cart.products.length > 0) {
-                productsHTML = '<ul>';
-                cart.products.forEach(p => {
-                    productsHTML += `<li>
-                        ${p.name} (ID: ${p.id}) - Cantidad: ${p.quantity}
-                        <button onclick="removeProduct('${cart.id}', '${p.id}')">Eliminar Producto</button>
-                    </li>`;
-                });
-                productsHTML += '</ul>';
-            } else {
-                productsHTML = '<p>No hay productos en este carrito.</p>';
-            }
-
-            div.innerHTML = `
-                <h3>Carrito ID: ${cart.id}</h3>
-                ${productsHTML}
-                <div class="actions-container">
-                    <button onclick="emptyCart('${cart.id}')">Vaciar Carrito</button>
-                    <button onclick="deleteCart('${cart.id}')">Eliminar Carrito 🗑️</button>
-                </div>
-            `;
-
-            cartsList.appendChild(div);
-        });
-    }
-
-    // ---------------------------
-    // SOCKET.IO LISTENERS
-    // ---------------------------
-    socket.on('cartsUpdated', (updatedCarts) => {
-        renderCarts(updatedCarts);
     });
+});
+
+// ===================== SOCKET.IO =====================
+socket.on("cartsUpdated", carts => {
+    // Puedes implementar render dinámico o recargar la página
+    console.log("Carritos actualizados:", carts);
 });
