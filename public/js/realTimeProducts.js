@@ -4,28 +4,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Función para renderizar productos ---
   function renderProducts(products) {
-    productsList.innerHTML = '';
+  productsList.innerHTML = '';
 
-    if (!products || products.length === 0) {
-      productsList.innerHTML = '<p class="no-products">No hay productos cargados.</p>';
-      return;
-    }
-
-    products.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'product-card';
-      div.dataset.id = p.id;
-
-      div.innerHTML = `
-        <h3>${p.name}</h3>
-        <p>${p.description}</p>
-        <span class="price-tag">$ ${p.price} <span>Stock: ${p.stock}</span></span>
-        <p>Categoría: ${p.category}</p>
-      `;
-
-      productsList.appendChild(div);
-    });
+  if (!products || products.length === 0) {
+    productsList.innerHTML = '<p class="no-products">No hay productos cargados.</p>';
+    return;
   }
+
+  products.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'product-card';
+    div.dataset.id = p.id;
+
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>ID: <span class="product-id">${p.id}</span></p>
+      <p>${p.description}</p>
+      <span class="price-tag">$ ${p.price} <span>Stock: ${p.stock}</span></span>
+      <p>Categoría: ${p.category}</p>
+    `;
+
+    productsList.appendChild(div);
+  });
+}
 
   // --- Socket: productos actualizados ---
   socket.on('productsUpdated', products => {
