@@ -1,7 +1,7 @@
 # 🌱 Plantify - E-commerce Backend
 
-**API RESTful** con **Node.js**, **Express** y **MongoDB** para gestionar un e-commerce de plantas.  
-Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizaciones en tiempo real con **WebSockets**.
+API RESTful desarrollada con Node.js, Express y MongoDB para un e-commerce de plantas.  
+Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizaciones en tiempo real con WebSockets.
 
 ---
 
@@ -61,8 +61,8 @@ Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizac
 
 ## 🛠 Tecnologías
 
-`Node.js`, `Express.js`, `MongoDB`, `Mongoose`, `Express-Handlebars`, `Socket.IO`,  
-`Express-Session`, `Dotenv`, `Cloudinary (opcional)`, `Multer`
+Node.js, Express.js, MongoDB, Mongoose, Express-Handlebars, Socket.IO,  
+Express-Session, Dotenv, Cloudinary (opcional), Multer
 
 ---
 
@@ -80,12 +80,16 @@ Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizac
 
 ```bash
 git clone https://github.com/Leoledes/entrega-final-backend1.git
+bash
+Copiar código
 cd entrega-final-backend1
 2️⃣ Instalar dependencias y ejecutar setup
 
 bash
 Copiar código
 npm run setup
+Esto instalará todas las dependencias y ejecutará src/config/setup.js si existe algún script inicial de configuración.
+
 3️⃣ Configurar variables de entorno
 
 bash
@@ -104,12 +108,12 @@ SESSION_SECRET=tu_secreto_super_seguro
 
 bash
 Copiar código
-# Producción
+# Modo Producción
 npm start
 
-# Desarrollo
+# Modo Desarrollo (recarga automática)
 npm run dev
-✅ Verificar: http://localhost:8080
+✅ Verificar funcionamiento: http://localhost:8080
 
 ⚙️ Configuración de Entorno
 Variable	Descripción	Valor por defecto
@@ -142,33 +146,25 @@ Copiar código
 /products?query=Interior&sort=asc&limit=5&page=1
 📡 API Endpoints
 Productos
+text
+Copiar código
 GET /api/products
-
 GET /api/products/:pid
-
 POST /api/products
-
 PUT /api/products/:pid
-
 DELETE /api/products/:pid
-
 Carritos
+text
+Copiar código
 POST /api/carts
-
 GET /api/carts/:cid
-
 POST /api/carts/:cid/products/:pid
-
 PUT /api/carts/:cid
-
 PUT /api/carts/:cid/products/:pid
-
 DELETE /api/carts/:cid/products/:pid
-
 DELETE /api/carts/:cid
-
 📁 Estructura del Proyecto
-arduino
+text
 Copiar código
 entrega-final-backend1/
 ├── index.js
@@ -256,3 +252,8 @@ Socket.IO
 Handlebars
 
 Desarrollado para Backend 1 - Coderhouse
+
+yaml
+Copiar código
+
+---
