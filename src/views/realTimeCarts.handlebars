@@ -1,11 +1,13 @@
 <h1>Gestión de Carritos en Tiempo Real</h1>
 
 <div class="forms-container">
+    <!-- Crear Nuevo Carrito -->
     <div class="form-card">
         <h2>Crear Nuevo Carrito</h2>
         <button id="createCartBtn">Crear Carrito</button>
     </div>
 
+    <!-- Agregar Producto a Carrito -->
     <div class="form-card">
         <h2>Agregar Producto a Carrito</h2>
         <form id="addProductToCartForm">
@@ -28,6 +30,7 @@
     {{#each carts}}
         <div class="product-card cart-card" data-id="{{this.id}}">
             <h3>Carrito ID: {{this.id}}</h3>
+            
             {{#if this.products.length}}
                 <ul>
                     {{#each this.products}}
@@ -37,12 +40,13 @@
             {{else}}
                 <p>No hay productos en este carrito.</p>
             {{/if}}
-        </div>
-        <div class="cart-card">
-            <h3>Carrito ID: {{id}}</h3>    
-            <button class="btn-delete-cart" data-cart-id="{{id}}">
-                Eliminar Carrito 🗑️
-            </button>
+
+            <div class="actions-container">
+                <button onclick="emptyCart('{{this.id}}')">Vaciar Carrito</button>
+                <button class="btn-delete-cart" data-cart-id="{{this.id}}">
+                    Eliminar Carrito 🗑️
+                </button>
+            </div>
         </div>
     {{/each}}
 </div>
