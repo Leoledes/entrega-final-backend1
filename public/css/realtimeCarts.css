@@ -1,4 +1,4 @@
-/* ===================== Estilos Globales ===================== */
+/* ===================== GLOBAL ===================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -28,26 +28,7 @@ h2 {
     font-weight: 400;
 }
 
-/* ===================== Contenedores ===================== */
-.forms-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-}
-
-.form-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e7ee;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    flex: 1;
-    min-width: 320px;
-    max-width: 450px;
-}
-
+/* ===================== GRID PRODUCTOS ===================== */
 .products-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -55,13 +36,14 @@ h2 {
     margin-top: 30px;
 }
 
+/* ===================== TARJETAS ===================== */
 .cart-card {
     background-color: #ffffff;
     border: 1px solid #e0e7ee;
     border-radius: 12px;
     padding: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .cart-card:hover {
@@ -87,7 +69,50 @@ h2 {
     font-size: 0.95em;
 }
 
-/* ===================== Formularios ===================== */
+/* ===================== ACCIONES ===================== */
+.actions-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.actions-container button {
+    flex: 1;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions-container button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* ===================== FORMULARIOS ===================== */
+.forms-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 320px;
+    max-width: 450px;
+}
+
 .form-card form label {
     display: block;
     margin-bottom: 8px;
@@ -106,14 +131,12 @@ h2 {
     transition: border-color 0.3s ease;
 }
 
-.form-card form input[type="text"]:focus,
-.form-card form input[type="number"]:focus {
+.form-card form input:focus {
     border-color: #3498db;
     outline: none;
 }
 
-/* ===================== Botones ===================== */
-/* Uniforme para todos los botones */
+/* ===================== BOTONES ===================== */
 button {
     background-color: #3498db;
     color: white;
@@ -131,25 +154,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Botón Agregar Producto específico */
-.add-product-form button {
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* Contenedor de acciones dentro de cada carrito */
-.actions-container {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-}
-
-/* Botones Vaciar y Eliminar Carrito */
-.actions-container button {
-    flex: 1; /* Ocupa espacio uniforme */
-}
-
-/* ===================== Mensajes y estados ===================== */
+/* ===================== MENSAJES SIN DATOS ===================== */
 .no-carts {
     text-align: center;
     padding: 50px;

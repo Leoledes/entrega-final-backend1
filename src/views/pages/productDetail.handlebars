@@ -1,25 +1,29 @@
-<div class="product-detail-card">
-  <h1>{{product.name}}</h1>
+<h1>{{product.name}}</h1>
 
-  <div class="product-images">
-    {{#if product.thumbnails.length}}
-      {{#each product.thumbnails}}
-        <img src="{{this}}" alt="{{../product.name}}" class="product-img-detail">
-      {{/each}}
-    {{else}}
-      <img src="/images/placeholder.png" alt="Sin imagen" class="product-img-detail">
-    {{/if}}
-  </div>
+<div class="product-detail-container">
+  {{#if product.thumbnails.[0]}}
+    <img src="{{product.thumbnails.[0]}}" alt="{{product.name}}" class="product-detail-img">
+  {{else}}
+    <img src="/images/placeholder.png" alt="Sin imagen" class="product-detail-img">
+  {{/if}}
 
-  <p class="price"><strong>Precio:</strong> ${{product.price}}</p>
-  <p><strong>Descripción:</strong> {{product.description}}</p>
-  <p><strong>Categoría:</strong> {{product.category}}</p>
-  <p><strong>Stock:</strong> {{product.stock}}</p>
-
-  <div class="actions-container">
-    <button onclick="addToCart('{{cartId}}', '{{product.id}}')">🛒 Agregar al Carrito</button>
-    <a href="/products">⬅️ Volver a Productos</a>
+  <div class="product-detail-info">
+    <p><strong>Descripción:</strong> {{product.description}}</p>
+    <p><strong>Precio:</strong> $ {{product.price}}</p>
+    <p><strong>Stock:</strong> {{product.stock}}</p>
+    <p><strong>Categoría:</strong> {{product.category}}</p>
+    
+    <div class="actions-container">
+      <button onclick="addToCart('{{product.id}}')">🛒 Agregar al Carrito</button>
+      <a href="/products" class="btn-detail">Volver al listado</a>
+    </div>
   </div>
 </div>
 
+<!-- Definir cartId para JS -->
+<script>
+  window.cartId = "{{cartId}}";
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="/js/cart.js"></script>

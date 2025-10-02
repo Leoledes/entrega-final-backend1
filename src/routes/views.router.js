@@ -34,7 +34,7 @@ router.get('/home', async (req, res) => {
       category: p.category,
       stock: p.stock,
       status: p.status,
-      thumbnails: p.thumbnails // <--- agregado
+      thumbnails: p.thumbnails
     }));
 
     res.render('home', {
@@ -62,7 +62,7 @@ router.get('/products', async (req, res) => {
       category: p.category,
       stock: p.stock,
       status: p.status,
-      thumbnails: p.thumbnails // <--- agregado
+      thumbnails: p.thumbnails
     }));
 
     res.render('pages/products', {
@@ -94,7 +94,7 @@ router.get('/products/:pid', async (req, res) => {
       category: productFromDB.category,
       stock: productFromDB.stock,
       status: productFromDB.status,
-      thumbnails: productFromDB.thumbnails // <--- agregado
+      thumbnails: productFromDB.thumbnails
     };
 
     res.render('pages/productDetail', {
@@ -125,7 +125,7 @@ router.get('/carts/:cid', async (req, res) => {
         name: p.product?.name,
         price: p.product?.price,
         quantity: p.quantity,
-        thumbnails: p.product?.thumbnails // <--- agregado
+        thumbnails: p.product?.thumbnails
       }))
     };
 
@@ -153,7 +153,7 @@ router.get('/realtimeproducts', async (req, res) => {
       category: p.category,
       stock: p.stock,
       status: p.status,
-      thumbnails: p.thumbnails // <--- agregado
+      thumbnails: p.thumbnails
     }));
 
     res.render('realTimeProducts', {
@@ -180,7 +180,7 @@ router.get('/realtimecarts', async (req, res) => {
           id: p.product._id,
           name: p.product.name,
           quantity: p.quantity,
-          thumbnails: p.product.thumbnails // <--- agregado
+          thumbnails: p.product.thumbnails
         }))
     }));
 
@@ -193,6 +193,25 @@ router.get('/realtimecarts', async (req, res) => {
   } catch (error) {
     console.error("Error en /realtimecarts:", error.message);
     res.status(500).send('Error al cargar la vista de carritos en tiempo real.');
+  }
+});
+
+// ===================== AGREGAR PRODUCTO AL CARRITO =====================
+router.post('/api/carts/:cid/products/:pid', async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const quantity = parseInt(req.body.quantity) || 1;
+
+    if (!pid) return res.status(400).json({ status: 'error', error: 'Product ID required' });
+
+    const updatedCart = await cartDAO.addProductToCart(cid, pid, quantity);
+
+    if (!updatedCart) return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
+
+    res.redirect('back'); // vuelve a la misma página
+  } catch (error) {
+    console.error('Error al agregar producto al carrito:', error.message);
+    res.status(500).json({ status: 'error', error: 'No se pudo agregar el producto al carrito' });
   }
 });
 

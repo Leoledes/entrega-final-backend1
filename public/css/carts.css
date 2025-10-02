@@ -1,4 +1,4 @@
-/* --- ESTILOS GENERALES --- */
+/* ===================== GLOBAL ===================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -26,7 +26,72 @@ h2 {
     font-weight: 400;
 }
 
-/* --- FORMULARIOS --- */
+/* ===================== GRID PRODUCTOS ===================== */
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* ===================== TARJETAS ===================== */
+.cart-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.cart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cart-card h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    font-weight: 500;
+}
+
+.cart-card ul {
+    padding-left: 20px;
+}
+
+.cart-card li {
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+/* ===================== ACCIONES ===================== */
+.actions-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.actions-container button {
+    flex: 1;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions-container button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* ===================== FORMULARIOS ===================== */
 .forms-container {
     display: flex;
     justify-content: center;
@@ -64,23 +129,22 @@ h2 {
     transition: border-color 0.3s ease;
 }
 
-.form-card form input[type="text"]:focus,
-.form-card form input[type="number"]:focus {
+.form-card form input:focus {
     border-color: #3498db;
     outline: none;
 }
 
 .form-card form button {
+    width: 100%;
     background-color: #3498db;
     color: white;
-    padding: 14px 25px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
+    padding: 14px 25px;
     font-size: 1em;
     font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease;
-    width: 100%;
 }
 
 .form-card form button:hover {
@@ -88,42 +152,14 @@ h2 {
     transform: translateY(-2px);
 }
 
-/* --- LISTA DE CARRITOS --- */
-.products-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-}
-
-.cart-card {
+/* ===================== MENSAJES SIN DATOS ===================== */
+.no-carts {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #7f8c8d;
     background-color: #ffffff;
-    border: 1px solid #e0e7ee;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
-}
-
-.cart-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.cart-card h3 {
-    color: #2c3e50;
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 1.4em;
-    font-weight: 500;
-}
-
-.cart-card ul {
-    padding-left: 20px;
-}
-
-.cart-card li {
-    color: #666;
-    margin-bottom: 8px;
-    font-size: 0.95em;
+    border-radius: 8px;
+    margin-top: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }

@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-empty').forEach(btn => {
       btn.addEventListener('click', () => {
         const cartId = btn.dataset.cartId;
-        if (confirm('¿Deseas vaciar este carrito?')) emptyCart(cartId);
+        if (confirm('¿Deseas vaciar este carrito?')) socket.emit('emptyCart', cartId);
       });
     });
 
     document.querySelectorAll('.btn-delete-cart').forEach(btn => {
       btn.addEventListener('click', () => {
         const cartId = btn.dataset.cartId;
-        if (confirm('¿Deseas eliminar este carrito?')) deleteCart(cartId);
+        if (confirm('¿Deseas eliminar este carrito?')) socket.emit('deleteCart', cartId);
       });
     });
   }
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('newCart');
   });
 
-  // --- Agregar producto desde formulario ---
-  addProductForm?.addEventListener('submit', async (e) => {
+  // --- Agregar producto desde formulario usando SOLO Socket.IO ---
+  addProductForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     const cartId = addProductForm.cartId.value;
     const productId = addProductForm.productId.value;
@@ -64,44 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!cartId || !productId) return alert('Completa ambos campos');
 
-    try {
-      await fetch(`/api/carts/${cartId}/products/${productId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity })
-      });
-
-      socket.emit("addProductToCart", { cartId, productId, quantity });
-      addProductForm.reset();
-    } catch (err) {
-      console.error(err);
-      alert('Error al agregar producto');
-    }
+    socket.emit("addProductToCart", { cartId, productId, quantity });
+    addProductForm.reset();
   });
 
-  // --- Vaciar carrito ---
-  async function emptyCart(cartId) {
-    try {
-      await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
-      socket.emit("emptyCart", cartId);
-    } catch (err) {
-      console.error(err);
-      alert('Error al vaciar carrito');
-    }
-  }
-
-  // --- Eliminar carrito ---
-  async function deleteCart(cartId) {
-    try {
-      await fetch(`/api/carts/${cartId}/delete`, { method: "DELETE" });
-      socket.emit("deleteCart", cartId);
-    } catch (err) {
-      console.error(err);
-      alert('Error al eliminar carrito');
-    }
-  }
-
-  // --- Socket: actualización de carritos ---
+  // --- Escucha de actualizaciones de carritos ---
   socket.on('cartsUpdated', carts => {
     console.log('Carritos actualizados:', carts);
     renderCarts(carts);

@@ -1,90 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io();
-  const productsList = document.getElementById('productsList');
+  const productsContainer = document.getElementById('productsContainer');
+
+  let activeCartId = null; // <-- Carrito activo
+
+  // --- Función para setear carrito activo ---
+  function setActiveCart(cartId) {
+    activeCartId = cartId;
+  }
 
   // --- Función para renderizar productos ---
   function renderProducts(products) {
-    productsList.innerHTML = '';
+    productsContainer.innerHTML = '';
 
     if (!products || products.length === 0) {
-      productsList.innerHTML = '<p class="no-products">No hay productos cargados.</p>';
+      productsContainer.innerHTML = '<p class="no-products">No hay productos disponibles.</p>';
       return;
     }
 
     products.forEach(p => {
       const div = document.createElement('div');
       div.className = 'product-card';
-      div.dataset.id = p.id;
-
-      // Imagen principal o placeholder
-      const thumbnail = (p.thumbnails && p.thumbnails.length > 0)
-        ? p.thumbnails[0]
-        : 'https://via.placeholder.com/200x200?text=Sin+Imagen';
 
       div.innerHTML = `
-        <img src="${thumbnail}" alt="${p.name}" class="product-img">
-        <h3>${p.name}</h3>
-        <p>ID: <span class="product-id">${p.id}</span></p>
-        <p>${p.description || "Sin descripción"}</p>
-        <span class="price-tag">$ ${p.price} <span>Stock: ${p.stock}</span></span>
-        <p>Categoría: ${p.category}</p>
+        <img src="${p.thumbnails?.[0] || '/img/default-product.png'}" alt="${p.name}" class="product-img">
+        <div class="product-info">
+          <h3>${p.name}</h3>
+          <p>ID: ${p.id}</p>
+          <p>${p.description || ''}</p>
+          <p class="price-tag">$${p.price || '0.00'}</p>
+        </div>
         <div class="actions-container">
-          <button class="delete-btn" data-id="${p.id}">Eliminar</button>
+          <button class="btn-add" data-product-id="${p.id}">Agregar</button>
+          <a href="/products/${p.id}" class="btn-detail">Ver detalle</a>
         </div>
       `;
 
-      productsList.appendChild(div);
+      productsContainer.appendChild(div);
     });
 
-    // --- Botones de eliminar dinámicos ---
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const productId = e.target.dataset.id;
-        if (productId) {
-          socket.emit('deleteProduct', productId);
+    // --- Eventos botón Agregar ---
+    document.querySelectorAll('.btn-add').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!activeCartId) return alert('No hay carrito activo para agregar el producto.');
+
+        const productId = btn.dataset.productId;
+        const quantity = 1; // Por defecto 1, podés cambiar o agregar input si querés
+
+        try {
+          const res = await fetch(`/api/carts/${activeCartId}/products/${productId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity })
+          });
+
+          if (!res.ok) throw new Error('Error agregando producto');
+
+          alert('Producto agregado correctamente');
+          socket.emit('addProductToCart', { cartId: activeCartId, productId, quantity });
+        } catch (err) {
+          console.error(err);
+          alert('No se pudo agregar el producto');
         }
       });
     });
   }
 
-  // --- Socket: productos actualizados ---
+  // --- Socket: actualización de productos ---
   socket.on('productsUpdated', products => {
-    console.log("📦 Productos recibidos:", products);
     renderProducts(products);
+  });
+
+  // --- Socket: actualización de carritos para setear carrito activo automáticamente ---
+  socket.on('cartsUpdated', carts => {
+    if (!activeCartId && carts.length > 0) {
+      setActiveCart(carts[0].id); // Toma el primer carrito existente como activo
+    }
   });
 
   socket.on('error', data => {
     alert(data.message || 'Ocurrió un error en tiempo real.');
-  });
-
-  // --- Formulario agregar producto ---
-  const addForm = document.getElementById('addProductForm');
-  addForm?.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const thumbnails = addForm.thumbnail.value
-      ? [addForm.thumbnail.value.trim()]
-      : [];
-
-    const product = {
-      name: addForm.name.value,
-      description: addForm.description.value,
-      price: parseFloat(addForm.price.value),
-      stock: parseInt(addForm.stock.value),
-      category: addForm.category.value,
-      thumbnails
-    };
-
-    socket.emit('newProduct', product);
-    addForm.reset();
-  });
-
-  // --- Formulario eliminar producto ---
-  const deleteForm = document.getElementById('deleteProductForm');
-  deleteForm?.addEventListener('submit', e => {
-    e.preventDefault();
-    const productId = deleteForm.productIdToDelete.value;
-    socket.emit('deleteProduct', productId);
-    deleteForm.reset();
   });
 });

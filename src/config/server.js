@@ -48,15 +48,13 @@ app.use('/api/carts', cartsRouter);
 // ================= MAPEO DE CARROS =================
 const mapCartProducts = (cartsFromDB) => {
     return cartsFromDB.map(c => ({
-        id: c._id,
-        products: c.products
-            .filter(p => p.product)
-            .map(p => ({
-                id: p.product?._id,
-                name: p.product?.name,
-                price: p.product?.price,
-                quantity: p.quantity
-            }))
+        id: c._id.toString(),
+        products: c.products.map(p => ({
+            id: p.product?._id?.toString(),
+            name: p.product?.name || 'Sin nombre',
+            price: p.product?.price || 0,
+            quantity: p.quantity
+        }))
     }));
 };
 
@@ -65,11 +63,9 @@ io.on('connection', async (socket) => {
     console.log('Cliente conectado:', socket.id);
 
     try {
-        // Envío inicial de productos
         const productsFromDB = await productDAO.getAllProducts();
         socket.emit('productsUpdated', productsFromDB);
 
-        // Envío inicial de carritos
         const cartsFromDB = await cartDAO.getAllCarts();
         socket.emit('cartsUpdated', mapCartProducts(cartsFromDB));
 
@@ -104,7 +100,7 @@ io.on('connection', async (socket) => {
     // --- Carritos ---
     socket.on('newCart', async () => {
         try {
-            const newCart = await cartDAO.createCart();
+            await cartDAO.createCart();
             const updatedCarts = await cartDAO.getAllCarts();
             io.emit('cartsUpdated', mapCartProducts(updatedCarts));
         } catch (err) {
@@ -116,8 +112,13 @@ io.on('connection', async (socket) => {
     socket.on('addProductToCart', async ({ cartId, productId, quantity }) => {
         try {
             await cartDAO.addProductToCart(cartId, productId, quantity || 1);
+
             const updatedCarts = await cartDAO.getAllCarts();
             io.emit('cartsUpdated', mapCartProducts(updatedCarts));
+
+            // Evento para actualizar instantáneamente el carrito afectado
+            socket.broadcast.emit('productAddedToCart', { cartId });
+
         } catch (err) {
             console.error('Error agregando producto al carrito:', err.message);
             socket.emit('error', { message: 'No se pudo agregar el producto al carrito.' });
