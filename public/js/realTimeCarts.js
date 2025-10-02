@@ -1,59 +1,86 @@
 const socket = io();
 
-// ===================== FUNCIONES DE CARRITO =====================
+// ===================== RENDER DINÁMICO DE CARRITOS =====================
+const cartsList = document.getElementById("cartsList");
 
-async function emptyCart(cartId) {
-    if (!cartId) return alert("No se encontró el carrito");
-    await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
-    alert("Carrito vaciado");
-    socket.emit("cartDeleted", cartId);
-}
+function renderCarts(carts) {
+    cartsList.innerHTML = "";
 
-// ===================== ELIMINAR CARRITO =====================
-document.querySelectorAll(".btn-delete-cart").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-        const cartId = e.target.dataset.cartId;
-        if (!cartId) return alert("No se encontró el carrito");
+    if (!carts || carts.length === 0) {
+        cartsList.innerHTML = "<p class='no-products'>No hay carritos disponibles.</p>";
+        return;
+    }
 
-        await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
-        alert("Carrito eliminado");
-        socket.emit("cartDeleted", cartId);
-    });
-});
+    carts.forEach(cart => {
+        const div = document.createElement("div");
+        div.className = "product-card cart-card";
+        div.dataset.id = cart.id;
 
-// ===================== AGREGAR PRODUCTO =====================
-document.querySelectorAll(".add-product-form").forEach(form => {
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const cartId = form.querySelector("input[name='cartId']").value;
-        const productId = form.querySelector("input[name='productId']").value;
-        const quantity = parseInt(form.querySelector("input[name='quantity']").value) || 1;
-
-        if (!cartId || !productId) return alert("Faltan datos");
-
-        try {
-            await fetch(`/api/carts/${cartId}/products/${productId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ quantity })
-            });
-
-            alert("Producto agregado al carrito");
-            socket.emit("productAdded", { cartId, productId, quantity });
-
-            // limpiar campos
-            form.querySelector("input[name='productId']").value = "";
-            form.querySelector("input[name='quantity']").value = 1;
-        } catch (err) {
-            console.error(err);
-            alert("Error al agregar producto");
+        let productsHTML = "<p>No hay productos en este carrito.</p>";
+        if (cart.products.length > 0) {
+            productsHTML = "<ul>" + cart.products.map(p => `
+                <li>${p.name} (ID: ${p.id}) - Cantidad: ${p.quantity}</li>
+            `).join("") + "</ul>";
         }
+
+        div.innerHTML = `
+            <h3>Carrito ID: ${cart.id}</h3>
+            ${productsHTML}
+            <div class="actions-container">
+                <button class="btn-empty-cart" data-cart-id="${cart.id}">Vaciar Carrito</button>
+                <button class="btn-delete-cart" data-cart-id="${cart.id}">Eliminar Carrito 🗑️</button>
+            </div>
+        `;
+
+        cartsList.appendChild(div);
     });
-});
+}
 
 // ===================== SOCKET.IO =====================
 socket.on("cartsUpdated", carts => {
-    // Puedes implementar render dinámico o recargar la página
-    console.log("Carritos actualizados:", carts);
+    console.log("📦 Carritos actualizados:", carts);
+    renderCarts(carts);
+});
+
+socket.on("error", data => {
+    alert(data.message || "Ocurrió un error en tiempo real.");
+});
+
+// ===================== CREAR NUEVO CARRITO =====================
+document.getElementById("createCartBtn").addEventListener("click", () => {
+    socket.emit("newCart");
+});
+
+// ===================== AGREGAR PRODUCTO A CARRITO =====================
+cartsList.addEventListener("submit", async (e) => {
+    if (!e.target.classList.contains("add-product-form")) return;
+    e.preventDefault();
+
+    const form = e.target;
+    const cartId = form.querySelector("input[name='cartId']").value;
+    const productId = form.querySelector("input[name='productId']").value;
+    const quantity = parseInt(form.querySelector("input[name='quantity']").value) || 1;
+
+    if (!cartId || !productId) return alert("Faltan datos");
+
+    socket.emit("addProductToCart", { cartId, productId, quantity });
+
+    form.querySelector("input[name='productId']").value = "";
+    form.querySelector("input[name='quantity']").value = 1;
+});
+
+// ===================== DELEGACIÓN DE EVENTOS PARA BOTONES =====================
+cartsList.addEventListener("click", e => {
+    const target = e.target;
+    const cartId = target.dataset.cartId;
+
+    if (!cartId) return;
+
+    if (target.classList.contains("btn-empty-cart")) {
+        socket.emit("emptyCart", cartId);
+    }
+
+    if (target.classList.contains("btn-delete-cart")) {
+        socket.emit("deleteCart", cartId);
+    }
 });
