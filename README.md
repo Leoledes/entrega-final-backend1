@@ -1,7 +1,7 @@
 # 🌱 Plantify - E-commerce Backend
 
-API RESTful desarrollada con Node.js, Express y MongoDB para un e-commerce de plantas.  
-Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizaciones en tiempo real con WebSockets.
+API RESTful desarrollada con **Node.js**, **Express** y **MongoDB** para la gestión de un e-commerce de plantas.  
+Incluye CRUD de productos, gestión de carritos, paginación avanzada y actualizaciones en tiempo real con **WebSockets**.
 
 ---
 
@@ -28,14 +28,14 @@ Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizac
 
 ## ✨ Características
 
-### 🌿 Gestión de Productos
+**Gestión de Productos**
 - CRUD completo de productos
-- Paginación profesional (`limit`, `page`, `sort`, `query`)
+- Paginación (`limit`, `page`, `sort`, `query`)
 - Filtros por categoría y disponibilidad
 - Ordenamiento ascendente/descendente por precio
 - Respuesta con metadata completa
 
-### 🛒 Gestión de Carritos
+**Gestión de Carritos**
 - Creación automática de carrito por sesión
 - Agregar/eliminar productos
 - Actualizar cantidades
@@ -43,17 +43,17 @@ Incluye CRUD de productos, carritos de compra, paginación avanzada y actualizac
 - Vaciar carrito completo
 - Referencias pobladas con detalles de productos
 
-### 👁 Vistas Dinámicas
+**Vistas Dinámicas**
 - Catálogo con paginación visual
 - Detalle de producto individual
 - Carrito con productos poblados
 - Actualizaciones en tiempo real con WebSockets
 
-### ⚙️ Características Técnicas
+**Técnicas**
 - Arquitectura modular (MVC + DAO)
 - Persistencia con MongoDB y Mongoose
 - Sistema de sesiones con Express-Session
-- WebSockets en tiempo real
+- WebSockets para actualizaciones en tiempo real
 - Validaciones robustas
 - Manejo centralizado de errores
 
@@ -76,143 +76,137 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
 
 ## 🚀 Instalación y Setup
 
-1️⃣ **Clonar el repositorio**
+1️⃣ **Clonar el repositorio**  
+- `git clone https://github.com/Leoledes/entrega-final-backend1.git`  
+- `cd entrega-final-backend1`
 
-```bash
-git clone https://github.com/Leoledes/entrega-final-backend1.git
-bash
-Copiar código
-cd entrega-final-backend1
-2️⃣ Instalar dependencias y ejecutar setup
+2️⃣ **Instalar dependencias y ejecutar setup**  
+- `npm run setup`  
+> Esto instalará todas las dependencias y ejecutará `src/config/setup.js` si existe.
 
-bash
-Copiar código
-npm run setup
-Esto instalará todas las dependencias y ejecutará src/config/setup.js si existe algún script inicial de configuración.
+3️⃣ **Configurar variables de entorno**  
+- Copiar plantilla: `cp .env.profe .env`  
+- Editar `.env` con tus valores:
+  - `PORT=8080`
+  - `MONGO_URI=mongodb://localhost:27017/plantify`
+  - `SESSION_SECRET=tu_secreto_super_seguro`  
+⚠️ Nunca subir `.env` con datos reales a repositorios públicos.
 
-3️⃣ Configurar variables de entorno
+4️⃣ **Iniciar la aplicación**  
+- Producción: `npm start`  
+- Desarrollo: `npm run dev`  
+- Verificar: `http://localhost:8080`
 
-bash
-Copiar código
-cp .env.profe .env
-Editar .env con tus valores:
+---
 
-env
-Copiar código
-PORT=8080
-MONGO_URI=mongodb://localhost:27017/plantify
-SESSION_SECRET=tu_secreto_super_seguro
-⚠️ Nunca subir .env con datos reales a repositorios públicos.
+## ⚙️ Configuración de Entorno
 
-4️⃣ Iniciar la aplicación
+| Variable         | Descripción                  | Valor por defecto |
+|------------------|-----------------------------|-----------------|
+| `PORT`           | Puerto del servidor          | 8080            |
+| `MONGO_URI`      | URI de conexión a MongoDB    | (requerido)     |
+| `SESSION_SECRET` | Secreto para firmar sesiones | (requerido)     |
 
-bash
-Copiar código
-# Modo Producción
-npm start
+---
 
-# Modo Desarrollo (recarga automática)
-npm run dev
-✅ Verificar funcionamiento: http://localhost:8080
+## 🎮 Uso
 
-⚙️ Configuración de Entorno
-Variable	Descripción	Valor por defecto
-PORT	Puerto del servidor	8080
-MONGO_URI	URI de conexión a MongoDB	(requerido)
-SESSION_SECRET	Secreto para firmar sesiones	(requerido)
+**Rutas Principales**
+- Inicio: `/`
+- Catálogo: `/home` o `/products`
+- Detalle de producto: `/products/:pid`
+- Carrito: `/carts/:cid`
+- Productos en tiempo real: `/realtimeproducts`
+- Carritos en tiempo real: `/realtimecarts`
 
-🎮 Uso
-Rutas Principales
-Inicio: /
+**Ejemplos de Paginación y Filtros**
+- `/products?page=2`
+- `/products?limit=5`
+- `/products?query=Interior`
+- `/products?query=status:true`
+- `/products?sort=asc`
+- `/products?query=Interior&sort=asc&limit=5&page=1`
 
-Catálogo: /home o /products
+---
 
-Detalle de producto: /products/:pid
+## 📡 API Endpoints
 
-Carrito: /carts/:cid
+**Productos**
+- `GET /api/products`
+- `GET /api/products/:pid`
+- `POST /api/products`
+- `PUT /api/products/:pid`
+- `DELETE /api/products/:pid`
 
-Productos en tiempo real: /realtimeproducts
+**Carritos**
+- `POST /api/carts`
+- `GET /api/carts/:cid`
+- `POST /api/carts/:cid/products/:pid`
+- `PUT /api/carts/:cid`
+- `PUT /api/carts/:cid/products/:pid`
+- `DELETE /api/carts/:cid/products/:pid`
+- `DELETE /api/carts/:cid`
 
-Carritos en tiempo real: /realtimecarts
+---
 
-Ejemplos de Paginación y Filtros
-text
-Copiar código
-/products?page=2
-/products?limit=5
-/products?query=Interior
-/products?query=status:true
-/products?sort=asc
-/products?query=Interior&sort=asc&limit=5&page=1
-📡 API Endpoints
-Productos
-text
-Copiar código
-GET /api/products
-GET /api/products/:pid
-POST /api/products
-PUT /api/products/:pid
-DELETE /api/products/:pid
-Carritos
-text
-Copiar código
-POST /api/carts
-GET /api/carts/:cid
-POST /api/carts/:cid/products/:pid
-PUT /api/carts/:cid
-PUT /api/carts/:cid/products/:pid
-DELETE /api/carts/:cid/products/:pid
-DELETE /api/carts/:cid
-📁 Estructura del Proyecto
-text
-Copiar código
+## 📁 Estructura del Proyecto
+
 entrega-final-backend1/
 ├── index.js
 ├── package.json
 ├── public/
-│   ├── css/
-│   └── js/
+│ ├── css/
+│ └── js/
 └── src/
-    ├── app.js
-    ├── config/
-    ├── controllers/
-    ├── dao/
-    ├── models/
-    ├── routes/
-    ├── middlewares/
-    ├── services/
-    ├── utils/
-    └── views/
-🎯 Funcionalidades Principales
-Paginación con metadata completa
+├── app.js
+├── config/
+├── controllers/
+├── dao/
+├── models/
+├── routes/
+├── middlewares/
+├── services/
+├── utils/
+└── views/
 
-Filtros avanzados
+yaml
+Copiar código
 
-Carritos con referencias (populate())
+---
 
-WebSockets en tiempo real
+## 🎯 Funcionalidades Principales
 
-Carrito único por sesión
+- Paginación con metadata completa
+- Filtros avanzados
+- Carritos con referencias (`populate()`)
+- WebSockets en tiempo real
+- Carrito único por sesión
 
-🧪 Testing
-Ejemplo con cURL:
+---
+
+## 🧪 Testing
+
+Ejemplo con **cURL**:
+
+- Obtener productos con paginación:
+  ```bash
+  curl http://localhost:8080/api/products?page=1&limit=5
+Crear producto:
 
 bash
 Copiar código
-# Obtener productos con paginación
-curl http://localhost:8080/api/products?page=1&limit=5
-
-# Crear producto
 curl -X POST http://localhost:8080/api/products \
   -H "Content-Type: application/json" \
   -d '{"name": "Pothos", "price": 1200, "stock": 20, "category": "Interior"}'
+Agregar producto al carrito:
 
-# Agregar producto al carrito
+bash
+Copiar código
 curl -X POST http://localhost:8080/api/carts/CART_ID/products/PRODUCT_ID \
   -H "Content-Type: application/json" \
   -d '{"quantity": 2}'
 🤝 Contribuciones
-Fork el proyecto
+Fork del proyecto
 
 Crear rama: git checkout -b feature/AmazingFeature
 
@@ -252,8 +246,3 @@ Socket.IO
 Handlebars
 
 Desarrollado para Backend 1 - Coderhouse
-
-yaml
-Copiar código
-
----
