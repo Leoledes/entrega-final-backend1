@@ -1,56 +1,54 @@
 <h1>Gestión de Productos en Tiempo Real</h1>
 
-<!-- --- FORMULARIOS DE GESTIÓN --- -->
 <div class="forms-container">
-    <!-- FORMULARIO AGREGAR PRODUCTO -->
-    <div class="form-card">
-        <h2>Agregar Producto</h2>
-        <form id="addProductForm">
-            <label for="name">Nombre:</label>
-            <input type="text" name="name" id="name" required>
+  <!-- FORMULARIO AGREGAR PRODUCTO -->
+  <div class="form-card">
+    <h2>Agregar Producto</h2>
+    <form id="addProductForm">
+      <label for="name">Nombre:</label>
+      <input type="text" name="name" id="name" required>
 
-            <label for="description">Descripción:</label>
-            <input type="text" name="description" id="description">
+      <label for="description">Descripción:</label>
+      <input type="text" name="description" id="description">
 
-            <label for="price">Precio:</label>
-            <input type="number" name="price" id="price" required step="0.01">
+      <label for="price">Precio:</label>
+      <input type="number" name="price" id="price" required step="0.01">
 
-            <label for="stock">Stock:</label>
-            <input type="number" name="stock" id="stock" required>
+      <label for="stock">Stock:</label>
+      <input type="number" name="stock" id="stock" required>
 
-            <label for="category">Categoría:</label>
-            <input type="text" name="category" id="category" required>
+      <label for="category">Categoría:</label>
+      <input type="text" name="category" id="category" required>
 
-            <button type="submit">Agregar Producto</button>
-        </form>
-    </div>
+      <button type="submit">Agregar Producto</button>
+    </form>
+  </div>
 
-    <!-- FORMULARIO ELIMINAR PRODUCTO -->
-    <div class="form-card">
-        <h2>Eliminar Producto</h2>
-        <form id="deleteProductForm">
-            <label for="productIdToDelete">ID del Producto:</label>
-            <input type="text" name="productIdToDelete" id="productIdToDelete" required>
+  <!-- FORMULARIO ELIMINAR PRODUCTO -->
+  <div class="form-card">
+    <h2>Eliminar Producto</h2>
+    <form id="deleteProductForm">
+      <label for="productIdToDelete">ID del Producto:</label>
+      <input type="text" name="productIdToDelete" id="productIdToDelete" required>
 
-            <button type="submit">Eliminar Producto</button>
-        </form>
-    </div>
+      <button type="submit">Eliminar Producto</button>
+    </form>
+  </div>
 </div>
 
-<!-- --- LISTADO DE PRODUCTOS --- -->
 <div id="productsList" class="products-container">
-    {{#if products.length}}
-        {{#each products}}
-            <div class="product-card" data-id="{{this.id}}">
-                <h3>{{this.name}}</h3>
-                <p>{{this.description}}</p>
-                <span class="price-tag">$ {{this.price}} <span>Stock: {{this.stock}}</span></span>
-                <p>Categoría: {{this.category}}</p>
-            </div>
-        {{/each}}
-    {{else}}
-        <p class="no-products">No hay productos cargados.</p>
-    {{/if}}
+  {{#if products.length}}
+    {{#each products}}
+      <div class="product-card" data-id="{{this.id}}">
+        <h3>{{this.name}}</h3>
+        <p>{{this.description}}</p>
+        <span class="price-tag">$ {{this.price}} <span>Stock: {{this.stock}}</span></span>
+        <p>Categoría: {{this.category}}</p>
+      </div>
+    {{/each}}
+  {{else}}
+    <p class="no-products">No hay productos cargados.</p>
+  {{/if}}
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
