@@ -227,20 +227,18 @@ entrega-final-backend1/
 
 ## 🧪 Testing
 
-Ejemplo con **cURL**:
+Ejemplo con cURL:
 
-- Obtener productos con paginación:
-  ```bash
-  curl http://localhost:8080/api/products?page=1&limit=5
-Crear producto:
-
+### Obtener productos con paginación
+```bash
+curl http://localhost:8080/api/products?page=1&limit=5
+Crear producto
 bash
 Copiar código
 curl -X POST http://localhost:8080/api/products \
   -H "Content-Type: application/json" \
   -d '{"name": "Pothos", "price": 1200, "stock": 20, "category": "Interior"}'
-Agregar producto al carrito:
-
+Agregar producto al carrito
 bash
 Copiar código
 curl -X POST http://localhost:8080/api/carts/CART_ID/products/PRODUCT_ID \
@@ -249,12 +247,21 @@ curl -X POST http://localhost:8080/api/carts/CART_ID/products/PRODUCT_ID \
 🤝 Contribuciones
 Fork del proyecto
 
-Crear rama: git checkout -b feature/AmazingFeature
+Crear rama:
 
-Commit cambios: git commit -m 'Add some AmazingFeature'
+bash
+Copiar código
+git checkout -b feature/AmazingFeature
+Commit cambios:
 
-Push: git push origin feature/AmazingFeature
+bash
+Copiar código
+git commit -m 'Add some AmazingFeature'
+Push:
 
+bash
+Copiar código
+git push origin feature/AmazingFeature
 Abrir Pull Request
 
 📝 Scripts Disponibles
