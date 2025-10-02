@@ -82,7 +82,6 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
 
 2️⃣ **Instalar dependencias y ejecutar setup**  
 - `npm run setup`  
-> Esto instalará todas las dependencias y ejecutará `src/config/setup.js` si existe.
 
 3️⃣ **Configurar variables de entorno**  
 - Copiar plantilla: `cp .env.profe .env`  
@@ -90,7 +89,6 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
   - `PORT=8080`
   - `MONGO_URI=mongodb://localhost:27017/plantify`
   - `SESSION_SECRET=tu_secreto_super_seguro`  
-⚠️ Nunca subir `.env` con datos reales a repositorios públicos.
 
 4️⃣ **Iniciar la aplicación**  
 - Producción: `npm start`  
@@ -168,9 +166,6 @@ entrega-final-backend1/
 ├── services/
 ├── utils/
 └── views/
-
-yaml
-Copiar código
 
 ---
 
