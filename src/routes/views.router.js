@@ -6,11 +6,10 @@ const cartDAO = require('../dao/cart.dao');
 const router = Router();
 
 // ===================== MIDDLEWARE DE CARRO EN SESIÓN =====================
-// Se asegura que cada usuario tenga un carrito
 router.use(async (req, res, next) => {
   try {
     if (!req.session.cartId) {
-      const newCart = await cartDAO.createCart(); // Crea un carrito vacío
+      const newCart = await cartDAO.createCart();
       req.session.cartId = newCart._id.toString();
     }
     next();
@@ -34,7 +33,8 @@ router.get('/home', async (req, res) => {
       price: p.price,
       category: p.category,
       stock: p.stock,
-      status: p.status
+      status: p.status,
+      thumbnails: p.thumbnails // <--- agregado
     }));
 
     res.render('home', {
@@ -61,7 +61,8 @@ router.get('/products', async (req, res) => {
       price: p.price,
       category: p.category,
       stock: p.stock,
-      status: p.status
+      status: p.status,
+      thumbnails: p.thumbnails // <--- agregado
     }));
 
     res.render('pages/products', {
@@ -83,9 +84,7 @@ router.get('/products/:pid', async (req, res) => {
     const pid = req.params.pid;
     const productFromDB = await productDAO.getProductById(pid);
 
-    if (!productFromDB) {
-      return res.status(404).send('Producto no encontrado');
-    }
+    if (!productFromDB) return res.status(404).send('Producto no encontrado');
 
     const product = {
       id: productFromDB._id,
@@ -94,7 +93,8 @@ router.get('/products/:pid', async (req, res) => {
       price: productFromDB.price,
       category: productFromDB.category,
       stock: productFromDB.stock,
-      status: productFromDB.status
+      status: productFromDB.status,
+      thumbnails: productFromDB.thumbnails // <--- agregado
     };
 
     res.render('pages/productDetail', {
@@ -124,7 +124,8 @@ router.get('/carts/:cid', async (req, res) => {
         id: p.product?._id,
         name: p.product?.name,
         price: p.product?.price,
-        quantity: p.quantity
+        quantity: p.quantity,
+        thumbnails: p.product?.thumbnails // <--- agregado
       }))
     };
 
@@ -151,7 +152,8 @@ router.get('/realtimeproducts', async (req, res) => {
       price: p.price,
       category: p.category,
       stock: p.stock,
-      status: p.status
+      status: p.status,
+      thumbnails: p.thumbnails // <--- agregado
     }));
 
     res.render('realTimeProducts', {
@@ -177,7 +179,8 @@ router.get('/realtimecarts', async (req, res) => {
         .map(p => ({
           id: p.product._id,
           name: p.product.name,
-          quantity: p.quantity
+          quantity: p.quantity,
+          thumbnails: p.product.thumbnails // <--- agregado
         }))
     }));
 

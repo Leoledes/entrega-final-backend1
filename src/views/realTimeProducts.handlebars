@@ -23,6 +23,9 @@
         <option value="Interior">Interior</option>
       </select>
 
+      <label for="thumbnail">URL Imagen:</label>
+      <input type="text" name="thumbnail" id="thumbnail" placeholder="https://i.ibb.co/xxxx/imagen.jpg">
+
       <button type="submit">Agregar Producto</button>
     </form>
   </div>
@@ -43,6 +46,7 @@
   {{#if products.length}}
     {{#each products}}
       <div class="product-card" data-id="{{this.id}}">
+        <img src="{{this.thumbnail}}" alt="{{this.name}}" class="product-img">
         <h3>{{this.name}}</h3>
         <p>{{this.description}}</p>
         <span class="price-tag">$ {{this.price}} <span>Stock: {{this.stock}}</span></span>

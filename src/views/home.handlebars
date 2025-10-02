@@ -4,17 +4,22 @@
   <div class="products-container">
     {{#each products}}
       <div class="product-card" data-id="{{this.id}}">
-        <div>
+        {{#if this.thumbnails.[0]}}
+          <img src="{{this.thumbnails.[0]}}" alt="{{this.name}}" class="product-img">
+        {{/if}}
+
+        <div class="product-info">
           <h3>{{this.name}}</h3>
-          <span class="price-tag">${{this.price}} <span>(Stock: {{this.stock}})</span></span>
-          <p>ID: {{this.id}}</p>
-          <p>Categoría: {{this.category}}</p>
           <p>{{this.description}}</p>
+          <span class="price-tag">
+            $ {{this.price}} <span>(Stock: {{this.stock}})</span>
+          </span>
+          <p>Categoría: {{this.category}}</p>
         </div>
 
         <div class="actions-container">
           <a href="/products/{{this.id}}" class="btn-detail">Ver Detalle</a>
-          <button onclick="addToCart('{{this.id}}')">🛒 Agregar</button>
+          <button onclick="addToCart('{{cartId}}', '{{this.id}}')">🛒 Agregar</button>
         </div>
       </div>
     {{/each}}
@@ -25,29 +30,3 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/cart.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const socket = io();
-  window.cartId = null;
-
-  // Obtener el primer carrito existente
-  fetch('/api/carts')
-    .then(res => res.json())
-    .then(carts => {
-      if (carts.length > 0) {
-        window.cartId = carts[0]._id;
-        console.log("Primer carrito:", window.cartId);
-      } else {
-        socket.emit('newCart');
-      }
-    });
-
-  // Actualizar cartId si se crea un carrito nuevo
-  socket.on('cartsUpdated', carts => {
-    if (carts.length > 0 && !window.cartId) {
-      window.cartId = carts[0].id;
-      console.log("Cart creado automáticamente:", window.cartId);
-    }
-  });
-});
-</script>
