@@ -150,11 +150,11 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
 ## 📁 Estructura del Proyecto
 
 entrega-final-backend1/
-- index.js                     # Punto de entrada principal
+- index.js                    
 - package-lock.json
-- package.json                 # Dependencias y scripts
-- public/                      # Archivos estáticos
-  - css/                       # Estilos
+- package.json                 
+- public/                      
+  - css/                      
     - carts.css
     - home.css
     - productDetail.css
@@ -163,45 +163,45 @@ entrega-final-backend1/
     - realtimeCarts.css
   - docs/
     - README.md
-  - js/                        # Scripts del cliente
+  - js/                        
     - cart.js
     - home.js
     - realTimeCarts.js
     - realTimeProducts.js
-- src/                         # Código fuente del backend
-  - app.js                     # Configuración de Express
-  - config/                    # Configuración general
+- src/                         
+  - app.js                    
+  - config/                    
     - config.js
-    - database.js              # Conexión a MongoDB
-    - server.js                # Inicialización del servidor
-  - controllers/               # Lógica de controladores
+    - database.js              
+    - server.js               
+  - controllers/               
     - cartController.js
     - productsController.js
-  - dao/                       # Data Access Objects
+  - dao/                       
     - cart.dao.js
     - product.dao.js
-  - data/                      # Datos en JSON (opcional)
+  - data/                      
     - carts.json
     - products.json
-  - managers/                  # Managers de lógica de negocio
+  - managers/                 
     - cartManager.js
     - productManager.js
-  - middlewares/               # Middlewares personalizados
+  - middlewares/               
     - cartInitializer.js
-  - models/                    # Modelos de Mongoose
+  - models/                   
     - cart.model.js
     - product.model.js
-  - routes/                    # Rutas del proyecto
+  - routes/                    
     - api/
       - carts.js
     - carts.routes.js
     - products.routes.js
     - views.router.js
-  - services/                  # Servicios
+  - services/                 
     - productService.js
-  - utils/                     # Utilidades
+  - utils/                     
     - fileManager.js
-  - views/                     # Plantillas Handlebars
+  - views/                     
     - home.handlebars
     - layouts/
       - main.handlebars
