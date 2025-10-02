@@ -225,9 +225,9 @@ entrega-final-backend1/
 
 ---
 
-📝 Scripts Disponibles
-json
-Copiar código
+## 📝 Scripts Disponibles
+
+```json
 {
   "start": "node src/config/server.js",
   "dev": "nodemon src/config/server.js",
