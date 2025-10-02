@@ -151,21 +151,67 @@ Express-Session, Dotenv, Cloudinary (opcional), Multer
 
 entrega-final-backend1/
 ├── index.js
+├── package-lock.json
 ├── package.json
 ├── public/
-│ ├── css/
-│ └── js/
+│   ├── css/
+│   │   ├── carts.css
+│   │   ├── home.css
+│   │   ├── productDetail.css
+│   │   ├── products.css
+│   │   ├── realtime.css
+│   │   └── realtimeCarts.css
+│   ├── docs/
+│   │   └── README.md
+│   └── js/
+│       ├── cart.js
+│       ├── home.js
+│       ├── realTimeCarts.js
+│       └── realTimeProducts.js
 └── src/
-├── app.js
-├── config/
-├── controllers/
-├── dao/
-├── models/
-├── routes/
-├── middlewares/
-├── services/
-├── utils/
-└── views/
+    ├── app.js
+    ├── config/
+    │   ├── config.js
+    │   ├── database.js
+    │   └── server.js
+    ├── controllers/
+    │   ├── cartController.js
+    │   └── productsController.js
+    ├── dao/
+    │   ├── cart.dao.js
+    │   └── product.dao.js
+    ├── data/
+    │   ├── carts.json
+    │   └── products.json
+    ├── managers/
+    │   ├── cartManager.js
+    │   └── productManager.js
+    ├── middlewares/
+    │   └── cartInitializer.js
+    ├── models/
+    │   ├── cart.model.js
+    │   └── product.model.js
+    ├── routes/
+    │   ├── api/
+    │   │   └── carts.js
+    │   ├── carts.routes.js
+    │   ├── products.routes.js
+    │   └── views.router.js
+    ├── services/
+    │   └── productService.js
+    ├── utils/
+    │   └── fileManager.js
+    └── views/
+        ├── home.handlebars
+        ├── layouts/
+        │   └── main.handlebars
+        ├── pages/
+        │   ├── cartDetail.handlebars
+        │   ├── productDetail.handlebars
+        │   └── products.handlebars
+        ├── realTimeCarts.handlebars
+        └── realTimeProducts.handlebars
+
 
 ---
 
