@@ -1,15 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io();
+
   const productsContainer = document.getElementById('productsContainer');
+  const addProductForm = document.querySelector('.add-product-form');
 
-  let activeCartId = null; // <-- Carrito activo
-
-  // --- Función para setear carrito activo ---
-  function setActiveCart(cartId) {
-    activeCartId = cartId;
-  }
-
-  // --- Función para renderizar productos ---
+  // ===================== RENDERIZAR PRODUCTOS =====================
   function renderProducts(products) {
     productsContainer.innerHTML = '';
 
@@ -21,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     products.forEach(p => {
       const div = document.createElement('div');
       div.className = 'product-card';
+      div.dataset.id = p.id;
 
       div.innerHTML = `
         <img src="${p.thumbnails?.[0] || '/img/default-product.png'}" alt="${p.name}" class="product-img">
@@ -28,57 +24,68 @@ document.addEventListener('DOMContentLoaded', () => {
           <h3>${p.name}</h3>
           <p>ID: ${p.id}</p>
           <p>${p.description || ''}</p>
-          <p class="price-tag">$${p.price || '0.00'}</p>
+          <p class="price-tag">$${p.price?.toFixed(2) || '0.00'}</p>
         </div>
         <div class="actions-container">
-          <button class="btn-add" data-product-id="${p.id}">Agregar</button>
+          <button class="btn-add" data-product-id="${p.id}">Agregar al carrito</button>
           <a href="/products/${p.id}" class="btn-detail">Ver detalle</a>
         </div>
       `;
-
       productsContainer.appendChild(div);
     });
 
-    // --- Eventos botón Agregar ---
+    // Eventos para agregar productos a carrito
     document.querySelectorAll('.btn-add').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if (!activeCartId) return alert('No hay carrito activo para agregar el producto.');
-
         const productId = btn.dataset.productId;
-        const quantity = 1; // Por defecto 1, podés cambiar o agregar input si querés
+        const cartId = prompt('Ingresa el ID del carrito donde agregar:');
+        const quantity = parseInt(prompt('Cantidad:', '1')) || 1;
+
+        if (!cartId || !productId) return alert('ID de carrito o producto inválido');
 
         try {
-          const res = await fetch(`/api/carts/${activeCartId}/products/${productId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ quantity })
           });
 
-          if (!res.ok) throw new Error('Error agregando producto');
-
-          alert('Producto agregado correctamente');
-          socket.emit('addProductToCart', { cartId: activeCartId, productId, quantity });
+          socket.emit("addProductToCart", { cartId, productId, quantity });
+          alert(`Producto agregado al carrito ${cartId}`);
         } catch (err) {
           console.error(err);
-          alert('No se pudo agregar el producto');
+          alert('Error al agregar producto al carrito');
         }
       });
     });
   }
 
-  // --- Socket: actualización de productos ---
+  // ===================== EVENTOS SOCKET.IO =====================
   socket.on('productsUpdated', products => {
     renderProducts(products);
   });
 
-  // --- Socket: actualización de carritos para setear carrito activo automáticamente ---
-  socket.on('cartsUpdated', carts => {
-    if (!activeCartId && carts.length > 0) {
-      setActiveCart(carts[0].id); // Toma el primer carrito existente como activo
-    }
-  });
-
   socket.on('error', data => {
     alert(data.message || 'Ocurrió un error en tiempo real.');
+  });
+
+  // ===================== CREAR NUEVO PRODUCTO =====================
+  addProductForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(addProductForm);
+
+    const productData = {
+      name: formData.get('name'),
+      description: formData.get('description'),
+      price: parseFloat(formData.get('price')),
+      category: formData.get('category'),
+      stock: parseInt(formData.get('stock')) || 0,
+      thumbnails: formData.getAll('thumbnails[]')
+    };
+
+    // Solo emitimos al servidor para que lo guarde y actualice todos los clientes
+    socket.emit('newProduct', productData);
+    addProductForm.reset();
+    alert('Producto creado correctamente');
   });
 });
