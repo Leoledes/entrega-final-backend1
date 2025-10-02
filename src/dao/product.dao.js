@@ -16,7 +16,7 @@ class ProductManager {
 
   async getAllProducts() {
     try {
-      const products = await Product.find({}, "_id title description price category stock status").lean();
+      const products = await Product.find({}, "_id name description price category stock status").lean();
       return products;
     } catch (error) {
       console.error("Error al buscar producto:", error);
@@ -61,9 +61,8 @@ class ProductManager {
     const limit = parseInt(options.limit) || 10;
     let page = parseInt(options.page) || 1;
     const rawQuery = options.query;
-    const sort = options.sort; // 'asc' | 'desc'
+    const sort = options.sort;
 
-    // Construir filtro
     const filter = {};
     if (rawQuery) {
       if (rawQuery.includes(':')) {
@@ -79,7 +78,6 @@ class ProductManager {
       }
     }
 
-    // Orden
     let sortObj = {};
     if (sort === 'asc') sortObj = { price: 1 };
     else if (sort === 'desc') sortObj = { price: -1 };
