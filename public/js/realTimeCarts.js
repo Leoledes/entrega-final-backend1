@@ -30,27 +30,54 @@ function renderCarts(updatedCarts) {
     cartsList.innerHTML = '';
     updatedCarts.forEach(cart => {
         const div = document.createElement('div');
-        div.className = 'cart-card';
-        div.dataset.id = cart._id;
+        div.className = 'product-card cart-card';
+        // Correcto: Usar cart.id
+        div.dataset.id = cart.id; 
 
         let productsHTML = '<ul>';
+
         cart.products.forEach(p => {
+            // ==========================================================
+            // CORRECCIÓN CLAVE: Acceder directamente a p.name, p.id, p.price
+            // ya que el servidor envía la información 'aplanada' y poblada.
+            // ==========================================================
             productsHTML += `<li>
-                ${p.product?.name || p.product} (ID: ${p.product?._id || p.product}) - Cantidad: ${p.quantity}
-                <button onclick="removeProduct('${cart._id}', '${p.product?._id || p.product}')">Eliminar</button>
+                ${p.name} (ID: ${p.id}) - Precio: $${p.price} - Cantidad: ${p.quantity}
+                <button onclick="removeProduct('${cart.id}', '${p.id}')">Eliminar Producto</button>
             </li>`;
         });
         productsHTML += '</ul>';
 
         div.innerHTML = `
-            <h3>Carrito ID: ${cart._id}</h3>
-            ${productsHTML}
-            <button onclick="emptyCart('${cart._id}')">Vaciar Carrito</button>
+            <h3>Carrito ID: ${cart.id}</h3>
+            ${productsHTML} 
+            
+            <button onclick="emptyCart('${cart.id}')">Vaciar Carrito</button>
+            
+            <button class="btn-delete-cart" data-cart-id="${cart.id}"> 
+                Eliminar Carrito 🗑️
+            </button> 
         `;
+
         cartsList.appendChild(div);
     });
 }
 
 socket.on('cartsUpdated', (updatedCarts) => {
     renderCarts(updatedCarts);
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-delete-cart')) {
+
+        const cartId = e.target.getAttribute('data-cart-id');
+        
+        // Se mantiene la validación para evitar errores
+        if (cartId && cartId.trim() !== '') { 
+            socket.emit('deleteCart', cartId);
+            console.log(`Solicitando eliminación del Carrito: ${cartId}`);
+        } else {
+             console.error("Error: Intentando eliminar un carrito con ID vacío o nulo.");
+        }
+    }
 });

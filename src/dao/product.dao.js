@@ -15,14 +15,17 @@ class ProductManager {
   }
 
   async getAllProducts() {
-    try {
-      const products = await Product.find({}, "_id name description price category stock status").lean();
-      return products;
-    } catch (error) {
-      console.error("Error al buscar producto:", error);
-      throw new Error("Error al obtener productos");
-    }
+  try {
+    const products = await Product.find({}, "_id name description price category stock status").lean();
+    return products.map(p => ({
+      id: p._id.toString(),
+      ...p
+    }));
+  } catch (error) {
+    console.error("Error al buscar producto:", error);
+    throw new Error("Error al obtener productos");
   }
+}
 
   async getProductById(_id) {
     try {

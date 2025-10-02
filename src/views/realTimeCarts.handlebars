@@ -38,6 +38,12 @@
                 <p>No hay productos en este carrito.</p>
             {{/if}}
         </div>
+        <div class="cart-card">
+            <h3>Carrito ID: {{id}}</h3>    
+            <button class="btn-delete-cart" data-cart-id="{{id}}">
+                Eliminar Carrito 🗑️
+            </button>
+        </div>
     {{/each}}
 </div>
 
