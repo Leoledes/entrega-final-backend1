@@ -47,6 +47,7 @@ h1 {
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 12px;
+    background-color: #eaeaea;
 }
 
 /* Info del producto */

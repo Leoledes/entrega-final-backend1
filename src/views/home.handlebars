@@ -6,6 +6,8 @@
       <div class="product-card" data-id="{{this.id}}">
         {{#if this.thumbnails.[0]}}
           <img src="{{this.thumbnails.[0]}}" alt="{{this.name}}" class="product-img">
+        {{else}}
+          <img src="/images/placeholder.png" alt="Sin imagen" class="product-img">
         {{/if}}
 
         <div class="product-info">

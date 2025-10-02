@@ -1,34 +1,34 @@
-<h1>Lista de Productos</h1>
+<h1>Catálogo de Productos</h1>
 
 {{#if products.length}}
   <div class="products-container">
     {{#each products}}
       <div class="product-card" data-id="{{this.id}}">
+        {{#if this.thumbnails.[0]}}
+          <img src="{{this.thumbnails.[0]}}" alt="{{this.name}}" class="product-img">
+        {{else}}
+          <img src="https://via.placeholder.com/200x200?text=Sin+Imagen" alt="Sin imagen" class="product-img">
+        {{/if}}
+
         <div class="product-info">
           <h3>{{this.name}}</h3>
-          <p class="price-tag">$ {{this.price}} <span>(Stock: {{this.stock}})</span></p>
-          <p>Categoría: {{this.category}}</p>
           <p>{{this.description}}</p>
+          <span class="price-tag">
+            $ {{this.price}} <span>(Stock: {{this.stock}})</span>
+          </span>
+          <p>Categoría: {{this.category}}</p>
         </div>
+
         <div class="actions-container">
           <a href="/products/{{this.id}}" class="btn-detail">Ver Detalle</a>
-          <button onclick="addToCart('{{../cartId}}', '{{this.id}}')">🛒 Agregar</button>
+          <button onclick="addToCart('{{cartId}}', '{{this.id}}')">🛒 Agregar</button>
         </div>
       </div>
     {{/each}}
   </div>
-
-  <div class="pagination">
-    {{#if hasPrevPage}}
-      <a href="{{prevLink}}">⬅️ Anterior</a>
-    {{/if}}
-    <span>Página {{page}} de {{totalPages}}</span>
-    {{#if hasNextPage}}
-      <a href="{{nextLink}}">Siguiente ➡️</a>
-    {{/if}}
-  </div>
 {{else}}
-  <p>No hay productos cargados.</p>
+  <p class="no-products">No hay productos cargados.</p>
 {{/if}}
 
+<script src="/socket.io/socket.io.js"></script>
 <script src="/js/cart.js"></script>

@@ -1,6 +1,16 @@
 <div class="product-detail-card">
   <h1>{{product.name}}</h1>
 
+  <div class="product-images">
+    {{#if product.thumbnails.length}}
+      {{#each product.thumbnails}}
+        <img src="{{this}}" alt="{{../product.name}}" class="product-img-detail">
+      {{/each}}
+    {{else}}
+      <img src="/images/placeholder.png" alt="Sin imagen" class="product-img-detail">
+    {{/if}}
+  </div>
+
   <p class="price"><strong>Precio:</strong> ${{product.price}}</p>
   <p><strong>Descripción:</strong> {{product.description}}</p>
   <p><strong>Categoría:</strong> {{product.category}}</p>
