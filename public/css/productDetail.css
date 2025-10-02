@@ -1,75 +1,85 @@
+/* Estilos para ProductDetail */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f9fafc;
+  color: #333;
+}
+
 .product-detail-card {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    text-align: left;
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .product-detail-card h1 {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 20px;
+  font-size: 28px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .product-images {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .product-img-detail {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    background-color: #eaeaea;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.product-detail-card p {
-    font-size: 1em;
-    color: #333;
-    margin: 8px 0;
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+p {
+  font-size: 15px;
+  margin: 5px 0;
 }
 
 .actions-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 .actions-container button {
-    flex: 1;
-    padding: 10px 15px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 10px 15px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .actions-container button:hover {
-    background-color: #2980b9;
+  background: #1e7e34;
 }
 
 .actions-container a {
-    flex: 1;
-    text-align: center;
-    padding: 10px 15px;
-    background-color: #ecf0f1;
-    color: #2c3e50;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
+  text-decoration: none;
+  padding: 10px 15px;
+  background: #6c757d;
+  color: white;
+  border-radius: 8px;
+  transition: 0.2s ease;
 }
 
 .actions-container a:hover {
-    background-color: #bdc3c7;
+  background: #5a6268;
 }
