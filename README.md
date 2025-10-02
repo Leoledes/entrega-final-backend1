@@ -225,45 +225,6 @@ entrega-final-backend1/
 
 ---
 
-## 🧪 Testing
-
-Ejemplo con cURL:
-
-### Obtener productos con paginación
-```bash
-curl http://localhost:8080/api/products?page=1&limit=5
-Crear producto
-bash
-Copiar código
-curl -X POST http://localhost:8080/api/products \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Pothos", "price": 1200, "stock": 20, "category": "Interior"}'
-Agregar producto al carrito
-bash
-Copiar código
-curl -X POST http://localhost:8080/api/carts/CART_ID/products/PRODUCT_ID \
-  -H "Content-Type: application/json" \
-  -d '{"quantity": 2}'
-🤝 Contribuciones
-Fork del proyecto
-
-Crear rama:
-
-bash
-Copiar código
-git checkout -b feature/AmazingFeature
-Commit cambios:
-
-bash
-Copiar código
-git commit -m 'Add some AmazingFeature'
-Push:
-
-bash
-Copiar código
-git push origin feature/AmazingFeature
-Abrir Pull Request
-
 📝 Scripts Disponibles
 json
 Copiar código
@@ -272,6 +233,7 @@ Copiar código
   "dev": "nodemon src/config/server.js",
   "setup": "npm install && node src/config/setup.js"
 }
+
 📄 Licencia
 Licencia ISC. Código abierto.
 
