@@ -18,11 +18,10 @@
       <input type="number" name="stock" id="stock" required>
 
       <label for="category">Categoría:</label>
-        <select name="category" id="category" required>
-            <option value="">--Seleccionar--</option>
-            <option value="Exterior">Exterior</option>
-            <option value="Interior">Interior</option>
-        </select>
+      <select name="category" id="category" required>
+        <option value="Exterior">Exterior</option>
+        <option value="Interior">Interior</option>
+      </select>
 
       <button type="submit">Agregar Producto</button>
     </form>
@@ -48,6 +47,9 @@
         <p>{{this.description}}</p>
         <span class="price-tag">$ {{this.price}} <span>Stock: {{this.stock}}</span></span>
         <p>Categoría: {{this.category}}</p>
+        <div class="actions-container">
+          <button onclick="deleteProduct('{{this.id}}')">Eliminar</button>
+        </div>
       </div>
     {{/each}}
   {{else}}

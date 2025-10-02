@@ -1,3 +1,4 @@
+/* ===== Estilos generales ===== */
 body {
     font-family: 'Inter', sans-serif;
     background-color: #f4f7f9;
@@ -17,6 +18,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* ===== Formularios ===== */
 .forms-container {
     display: flex;
     flex-wrap: wrap;
@@ -43,12 +45,14 @@ h1 {
     font-weight: 500;
 }
 
-.form-card input {
+.form-card input, 
+.form-card select {
     width: 100%;
     padding: 8px;
     margin-bottom: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    box-sizing: border-box;
 }
 
 .form-card button {
@@ -59,46 +63,96 @@ h1 {
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
 .form-card button:hover {
     background-color: #2980b9;
 }
 
+/* ===== Lista de productos estilo Home ===== */
 .products-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 0;
 }
 
 .product-card {
-    background-color: #fff;
-    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    flex: 1 1 300px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .product-card h3 {
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 1.4em;
+    font-weight: 600;
 }
 
+.product-card p {
+    color: #666;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+}
+
+.price-tag {
+    font-weight: 700;
+    color: #27ae60;
+    font-size: 1.3em;
+    margin: 10px 0 12px 0;
+    display: block;
+}
+
+.price-tag span {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 400;
+}
+
+/* ===== Contenedor de acciones ===== */
 .actions-container {
-    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
 }
 
 .actions-container button {
     background-color: #3498db;
     color: white;
-    padding: 8px 16px;
+    padding: 10px 15px;
     border: none;
     border-radius: 6px;
-    margin-right: 10px;
     cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.3s ease;
+    flex: 1;
 }
 
 .actions-container button:hover {
     background-color: #2980b9;
+}
+
+/* ===== Mensaje de sin productos ===== */
+.no-products {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #7f8c8d;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
