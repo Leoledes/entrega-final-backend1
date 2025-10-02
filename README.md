@@ -225,9 +225,7 @@ entrega-final-backend1/
 
 ---
 
-## 📝 Scripts Disponibles
-
-```json
+## 📝 Scripts Disponibles en package.json
 {
   "start": "node src/config/server.js",
   "dev": "nodemon src/config/server.js",
