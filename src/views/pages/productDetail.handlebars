@@ -1,15 +1,15 @@
 <div class="product-detail-card"> 
     <h1>{{product.name}}</h1>
 
-    <p><strong>Precio:</strong> ${{product.price}}</p>
-    <p><strong>Descripción:</strong> {{product.description}}</p>
+    <p class="price-tag">${{product.price}} <span>(Stock: {{product.stock}})</span></p>
+
     <p><strong>Categoría:</strong> {{product.category}}</p>
-    <p><strong>Stock:</strong> {{product.stock}}</p>
+    <p><strong>Descripción:</strong> {{product.description}}</p>
 
-    <button onclick="addToCart('{{cartId}}', '{{product.id}}')">Agregar al Carrito</button>
-    <a href="/products">⬅️ Volver a Productos</a>
-
-    <script src="/js/cart.js"></script>
+    <div class="actions-container">
+        <button onclick="addToCart('{{cartId}}', '{{product.id}}')">🛒 Agregar al Carrito</button>
+        <a href="/products" class="btn-detail">⬅️ Volver a Productos</a>
+    </div>
 </div>
 
 <script src="/js/cart.js"></script>

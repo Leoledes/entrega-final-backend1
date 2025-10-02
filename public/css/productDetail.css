@@ -1,87 +1,172 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 40px 20px;
+    padding: 20px;
     background-color: #f4f7f9;
     color: #333;
     line-height: 1.6;
-    display: flex; /* Centra el contenido */
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .product-detail-card {
-    /* Estilo de tarjeta principal */
     background-color: #ffffff;
     border: 1px solid #e0e7ee;
     border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    max-width: 650px; /* Ancho máximo para el detalle */
-    width: 100%;
+    padding: 30px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .product-detail-card h1 {
     color: #2c3e50;
-    font-size: 2.2em;
+    font-size: 2em;
     font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 25px;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
 }
 
 .product-detail-card p {
-    font-size: 1.1em;
-    margin-bottom: 12px;
+    margin: 8px 0;
+    font-size: 1em;
     color: #555;
 }
 
-.product-detail-card p strong {
-    color: #34495e;
+.product-detail-card .price-tag {
+    font-size: 1.5em;
     font-weight: 700;
-    margin-right: 10px;
+    color: #27ae60;
+    margin: 15px 0;
 }
 
-/* Estilo específico para el precio */
-.product-detail-card p:first-of-type { 
-    font-size: 1.6em;
-    color: #27ae60; 
-    font-weight: 700;
-    margin-bottom: 25px;
+.product-detail-card .price-tag span {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 400;
 }
 
-/* Estilo para el botón de agregar al carrito */
-button {
+.actions-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.actions-container button {
     background-color: #3498db;
     color: white;
-    padding: 12px 25px;
+    padding: 12px 20px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
     font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    margin-top: 20px;
-    margin-right: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+.actions-container button:hover {
     background-color: #2980b9;
-    transform: translateY(-2px);
 }
 
-/* Estilo para el enlace "Volver" */
-a {
-    display: inline-block;
-    color: #34495e;
+.actions-container .btn-detail {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background-color: transparent;
+    color: #3498db;
     text-decoration: none;
-    font-size: 1em;
+    border: 1px solid #3498db;
+    border-radius: 6px;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-a:hover {
-    color: #2980b9;
-    text-decoration: underline;
+.actions-container .btn-detail:hover {
+    background-color: #3498db;
+    color: white;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.product-detail-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-detail-card h1 {
+    color: #2c3e50;
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.product-detail-card p {
+    margin: 8px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+.product-detail-card .price-tag {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #27ae60;
+    margin: 15px 0;
+}
+
+.product-detail-card .price-tag span {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 400;
+}
+
+.actions-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.actions-container button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.actions-container button:hover {
+    background-color: #2980b9;
+}
+
+.actions-container .btn-detail {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background-color: transparent;
+    color: #3498db;
+    text-decoration: none;
+    border: 1px solid #3498db;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.actions-container .btn-detail:hover {
+    background-color: #3498db;
+    color: white;
 }

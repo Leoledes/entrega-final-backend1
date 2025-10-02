@@ -1,13 +1,12 @@
 const productDAO = require('../dao/product.dao');
 
+// Obtener lista de productos con paginación
 const getProducts = async (req, res) => {
   try {
-    // Validación y conversión de query params
     const limit = Math.max(1, parseInt(req.query.limit) || 10);
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const { query, sort } = req.query;
 
-    // Obtener productos paginados desde DAO
     const { products, totalDocs, totalPages, page: currentPage } =
       await productDAO.getProductsPaginated({ limit, page, query, sort });
 
@@ -16,7 +15,6 @@ const getProducts = async (req, res) => {
     const prevPage = hasPrevPage ? currentPage - 1 : null;
     const nextPage = hasNextPage ? currentPage + 1 : null;
 
-    // Construir links prev/next
     const buildLink = (newPage) => {
       const params = { ...req.query, page: newPage };
       const q = new URLSearchParams(params).toString();
@@ -40,16 +38,22 @@ const getProducts = async (req, res) => {
   }
 };
 
+// Obtener detalle de un producto (ahora renderiza HBS)
 const getProductById = async (req, res) => {
   try {
     const product = await productDAO.getProductById(req.params.pid);
-    if (!product) return res.status(404).json({ message: "Producto no encontrado" });
-    res.json(product);
+    if (!product) return res.status(404).render('404', { message: "Producto no encontrado" });
+
+    res.render('productdetail', { 
+      product, 
+      cartId: req.session?.cartId || '' // Para usar en addToCart
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).render('500', { error: err.message });
   }
 };
 
+// Crear un nuevo producto
 const createProduct = async (req, res) => {
   try {
     const product = await productDAO.createProduct(req.body);
@@ -59,6 +63,7 @@ const createProduct = async (req, res) => {
   }
 };
 
+// Actualizar producto por ID
 const updateProduct = async (req, res) => {
   try {
     const product = await productDAO.updateProductById(req.params.pid, req.body);
@@ -69,6 +74,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Eliminar producto por ID
 const deleteProduct = async (req, res) => {
   try {
     const deleted = await productDAO.deleteProductById(req.params.pid);

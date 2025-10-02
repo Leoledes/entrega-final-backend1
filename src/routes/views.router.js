@@ -1,16 +1,15 @@
 const { Router } = require('express');
 const productDAO = require('../dao/product.dao');
-const cartDAO = require('../dao/cart.dao'); // Se mantiene por si es necesario en otras rutas
+const cartDAO = require('../dao/cart.dao');
 
 const router = Router();
 
+// Redirección raíz
 router.get('/', (req, res) => res.redirect('/home'));
 
+// ===================== HOME =====================
 router.get('/home', async (req, res) => {
     try {
-        // La lógica asíncrona de creación de carrito se ha ELIMINADO de aquí.
-        // La página carga rápidamente al solo ejecutar la consulta de productos.
-        
         const productsFromDB = await productDAO.getAllProducts();
         const products = productsFromDB.map(p => ({
             id: p._id,
@@ -27,8 +26,7 @@ router.get('/home', async (req, res) => {
             title: 'Productos',
             style: 'home.css',
             products,
-            // Si el cartId existe en la sesión, se pasa. Si no, es 'undefined', lo cual no bloquea.
-            cartId: req.session.cartId 
+            cartId: req.session.cartId
         });
     } catch (error) {
         console.error("Error en /home:", error.message);
@@ -36,12 +34,8 @@ router.get('/home', async (req, res) => {
     }
 });
 
-// =========================================================
-// Rutas de Vistas Adicionales (Ejemplos)
-// =========================================================
-
+// ===================== LISTADO DE PRODUCTOS =====================
 router.get('/products', async (req, res) => {
-    // Si tienes lógica de paginación o filtrado aquí, debe estar.
     try {
         const productsFromDB = await productDAO.getAllProducts();
         const products = productsFromDB.map(p => ({
@@ -57,7 +51,7 @@ router.get('/products', async (req, res) => {
         res.render('pages/products', {
             layout: 'main',
             title: 'Listado de Productos',
-            style: 'home.css', // O el CSS que uses para esta vista
+            style: 'home.css',
             products,
             cartId: req.session.cartId
         });
@@ -67,16 +61,71 @@ router.get('/products', async (req, res) => {
     }
 });
 
+// ===================== DETALLE DE PRODUCTO =====================
 router.get('/products/:pid', async (req, res) => {
-    // Tu lógica para la vista de detalle de producto
+    try {
+        const pid = req.params.pid;
+        const productFromDB = await productDAO.getProductById(pid);
+
+        if (!productFromDB) {
+            return res.status(404).send('Producto no encontrado');
+        }
+
+        const product = {
+            id: productFromDB._id,
+            name: productFromDB.name,
+            description: productFromDB.description,
+            price: productFromDB.price,
+            category: productFromDB.category,
+            stock: productFromDB.stock,
+            status: productFromDB.status
+        };
+
+        res.render('pages/productDetail', {
+            layout: 'main',
+            title: product.name,
+            style: 'productDetail.css',
+            product,
+            cartId: req.session.cartId
+        });
+    } catch (error) {
+        console.error('Error en /products/:pid:', error.message);
+        res.status(500).send('Error al obtener el producto');
+    }
 });
 
+// ===================== DETALLE DE CARRITO =====================
 router.get('/carts/:cid', async (req, res) => {
-    // Tu lógica para la vista de detalle de carrito
+    try {
+        const cid = req.params.cid;
+        const cartFromDB = await cartDAO.getCartById(cid);
+
+        if (!cartFromDB) return res.status(404).send('Carrito no encontrado');
+
+        const cart = {
+            id: cartFromDB._id,
+            products: cartFromDB.products.map(p => ({
+                id: p.product?._id,
+                name: p.product?.name,
+                price: p.product?.price,
+                quantity: p.quantity
+            }))
+        };
+
+        res.render('pages/cartDetail', {
+            layout: 'main',
+            title: `Carrito ${cart.id}`,
+            style: 'home.css',
+            cart
+        });
+    } catch (error) {
+        console.error('Error en /carts/:cid:', error.message);
+        res.status(500).send('Error al obtener el carrito');
+    }
 });
 
+// ===================== REALTIME PRODUCTS =====================
 router.get('/realtimeproducts', async (req, res) => {
-    // Ruta que carga la vista de Socket.IO
     try {
         const productsFromDB = await productDAO.getAllProducts();
         const products = productsFromDB.map(p => ({
@@ -101,6 +150,7 @@ router.get('/realtimeproducts', async (req, res) => {
     }
 });
 
+// ===================== REALTIME CARTS =====================
 router.get('/realtimecarts', async (req, res) => {
     try {
         const cartsFromDB = await cartDAO.getAllCarts();
