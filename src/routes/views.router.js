@@ -1,11 +1,9 @@
-// views.router.js
 const { Router } = require('express');
 const productDAO = require('../dao/product.dao');
 const cartDAO = require('../dao/cart.dao');
 
 const router = Router();
 
-// ===================== MIDDLEWARE DE CARRO EN SESIÓN =====================
 router.use(async (req, res, next) => {
   try {
     if (!req.session.cartId) {
@@ -19,10 +17,8 @@ router.use(async (req, res, next) => {
   }
 });
 
-// ===================== REDIRECCIÓN RAÍZ =====================
 router.get('/', (req, res) => res.redirect('/home'));
 
-// ===================== HOME =====================
 router.get('/home', async (req, res) => {
   try {
     const productsFromDB = await productDAO.getAllProducts();
@@ -50,11 +46,16 @@ router.get('/home', async (req, res) => {
   }
 });
 
-// ===================== LISTADO DE PRODUCTOS =====================
 router.get('/products', async (req, res) => {
   try {
-    const productsFromDB = await productDAO.getAllProducts();
-    const products = productsFromDB.map(p => ({
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const { query, sort } = req.query;
+
+    const { products, totalDocs, totalPages, page: currentPage, hasPrevPage, hasNextPage, prevPage, nextPage } 
+      = await productDAO.getProductsPaginated({ limit, page, query, sort });
+
+    const mappedProducts = products.map(p => ({
       id: p._id,
       name: p.name,
       description: p.description,
@@ -69,8 +70,19 @@ router.get('/products', async (req, res) => {
       layout: 'main',
       title: 'Listado de Productos',
       style: 'home.css',
-      products,
-      cartId: req.session.cartId
+      products: mappedProducts,
+      cartId: req.session.cartId,
+      pagination: {
+        totalPages,
+        currentPage,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage,
+        limit,
+        query: query || '',
+        sort: sort || ''
+      }
     });
   } catch (error) {
     console.error("Error en /products:", error.message);
@@ -78,7 +90,6 @@ router.get('/products', async (req, res) => {
   }
 });
 
-// ===================== DETALLE DE PRODUCTO =====================
 router.get('/products/:pid', async (req, res) => {
   try {
     const pid = req.params.pid;
@@ -110,7 +121,6 @@ router.get('/products/:pid', async (req, res) => {
   }
 });
 
-// ===================== DETALLE DE CARRITO =====================
 router.get('/carts/:cid', async (req, res) => {
   try {
     const cid = req.params.cid;
@@ -141,7 +151,6 @@ router.get('/carts/:cid', async (req, res) => {
   }
 });
 
-// ===================== REALTIME PRODUCTS =====================
 router.get('/realtimeproducts', async (req, res) => {
   try {
     const productsFromDB = await productDAO.getAllProducts();
@@ -168,7 +177,6 @@ router.get('/realtimeproducts', async (req, res) => {
   }
 });
 
-// ===================== REALTIME CARTS =====================
 router.get('/realtimecarts', async (req, res) => {
   try {
     const cartsFromDB = await cartDAO.getAllCarts();
@@ -196,7 +204,6 @@ router.get('/realtimecarts', async (req, res) => {
   }
 });
 
-// ===================== AGREGAR PRODUCTO AL CARRITO =====================
 router.post('/api/carts/:cid/products/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
@@ -208,7 +215,7 @@ router.post('/api/carts/:cid/products/:pid', async (req, res) => {
 
     if (!updatedCart) return res.status(404).json({ status: 'error', error: 'Cart or product not found' });
 
-    res.redirect('back'); // vuelve a la misma página
+    res.redirect('back');
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error.message);
     res.status(500).json({ status: 'error', error: 'No se pudo agregar el producto al carrito' });

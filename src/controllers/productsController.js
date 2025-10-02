@@ -1,19 +1,21 @@
 const productDAO = require('../dao/product.dao');
 
-// Obtener lista de productos con paginación
 const getProducts = async (req, res) => {
   try {
     const limit = Math.max(1, parseInt(req.query.limit) || 10);
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const { query, sort } = req.query;
 
-    const { products, totalDocs, totalPages, page: currentPage } =
-      await productDAO.getProductsPaginated({ limit, page, query, sort });
+    // Pasar req para que el DAO pueda construir los links
+    const result = await productDAO.getProductsPaginated({ 
+      limit, 
+      page, 
+      query, 
+      sort,
+      req  // 👈 AGREGAR ESTO
+    });
 
-    const hasPrevPage = currentPage > 1;
-    const hasNextPage = currentPage < totalPages;
-    const prevPage = hasPrevPage ? currentPage - 1 : null;
-    const nextPage = hasNextPage ? currentPage + 1 : null;
+    const { products, totalDocs, totalPages, page: currentPage, hasPrevPage, hasNextPage, prevPage, nextPage, prevLink, nextLink } = result;
 
     const buildLink = (newPage) => {
       const params = { ...req.query, page: newPage };
@@ -38,7 +40,6 @@ const getProducts = async (req, res) => {
   }
 };
 
-// Obtener detalle de un producto (ahora renderiza HBS)
 const getProductById = async (req, res) => {
   try {
     const product = await productDAO.getProductById(req.params.pid);
@@ -46,14 +47,13 @@ const getProductById = async (req, res) => {
 
     res.render('productdetail', { 
       product, 
-      cartId: req.session?.cartId || '' // Para usar en addToCart
+      cartId: req.session?.cartId || ''
     });
   } catch (err) {
     res.status(500).render('500', { error: err.message });
   }
 };
 
-// Crear un nuevo producto
 const createProduct = async (req, res) => {
   try {
     const product = await productDAO.createProduct(req.body);
@@ -63,7 +63,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-// Actualizar producto por ID
 const updateProduct = async (req, res) => {
   try {
     const product = await productDAO.updateProductById(req.params.pid, req.body);
@@ -74,7 +73,6 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// Eliminar producto por ID
 const deleteProduct = async (req, res) => {
   try {
     const deleted = await productDAO.deleteProductById(req.params.pid);
