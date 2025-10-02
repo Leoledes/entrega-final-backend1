@@ -44,6 +44,9 @@ h2 {
     padding: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .cart-card:hover {
@@ -57,10 +60,12 @@ h2 {
     margin-bottom: 12px;
     font-size: 1.4em;
     font-weight: 500;
+    text-align: center;
 }
 
 .cart-card ul {
     padding-left: 20px;
+    margin-bottom: 15px;
 }
 
 .cart-card li {
@@ -72,12 +77,15 @@ h2 {
 /* ===================== ACCIONES ===================== */
 .actions-container {
     display: flex;
+    justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;
     margin-top: 12px;
 }
 
 .actions-container button {
     flex: 1;
+    min-width: 80px;
     background-color: #3498db;
     color: white;
     border: none;
@@ -88,9 +96,17 @@ h2 {
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
+.actions-container button.btn-delete {
+    background-color: #dc3545;
+}
+
 .actions-container button:hover {
     background-color: #2980b9;
     transform: translateY(-2px);
+}
+
+.actions-container button.btn-delete:hover {
+    background-color: #a71d2a;
 }
 
 /* ===================== FORMULARIOS ===================== */
@@ -113,6 +129,12 @@ h2 {
     max-width: 450px;
 }
 
+.form-card h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .form-card form label {
     display: block;
     margin-bottom: 8px;
@@ -121,7 +143,8 @@ h2 {
 }
 
 .form-card form input[type="text"],
-.form-card form input[type="number"] {
+.form-card form input[type="number"],
+.form-card form select {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
@@ -131,14 +154,16 @@ h2 {
     transition: border-color 0.3s ease;
 }
 
-.form-card form input:focus {
+.form-card form input:focus,
+.form-card form select:focus {
     border-color: #3498db;
     outline: none;
 }
 
 /* ===================== BOTONES ===================== */
+/* ===================== BOTONES ===================== */
 button {
-    background-color: #3498db;
+    background-color: #007bff;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -150,18 +175,45 @@ button {
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #0056b3;
     transform: translateY(-2px);
 }
 
+.actions-container button {
+    flex: 1;
+    min-width: 80px;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions-container button.btn-delete {
+    background-color: #dc3545;
+}
+
+.actions-container button.btn-delete:hover {
+    background-color: #a71d2a;
+}
+
+.actions-container button:not(.btn-delete) {
+    background-color: #007bff;
+}
+
+.actions-container button:not(.btn-delete):hover {
+    background-color: #0056b3;
+}
+
 /* ===================== MENSAJES SIN DATOS ===================== */
-.no-carts {
+.no-carts,
+.no-products {
     text-align: center;
-    padding: 50px;
+    padding: 40px 20px;
     font-size: 1.2em;
     color: #7f8c8d;
     background-color: #ffffff;
     border-radius: 8px;
-    margin-top: 40px;
+    margin-top: 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
